@@ -1,4 +1,5 @@
 import type { CharacterState } from "@dndbuilder/engine";
+import type { Party } from "../state/party";
 import { idbAll, idbDelete, idbGet, idbPut } from "./idb";
 
 export interface StoredFile {
@@ -89,6 +90,19 @@ export const characters = {
   },
   async remove(id: string): Promise<void> {
     await idbDelete("characters", id);
+  },
+};
+
+export const parties = {
+  async list(): Promise<Party[]> {
+    const all = await idbAll<Party>("parties");
+    return all.sort((a, b) => a.name.localeCompare(b.name));
+  },
+  async save(party: Party): Promise<void> {
+    await idbPut("parties", party.id, party);
+  },
+  async remove(id: string): Promise<void> {
+    await idbDelete("parties", id);
   },
 };
 
