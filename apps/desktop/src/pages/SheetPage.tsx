@@ -1,7 +1,7 @@
 import { attackDetails, formatModifier, type StatPart } from "@dndbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
-import type { PaperSize } from "../pdf/characterSheetPdf";
+import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";
 import { CompanionBlock } from "../components/CompanionBlock";
 import { Portrait } from "../components/Portrait";
 import { useCharacter } from "../state/app";
@@ -12,6 +12,10 @@ const tip = (parts: StatPart[]) => parts.map((p) => `${p.source}: ${formatModifi
 export function SheetPage() {
   const { sheet, character, content } = useCharacter();
   const [paper, setPaper] = useState<PaperSize>(() => settings.get<PaperSize>("paper", "letter"));
+  const [pdfStyle, setPdfStyle] = useState<PdfStyle>(() => {
+    const v = settings.get<PdfStyle>("pdfStyle", "classic");
+    return v === "print" || v === "dark" ? v : "classic";
+  });
   const units = useUnits();
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
@@ -20,10 +24,11 @@ export function SheetPage() {
     setExporting(true);
     setExportError(null);
     settings.set("paper", paper);
+    settings.set("pdfStyle", pdfStyle);
     try {
       // Loaded on demand to keep the initial bundle small.
       const { characterSheetPdf } = await import("../pdf/characterSheetPdf");
-      const bytes = await characterSheetPdf(sheet, character.state, content.registry, { paper, units: units.system });
+      const bytes = await characterSheetPdf(sheet, character.state, content.registry, { paper, units: units.system, style: pdfStyle });
       const platform = await getPlatform();
       const file = `${(sheet.name || "character").replace(/[\\/:*?"<>|]+/g, "_")}.pdf`;
       await platform.saveBinaryFile(file, bytes, "pdf", "application/pdf");
@@ -44,6 +49,11 @@ export function SheetPage() {
         <select value={paper} onChange={(e) => setPaper(e.target.value as PaperSize)} aria-label="Paper size">
           <option value="letter">US Letter</option>
           <option value="a4">A4</option>
+        </select>
+        <select value={pdfStyle} onChange={(e) => setPdfStyle(e.target.value as PdfStyle)} aria-label="PDF style">
+          <option value="classic">Classic</option>
+          <option value="print">Printer friendly</option>
+          <option value="dark">Dark</option>
         </select>
         <button onClick={() => window.print()}>Print</button>
         {exportError && <span className="error-text small">{exportError}</span>}
