@@ -1141,3 +1141,141 @@ ul.plain {
   opacity: 0.55;
   font-style: italic;
 }
+
+/* Equipment: inventory, search and a preview that stays in view while the lists scroll */
+.equipment-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(300px, 0.95fr);
+  grid-template-areas: "inv search preview";
+  gap: 1rem;
+  align-items: start;
+}
+.eq-inventory {
+  grid-area: inv;
+}
+.eq-search {
+  grid-area: search;
+}
+.eq-preview {
+  grid-area: preview;
+}
+.eq-search .result-list {
+  max-height: calc(100vh - 13rem);
+}
+.inventory tr.selected td,
+.result-list li:hover {
+  background: var(--accent-soft);
+}
+@media (max-width: 1300px) {
+  .equipment-page {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "inv inv" "search preview";
+  }
+}
+@media (max-width: 760px) {
+  .equipment-page {
+    grid-template-columns: 1fr;
+    grid-template-areas: "inv" "search" "preview";
+  }
+  .eq-preview.sticky {
+    position: static;
+    max-height: none;
+  }
+}
+
+/* Item card */
+.item-detail {
+  --rarity: var(--border);
+}
+.item-detail.rarity-common {
+  --rarity: #8a857c;
+}
+.item-detail.rarity-uncommon {
+  --rarity: #3a9a52;
+}
+.item-detail.rarity-rare {
+  --rarity: #4a86d4;
+}
+.item-detail.rarity-very-rare {
+  --rarity: #9b5bd4;
+}
+.item-detail.rarity-legendary {
+  --rarity: #e08a1e;
+}
+.item-detail.rarity-artifact {
+  --rarity: #d4503f;
+}
+.item-detail .item-head {
+  border-left: 4px solid var(--rarity);
+  padding-left: 0.6rem;
+}
+.item-detail .item-head h3 {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+  margin: 0;
+  font-size: 1.25rem;
+}
+.item-detail[class*="rarity-"] .item-head h3,
+.item-detail[class*="rarity-"] .item-sub {
+  color: var(--rarity);
+}
+.item-sub {
+  font-style: italic;
+}
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.4rem 0 0.6rem;
+}
+.item-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 0.4rem;
+  margin: 0.6rem 0;
+}
+.item-stats > div {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.5rem;
+}
+.item-stats dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.item-stats dd {
+  margin: 0;
+  font-weight: 600;
+}
+.chips {
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.chips li {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  font-size: 0.85rem;
+}
+.chips li.chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.item-notes {
+  margin: 0.4rem 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+.item-desc {
+  border-top: 1px solid var(--border);
+  margin-top: 0.6rem;
+  padding-top: 0.3rem;
+}
