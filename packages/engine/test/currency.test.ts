@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import {
   averageWealth,
+  buildSheet,
   backgroundGold,
   clearStartingWealth,
   coinWeight,
@@ -145,6 +146,13 @@ describe("starting wealth", () => {
       ["background-gold", 50],
       ["all-gold", 205],
     ]);
+  });
+
+  it("lists unchosen starting wealth as an open choice for a new character", () => {
+    const s = character("ID_WOTC_PHB_CLASS_FIGHTER", "ID_BACKGROUND_ACOLYTE");
+    expect(buildSheet(resolveCharacter(registry, s)).warnings).toContain("Starting wealth: not chosen");
+    takeStartingWealth(s, startingWealth(resolveCharacter(registry, s)).options[0]);
+    expect(buildSheet(resolveCharacter(registry, s)).warnings).not.toContain("Starting wealth: not chosen");
   });
 
   it("grants starting gold once and can take it back", () => {

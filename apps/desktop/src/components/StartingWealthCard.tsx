@@ -1,6 +1,6 @@
 import { clearStartingWealth, formatWealth, startingWealth, takeStartingWealth, type StartingWealthOption } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
-import { useCharacter } from "../state/app";
+import { useApp, useCharacter } from "../state/app";
 
 function takenText(option: StartingWealthOption | undefined, gp: number, rolls?: number[]): string {
   if (option?.roll && rolls?.length) return `Rolled ${formatWealth(option.roll)}: ${rolls.join(" + ")} → ${gp} gp`;
@@ -8,8 +8,9 @@ function takenText(option: StartingWealthOption | undefined, gp: number, rolls?:
 }
 
 /** Pick how the character starts: with its class and background equipment, or with gold to spend. */
-export function StartingWealthCard() {
+export function StartingWealthCard({ onBuildPage = false }: { onBuildPage?: boolean }) {
   const { character, resolved, update } = useCharacter();
+  const { setPage } = useApp();
   const wealth = useMemo(() => startingWealth(resolved), [resolved]);
   const taken = character.state.startingWealth;
   const [changing, setChanging] = useState(false);
@@ -32,10 +33,18 @@ export function StartingWealthCard() {
       <div className="starting-wealth taken">
         <div className="grow">
           <strong>Starting wealth</strong> <span className="small">{takenText(takenOption, taken.gp, taken.rolls)}</span>
-          {equipment.length > 0 && (
-            <div className="muted small">Add your {equipment.join(" and ")} starting equipment below with “Add” (it’s free).</div>
-          )}
+          <div className="muted small">
+            {taken.gp > 0 && `${taken.gp} gp is in your purse. `}
+            {equipment.length > 0
+              ? `Add your ${equipment.join(" and ")} starting equipment on the Equipment tab with “Add” (it’s free).`
+              : "Spend it on the Equipment tab with “Buy”."}
+          </div>
         </div>
+        {onBuildPage && (
+          <button className="small" onClick={() => setPage("equipment")}>
+            Go shopping
+          </button>
+        )}
         <button className="small ghost" onClick={() => setChanging(true)}>
           Change
         </button>
@@ -54,6 +63,7 @@ export function StartingWealthCard() {
         {wealth.rules === "2014"
           ? "Take your class and background equipment, or ignore it and buy your own gear with gold."
           : "Your class and background each offer their equipment or gold instead."}
+        {!wealth.backgroundName && " Choose a background first: it can add gold or change the options."}
       </p>
       <div className="wealth-options">
         {wealth.options.map((o) => (

@@ -260,6 +260,10 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
     if (missing > 0) warnings.push(`${p.rule.name}: ${missing} choice${missing > 1 ? "s" : ""} remaining`);
   }
   if (!rc.mainClass) warnings.push("No class chosen");
+  // A new character (no coins or gear yet) still has to pick its starting wealth.
+  const st = rc.state;
+  if (rc.mainClass && !st.startingWealth && st.inventory.length === 0 && Object.values(st.currency).every((n) => !n))
+    warnings.push("Starting wealth: not chosen");
   for (const n of rc.nodes) {
     if (n.element.type === "Multiclass" && !meetsRequirements(rc, n.element.requirements)) {
       warnings.push(`Multiclass prerequisites not met for ${n.element.name}${n.element.prerequisite ? ` (${n.element.prerequisite})` : ""}`);
