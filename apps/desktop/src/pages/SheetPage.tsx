@@ -1,5 +1,7 @@
 import { formatModifier, type StatPart } from "@dndbuilder/engine";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { getPlatform, settings } from "../platform";
+import type { PaperSize } from "../pdf/characterSheetPdf";
 import { CompanionBlock } from "../components/CompanionBlock";
 import { useCharacter } from "../state/app";
 
@@ -7,12 +9,41 @@ const tip = (parts: StatPart[]) => parts.map((p) => `${p.source}: ${formatModifi
 
 export function SheetPage() {
   const { sheet, character, content } = useCharacter();
+  const [paper, setPaper] = useState<PaperSize>(() => settings.get<PaperSize>("paper", "letter"));
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
+  const exportPdf = async () => {
+    setExporting(true);
+    setExportError(null);
+    settings.set("paper", paper);
+    try {
+      // Loaded on demand to keep the initial bundle small.
+      const { characterSheetPdf } = await import("../pdf/characterSheetPdf");
+      const bytes = await characterSheetPdf(sheet, character.state, content.registry, { paper });
+      const platform = await getPlatform();
+      const file = `${(sheet.name || "character").replace(/[\\/:*?"<>|]+/g, "_")}.pdf`;
+      await platform.saveBinaryFile(file, bytes, "pdf", "application/pdf");
+    } catch (e) {
+      setExportError((e as Error).message);
+    } finally {
+      setExporting(false);
+    }
+  };
   const s = sheet;
   const equipped = character.state.inventory.filter((i) => i.equipped);
   return (
     <div className="sheet-page">
-      <div className="sheet-actions no-print">
-        <button onClick={() => window.print()}>Print / Save as PDF</button>
+      <div className="sheet-actions no-print row">
+        <button className="primary" disabled={exporting} onClick={exportPdf}>
+          {exporting ? "Exporting…" : "Export PDF"}
+        </button>
+        <select value={paper} onChange={(e) => setPaper(e.target.value as PaperSize)} aria-label="Paper size">
+          <option value="letter">US Letter</option>
+          <option value="a4">A4</option>
+        </select>
+        <button onClick={() => window.print()}>Print</button>
+        {exportError && <span className="error-text small">{exportError}</span>}
       </div>
       <article className="sheet">
         <header className="sheet-header">

@@ -91,6 +91,12 @@ fn write_text_file(path: String, content: String) -> Result<(), String> {
     fs::write(&path, content).map_err(|e| format!("{}: {}", path, e))
 }
 
+/// Write binary data (e.g. an exported PDF) to a file the user picked.
+#[tauri::command]
+fn write_binary_file(path: String, data: Vec<u8>) -> Result<(), String> {
+    fs::write(&path, data).map_err(|e| format!("{}: {}", path, e))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -100,7 +106,8 @@ pub fn run() {
             read_custom_content,
             open_custom_content_folder,
             read_text_file,
-            write_text_file
+            write_text_file,
+            write_binary_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running dndbuilder");

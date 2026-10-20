@@ -65,13 +65,14 @@ npm test
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
 4. **Equipment**: add items and equip armor, shields and weapons. AC updates automatically.
-5. **Sheet**: the finished character. *Print / Save as PDF* produces a printable sheet.
+5. **Spells**: prepare spells for each spellcasting class; slots, save DC and attack bonus are calculated for you.
+6. **Sheet**: the finished character. *Export PDF* writes a multi-page character sheet (US Letter or A4) with
+   spellcasting, companion and background pages.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
 ## Roadmap
 
-* PDF character sheet export
 * Attacks section (weapon attack bonus and damage)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
