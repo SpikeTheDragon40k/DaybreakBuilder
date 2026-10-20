@@ -887,6 +887,28 @@ ul.plain {
 .box h3 {
   margin-top: 0;
 }
+.attacks {
+  width: 100%;
+  border-collapse: collapse;
+}
+.attacks th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.attacks td {
+  padding: 0.25rem 0.4rem 0.25rem 0;
+  vertical-align: top;
+  border-top: 1px solid var(--border);
+}
+.attacks td.num {
+  font-weight: 700;
+}
+.attacks tr.not-proficient td:first-child {
+  font-style: italic;
+}
 .checks {
   list-style: none;
   padding: 0;

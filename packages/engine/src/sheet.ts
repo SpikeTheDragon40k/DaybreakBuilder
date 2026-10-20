@@ -2,6 +2,7 @@ import { ABILITIES, ABILITY_ABBR, SKILLS, getSetter, type Ability, type ElementD
 import { meetsRequirements, type ResolvedCharacter, type ResolvedNode } from "./resolver.js";
 import type { StatPart } from "./stats.js";
 import { buildCompanionSheet, type CompanionSheet } from "./companion.js";
+import { buildAttacks, type AttackRow } from "./attacks.js";
 import {
   casterSpells,
   findCasters,
@@ -85,6 +86,7 @@ export interface CharacterSheet {
   vision: { name: string; range: number }[];
   proficiencies: { armor: string[]; weapons: string[]; tools: string[]; skills: string[]; savingThrows: string[]; other: string[] };
   languages: string[];
+  attacks: AttackRow[];
   features: FeatureRow[];
   spellcasting: SpellcastingRow[];
   companion: CompanionSheet | null;
@@ -301,6 +303,7 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
       other: unique(profs.other),
     },
     languages: unique(languages),
+    attacks: buildAttacks(rc),
     features,
     spellcasting,
     multiclassSpellcasting,

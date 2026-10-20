@@ -3,7 +3,7 @@ import { element, stat } from "../lib/content.mjs";
 import { SOURCE } from "./common.mjs";
 
 const STYLES = [
-  ["Archery", "You gain a +2 bonus to attack rolls you make with ranged weapons.", ["Fighter", "Ranger"], []],
+  ["Archery", "You gain a +2 bonus to attack rolls you make with ranged weapons.", ["Fighter", "Ranger"], [stat({ name: "ranged:attack", value: 2, alt: "Archery" })]],
   [
     "Defense",
     "While you are wearing armor, you gain a +1 bonus to AC.",
