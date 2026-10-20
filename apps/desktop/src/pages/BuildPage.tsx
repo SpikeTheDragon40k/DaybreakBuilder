@@ -1,3 +1,4 @@
+import { currencyValue, formatPrice } from "@dndbuilder/engine";
 import { PortraitButton } from "../components/Portrait";
 import { StartingWealthCard } from "../components/StartingWealthCard";
 import { useCharacter } from "../state/app";
@@ -8,6 +9,7 @@ import { LevelPanel } from "./build/LevelPanel";
 
 export function BuildPage() {
   const { character, sheet, update } = useCharacter();
+  const gold = currencyValue(character.state.currency);
   return (
     <div className="build-page">
       <div className="build-header">
@@ -24,7 +26,7 @@ export function BuildPage() {
             aria-label="Character name"
             onChange={(e) => update((d) => void (d.name = e.target.value))}
           />
-          <span className="muted">{[sheet.race, sheet.subrace, sheet.classSummary, sheet.background].filter(Boolean).join(" · ")}</span>
+          <span className="muted">{[sheet.race, sheet.subrace, sheet.classSummary, sheet.background, gold > 0 && formatPrice(gold)].filter(Boolean).join(" · ")}</span>
         </div>
       </div>
       {sheet.warnings.length > 0 && (
@@ -35,7 +37,7 @@ export function BuildPage() {
           {sheet.warnings.length > 8 && <li className="muted">…and {sheet.warnings.length - 8} more</li>}
         </ul>
       )}
-      {character.state.levels[0] && !character.state.startingWealth && <StartingWealthCard />}
+      {character.state.levels[0] && <StartingWealthCard onBuildPage />}
       <div className="build-columns">
         <div className="col">
           <LevelPanel />
