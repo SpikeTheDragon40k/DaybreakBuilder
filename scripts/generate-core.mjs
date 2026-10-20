@@ -332,6 +332,93 @@ for (const a of ABILITIES) {
 file("ability-scores.xml", "Core: Ability Score Improvements", "Single-point ability score increases used by Ability Score Improvement features.", asi);
 
 // ---------------------------------------------------------------------------
+// 2024 background ability scores
+//
+// A 2024 background lists three abilities: raise one by 2 and another by 1, or
+// all three by 1. Backgrounds grant the combination for their three abilities
+// (custom backgrounds select one) plus the marker ID_INTERNAL_GRANTS_BACKGROUND_ASI,
+// which older species use to drop their own increases. Ids match the community
+// content so files written for Aurora resolve against these definitions.
+
+const BACKGROUND_ASI_MARKER = "ID_INTERNAL_GRANTS_BACKGROUND_ASI";
+const increaseId = (a, n) => `ID_WOTC_TCOE_OPTION_CUSTOMIZED_ASI_${a.toUpperCase()}_INCREASE_${n}`;
+const backgroundAsi = [
+  element({
+    name: "Background Ability Score Improvement",
+    type: "Grants",
+    id: BACKGROUND_ASI_MARKER,
+    source: "Internal",
+    description: "<p>Ability score increases come from the background (2024 rules), so species don't grant their own.</p>",
+  }),
+];
+for (const n of [1, 2]) {
+  for (const a of ABILITIES) {
+    backgroundAsi.push(
+      element({
+        name: cap(a),
+        type: "Ability Score Improvement",
+        id: increaseId(a, n),
+        source: "Internal",
+        requirements: `!${increaseId(a, 3 - n)}`,
+        supports: `Custom Ability Score Increase ${n}`,
+        description: `<p>Your ${cap(a)} score increases by ${n}.</p>`,
+        sheet: false,
+        rules: [stat({ name: a, value: n, alt: "Ability Score Increase" })],
+      }),
+    );
+  }
+}
+for (let i = 0; i < ABILITIES.length; i++) {
+  for (let j = i + 1; j < ABILITIES.length; j++) {
+    for (let k = j + 1; k < ABILITIES.length; k++) {
+      const three = [ABILITIES[i], ABILITIES[j], ABILITIES[k]];
+      const id = `ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_${three.map((a) => ABBR[a].toUpperCase()).join("_")}`;
+      const names = three.map(cap);
+      const list = `${names[0]}, ${names[1]} or ${names[2]}`;
+      backgroundAsi.push(
+        element({
+          name: names.join(", "),
+          type: "Ability Score Improvement",
+          id,
+          source: "Internal",
+          supports: "Custom Background Ability Score Combination",
+          description: `<p>Increase one of ${list} by 2 and another one by 1, or increase all three by 1. None of these increases can raise a score above 20.</p>`,
+          sheet: false,
+          rules: [select({ type: "Ability Score Improvement", name: "Ability Score Improvement Option", supports: `${id}_1|${id}_2` })],
+        }),
+        element({
+          name: "Ability Score Improvement +2, +1",
+          type: "Ability Score Improvement",
+          id: `${id}_1`,
+          source: "Internal",
+          description: `<p>Increase one of ${list} by 2 and a different one by 1.</p>`,
+          sheet: false,
+          rules: [
+            select({ type: "Ability Score Improvement", name: "Background Ability Score Improvement +2", supports: three.map((a) => increaseId(a, 2)).join("|") }),
+            select({ type: "Ability Score Improvement", name: "Background Ability Score Improvement +1", supports: three.map((a) => increaseId(a, 1)).join("|") }),
+          ],
+        }),
+        element({
+          name: "Ability Score Improvement +1, +1, +1",
+          type: "Ability Score Improvement",
+          id: `${id}_2`,
+          source: "Internal",
+          description: `<p>Increase ${names[0]}, ${names[1]} and ${names[2]} by 1.</p>`,
+          sheet: false,
+          rules: three.map((a) => stat({ name: a, value: 1, alt: "Ability Score Increase (Background)" })),
+        }),
+      );
+    }
+  }
+}
+file(
+  "background-ability-scores.xml",
+  "Core: Background Ability Scores",
+  "Ability score increases for 2024 backgrounds: the +2/+1 or +1/+1/+1 choice over three abilities.",
+  backgroundAsi,
+);
+
+// ---------------------------------------------------------------------------
 // Sizes, damage types, conditions
 
 const SIZES = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan", "Colossal"];

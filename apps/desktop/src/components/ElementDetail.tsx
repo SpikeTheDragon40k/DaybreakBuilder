@@ -1,5 +1,5 @@
 import type { ContentRegistry, ElementDef } from "@dndbuilder/engine";
-import { getSetter } from "@dndbuilder/engine";
+import { featCategory, getSetter } from "@dndbuilder/engine";
 import { Html } from "./Html";
 import { isItem, ItemDetail } from "./ItemDetail";
 import { useUnits } from "../units";
@@ -23,6 +23,7 @@ export function ElementDetail({ element, registry }: { element: ElementDef; regi
         <h3>{element.name}</h3>
         <div className="muted small">
           {element.type}
+          {featCategory(element) ? ` (${featCategory(element)})` : ""}
           {element.source ? ` · ${element.source}` : ""}
         </div>
       </header>

@@ -105,7 +105,8 @@ spells, oath spells) are granted by the subclass, not added to `<supports>`.
 ```
 
 Feats are offered by the ASI "Feat" option, which shows when the user enables
-feats; nothing else is needed for them to be selectable.
+feats; nothing else is needed for them to be selectable. 2024 feats also carry
+their category in `<supports>` (see 2024 backgrounds below).
 
 ## Background
 
@@ -129,6 +130,33 @@ feats; nothing else is needed for them to be selectable.
 
 Personality trait / ideal / bond / flaw tables go into the description as
 `<table>`s; they're not rules.
+
+### 2024 backgrounds (Player’s Handbook 2024 and later)
+
+A 2024 background lists three abilities, an Origin feat, two skills, a tool and
+equipment. The abilities and the marker use built-in ids (see
+`content/core/background-ability-scores.xml`); grep for the exact combination id,
+abilities in sheet order (`STR_DEX_CON` … `INT_WIS_CHA`):
+
+```xml
+<element name="Sage" type="Background" source="Player’s Handbook (2024)" id="ID_WOTC_PHB24_BACKGROUND_SAGE">
+	<description><p>…</p></description>
+	<setters><set name="short">Constitution, Intelligence, Wisdom, Magic Initiate (Wizard), Arcana and History</set></setters>
+	<rules>
+		<grant type="Ability Score Improvement" id="ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_CON_INT_WIS" />
+		<grant type="Feat" id="ID_WOTC_PHB24_FEAT_MAGIC_INITIATE_WIZARD" />   <!-- the Origin feat -->
+		<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_ARCANA" />
+		<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_HISTORY" />
+		<grant type="Proficiency" id="ID_PROFICIENCY_TOOL_PROFICIENCY_CALLIGRAPHERS_SUPPLIES" />
+		<grant type="Grants" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI" />          <!-- turns off species ASIs -->
+	</rules>
+</element>
+```
+
+Feats get their 2024 category as a supports keyword: `<supports>Origin</supports>`,
+`General`, `Fighting Style` or `Epic Boon`. A choice of Origin feat is
+`<select type="Feat" name="Origin Feat (…)" supports="Origin" />`. 2024 species have no
+ability score increases.
 
 ## Race and subrace
 

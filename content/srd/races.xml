@@ -15,7 +15,7 @@
 			<set name="names-format">{{name}} {{clan}}</set>
 		</setters>
 		<rules>
-			<stat name="constitution" value="2" alt="Racial Ability Score Increase" />
+			<stat name="constitution" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="25" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
@@ -70,7 +70,7 @@
 		<description><p>As a hill dwarf you have keen senses, deep intuition and remarkable resilience. Wisdom +1. Dwarven Toughness: your hit point maximum increases by 1 per level.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" />
+			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_DWARVEN_TOUGHNESS" />
 		</rules>
 	</element>
@@ -106,7 +106,7 @@
 		<description><p>Elves are a magical people of otherworldly grace, living in the world but not entirely part of it. They can live well over seven hundred years.</p><p>Ability Score Increase: Dexterity +2. Speed 30 feet. Darkvision, Keen Senses, Fey Ancestry and Trance. You speak Common and Elvish.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" />
+			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
@@ -142,7 +142,7 @@
 		<description><p>High elves have a keen mind and a mastery of at least the basics of magic. Intelligence +1, Elf Weapon Training, one wizard cantrip and one extra language.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_ELF_WEAPON_TRAINING" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_HIGH_ELF_CANTRIP" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_EXTRA_LANGUAGE_HIGH_ELF" />
@@ -180,7 +180,7 @@
 		<description><p>The diminutive halflings survive in a world full of larger creatures by avoiding notice or, barring that, avoiding offense. They stand about 3 feet tall.</p><p>Ability Score Increase: Dexterity +2. Size Small, speed 25 feet. Lucky, Brave and Halfling Nimbleness. You speak Common and Halfling.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" />
+			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="25" bonus="base" />
 			<grant type="Size" id="ID_SIZE_SMALL" />
 			<grant type="Language" id="ID_LANGUAGE_COMMON" />
@@ -212,7 +212,7 @@
 		<description><p>Lightfoot halflings can easily hide from notice, even using other people as cover. Charisma +1 and Naturally Stealthy.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_NATURALLY_STEALTHY" />
 		</rules>
 	</element>
@@ -226,12 +226,12 @@
 		<description><p>Humans are the most adaptable and ambitious people among the common races, with widely varying tastes, morals and customs.</p><p>Ability Score Increase: every ability score +1. Speed 30 feet. You speak Common and one extra language of your choice.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="strength" value="1" alt="Racial Ability Score Increase" />
-			<stat name="dexterity" value="1" alt="Racial Ability Score Increase" />
-			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
-			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
-			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" />
-			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<stat name="strength" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="dexterity" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Language" id="ID_LANGUAGE_COMMON" />
@@ -243,8 +243,8 @@
 		<description><p>Born of dragons, dragonborn walk proudly through a world that greets them with fearful incomprehension. They are tall and strongly built, with draconic features.</p><p>Ability Score Increase: Strength +2, Charisma +1. Speed 30 feet. Draconic Ancestry, Breath Weapon and Damage Resistance. You speak Common and Draconic.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="strength" value="2" alt="Racial Ability Score Increase" />
-			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<stat name="strength" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Language" id="ID_LANGUAGE_COMMON" />
@@ -360,7 +360,7 @@
 		<description><p>A gnome’s energy and enthusiasm for living shines through every inch of their tiny body. They are slight, about 3 to 4 feet tall.</p><p>Ability Score Increase: Intelligence +2. Size Small, speed 25 feet. Darkvision and Gnome Cunning. You speak Common and Gnomish.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="intelligence" value="2" alt="Racial Ability Score Increase" />
+			<stat name="intelligence" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="25" bonus="base" />
 			<grant type="Size" id="ID_SIZE_SMALL" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
@@ -381,7 +381,7 @@
 		<description><p>Rock gnomes have a natural inventiveness and hardiness. Constitution +1, Artificer’s Lore and Tinker.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_ARTIFICERS_LORE" />
 			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_TINKER" />
 		</rules>
@@ -404,8 +404,8 @@
 		<description><p>Walking in two worlds but truly belonging to neither, half-elves combine what some say are the best qualities of their elf and human parents.</p><p>Ability Score Increase: Charisma +2 and two other ability scores of your choice +1. Speed 30 feet. Darkvision, Fey Ancestry and Skill Versatility. You speak Common, Elvish and one extra language.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="charisma" value="2" alt="Racial Ability Score Increase" />
-			<select type="Ability Score Improvement" name="Ability Score Increase (Half-Elf)" number="2" supports="Ability Score Improvement,Class,!Charisma" />
+			<stat name="charisma" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<select type="Ability Score Improvement" name="Ability Score Increase (Half-Elf)" number="2" supports="Ability Score Improvement,Class,!Charisma" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
@@ -429,8 +429,8 @@
 		<description><p>Half-orcs’ grayish pigmentation, sloping foreheads, jutting jaws and prominent teeth make their orcish heritage plain for all to see. They are taller and bulkier than humans.</p><p>Ability Score Increase: Strength +2, Constitution +1. Speed 30 feet. Darkvision, Menacing, Relentless Endurance and Savage Attacks. You speak Common and Orc.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="strength" value="2" alt="Racial Ability Score Increase" />
-			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
+			<stat name="strength" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
@@ -466,8 +466,8 @@
 		<description><p>To be greeted with stares and whispers, to suffer violence and insult on the street: this is the lot of the tiefling, whose infernal bloodline shows in their horns, tails and solid-colored eyes.</p><p>Ability Score Increase: Intelligence +1, Charisma +2. Speed 30 feet. Darkvision, Hellish Resistance and Infernal Legacy. You speak Common and Infernal.</p></description>
 		<sheet display="false" />
 		<rules>
-			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
-			<stat name="charisma" value="2" alt="Racial Ability Score Increase" />
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<stat name="charisma" value="2" alt="Racial Ability Score Increase" requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
 			<stat name="innate speed" value="30" bonus="base" />
 			<grant type="Size" id="ID_SIZE_MEDIUM" />
 			<grant type="Vision" id="ID_VISION_DARKVISION" />
