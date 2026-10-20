@@ -1,39 +1,187 @@
 name: Release
 
+# Two ways to release:
+#  1. Actions → Release → "Run workflow", enter a version (e.g. 0.2.0, or 0.2.0-1 for a
+#     pre-release). The workflow bumps every version file, commits, tags vX.Y.Z and releases.
+#  2. Bump locally (node scripts/version.mjs X.Y.Z), commit, then push a tag vX.Y.Z.
+#
+# Either way: tests run, a draft GitHub release is created with generated notes, Linux
+# (.deb, .rpm, .AppImage) and Windows (.msi, .exe) installers are built and attached
+# together with SHA256SUMS.txt, and the release is published.
+
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, e.g. 0.2.0 (or 0.2.0-1 for a pre-release)"
+        required: true
+        type: string
   push:
-    tags: ["v*"]
+    tags: ["v*.*.*"]
 
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: 22
+
 jobs:
-  release:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-22.04
-          - os: windows-latest
-    runs-on: ${{ matrix.os }}
+  test:
+    name: Test
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Fetch AuroraLegacy content for integration tests
+        run: git clone --depth 1 https://github.com/AuroraLegacy/elements.git fixtures/external/aurora-legacy || true
+      - run: npm run typecheck
+      - run: npm test
+
+  prepare:
+    name: Tag and create draft release
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      release_id: ${{ steps.release.outputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Resolve version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            version="${INPUT_VERSION#v}"
+          else
+            version="${GITHUB_REF_NAME#v}"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version, commit and tag
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "::error::Tag $TAG already exists"
+            exit 1
+          fi
+          node scripts/version.mjs "$VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet; then
+            git commit -am "Release $TAG"
+          fi
+          git tag -a "$TAG" -m "dndbuilder $TAG"
+          git push origin "HEAD:$GITHUB_REF_NAME" "$TAG"
+
+      - name: Check that every version file matches the tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: node scripts/version.mjs --check "$TAG"
+
+      - name: Create draft release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          prerelease=false
+          case "$TAG" in *-*) prerelease=true ;; esac
+          id=$(gh api "repos/$GITHUB_REPOSITORY/releases" \
+            -f tag_name="$TAG" \
+            -f name="dndbuilder $TAG" \
+            -F draft=true \
+            -F prerelease="$prerelease" \
+            -F generate_release_notes=true \
+            --jq .id)
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build (${{ matrix.name }})
+    needs: prepare
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-22.04
+          - name: Windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - run: npm ci
-      - uses: tauri-apps/tauri-action@v0
+      - name: Build installers and attach them to the release
+        uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           projectPath: apps/desktop
-          tagName: ${{ github.ref_name }}
-          releaseName: dndbuilder ${{ github.ref_name }}
-          releaseDraft: true
+          releaseId: ${{ needs.prepare.outputs.release_id }}
+
+  publish:
+    name: Checksums and publish
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add SHA256SUMS.txt and publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ needs.prepare.outputs.release_id }}
+        run: |
+          mkdir assets
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets" --paginate --jq '.[] | "\(.id) \(.name)"' |
+            while read -r asset_id name; do
+              gh api -H "Accept: application/octet-stream" "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" > "assets/$name"
+            done
+          (cd assets && sha256sum -- * > ../SHA256SUMS.txt)
+          cat SHA256SUMS.txt
+          gh api -X POST -H "Content-Type: text/plain" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=SHA256SUMS.txt" \
+            --input SHA256SUMS.txt --jq .browser_download_url
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" -F draft=false --jq .html_url
+
+  cleanup:
+    name: Delete draft on failure
+    needs: [prepare, build, publish]
+    if: failure() && needs.prepare.outputs.release_id != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete the unfinished draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ needs.prepare.outputs.release_id }}
+        run: gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID"

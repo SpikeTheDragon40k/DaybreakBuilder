@@ -71,6 +71,22 @@ npm test
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
+## Releasing
+
+Releases are built by GitHub Actions (`.github/workflows/release.yml`) for Linux (`.deb`, `.rpm`, `.AppImage`) and
+Windows (`.msi`, `.exe`), with a `SHA256SUMS.txt` and release notes generated from merged pull requests (grouped by
+label, see `.github/release.yml`).
+
+* **One click:** Actions → *Release* → *Run workflow* on `main`, and enter the version (`0.2.0`, or `0.2.0-1` for a
+  pre-release). The workflow runs the tests, bumps every version file, commits `Release v0.2.0`, tags it, builds the
+  installers and publishes the release. If `main` is branch-protected, allow GitHub Actions to push to it, or use the
+  second option.
+* **From a tag:** `node scripts/version.mjs 0.2.0`, commit, then `git tag v0.2.0 && git push origin v0.2.0`. The
+  workflow checks that every version file matches the tag before building.
+
+`node scripts/version.mjs` prints the current version and fails if any file is out of sync. If a build fails, the
+draft release is deleted; delete the tag (and revert the version commit) before retrying the same version.
+
 ## Roadmap
 
 * Attacks section (weapon attack bonus and damage)
