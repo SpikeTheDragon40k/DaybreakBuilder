@@ -829,3 +829,50 @@ ul.plain {
     break-inside: avoid;
   }
 }
+
+/* Spells */
+.spell-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.spell-list li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+.spell-list li:hover {
+  background: var(--panel-2);
+}
+.panel.sticky {
+  position: sticky;
+  top: 4rem;
+  max-height: calc(100vh - 5rem);
+  overflow: auto;
+}
+
+/* Companion stat block */
+.companion .statblock-name {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+.statblock-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0.4rem 0;
+}
+.small-boxes {
+  grid-template-columns: repeat(6, 1fr);
+  font-size: 0.85rem;
+}
+.companion h5 {
+  margin: 0.5rem 0 0.2rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+}
+.feature-text {
+  margin: 0.2rem 0;
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Class Options</name>
+		<description>Fighting styles and ability score improvement options.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Archery" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_ARCHERY">
+		<supports>Fighting Style, Fighter, Ranger</supports>
+		<description><p>You gain a +2 bonus to attack rolls you make with ranged weapons.</p></description>
+		<sheet><description>You gain a +2 bonus to attack rolls you make with ranged weapons.</description></sheet>
+	</element>
+
+	<element name="Defense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_DEFENSE">
+		<supports>Fighting Style, Fighter, Paladin, Ranger</supports>
+		<description><p>While you are wearing armor, you gain a +1 bonus to AC.</p></description>
+		<sheet><description>While you are wearing armor, you gain a +1 bonus to AC.</description></sheet>
+		<rules>
+			<stat name="ac:misc" value="1" equipped="[armor:any]" alt="Defense" />
+		</rules>
+	</element>
+
+	<element name="Dueling" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_DUELING">
+		<supports>Fighting Style, Fighter, Paladin, Ranger</supports>
+		<description><p>When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.</p></description>
+		<sheet><description>When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.</description></sheet>
+	</element>
+
+	<element name="Great Weapon Fighting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING">
+		<supports>Fighting Style, Fighter, Paladin</supports>
+		<description><p>When you roll a 1 or 2 on a damage die for an attack with a melee weapon you are wielding with two hands, you can reroll the die and must use the new roll. The weapon must have the two-handed or versatile property.</p></description>
+		<sheet><description>When you roll a 1 or 2 on a damage die for an attack with a melee weapon you are wielding with two hands, you can reroll the die and must use the new roll. The weapon must have the two-handed or versatile property.</description></sheet>
+	</element>
+
+	<element name="Protection" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_PROTECTION">
+		<supports>Fighting Style, Fighter, Paladin</supports>
+		<description><p>When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.</p></description>
+		<sheet><description>When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.</description></sheet>
+	</element>
+
+	<element name="Two-Weapon Fighting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_TWO_WEAPON_FIGHTING">
+		<supports>Fighting Style, Fighter, Ranger</supports>
+		<description><p>When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.</p></description>
+		<sheet><description>When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.</description></sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_IMPROVEMENT_OPTION_ABILITY_SCORES">
+		<supports>Improvement Option</supports>
+		<description><p>Increase one ability score of your choice by 2, or two ability scores by 1. You can’t increase an ability score above 20 this way.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="allow duplicate">true</set>
+		</setters>
+		<rules>
+			<select type="Ability Score Improvement" name="Ability Score Improvement" number="2" supports="Ability Score Improvement,Class" />
+		</rules>
+	</element>
+
+	<element name="Feat" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_IMPROVEMENT_OPTION_FEAT">
+		<supports>Improvement Option</supports>
+		<requirements>ID_INTERNAL_OPTION_ALLOW_FEATS</requirements>
+		<description><p>Instead of improving your ability scores, you take a feat of your choice.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="allow duplicate">true</set>
+		</setters>
+		<rules>
+			<select type="Feat" name="Feat" />
+		</rules>
+	</element>
+</elements>

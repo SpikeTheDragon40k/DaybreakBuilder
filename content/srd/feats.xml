@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Feats</name>
+		<description>The Grappler feat.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Grappler" type="Feat" source="System Reference Document 5.1" id="ID_PHB_FEAT_GRAPPLER">
+		<prerequisite>Strength 13 or higher</prerequisite>
+		<requirements>[str:13]</requirements>
+		<description><p>You’ve developed the skills necessary to hold your own in close-quarters grappling. You have advantage on attack rolls against a creature you are grappling, and you can use your action to try to pin a creature grappled by you: make another grapple check, and if you succeed, you and the creature are both restrained until the grapple ends.</p></description>
+		<sheet><description>Advantage on attacks against a creature you are grappling; you can use your action to try to pin a grappled creature (both restrained).</description></sheet>
+	</element>
+</elements>

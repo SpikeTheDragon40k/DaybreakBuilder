@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Barbarian</name>
+		<description>The barbarian class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Barbarian" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_BARBARIAN">
+		<description><p>Barbarians are defined by their rage: unbridled, unquenchable and unthinking fury. They are hardy warriors who shrug off blows and wade into battle.</p><p>Hit Dice: 1d12 per barbarian level. Proficiencies: light and medium armor, shields, simple and martial weapons. Saving throws: Strength, Constitution. Skills: choose two from Animal Handling, Athletics, Intimidation, Nature, Perception and Survival.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d12</set>
+			<set name="short">A fierce warrior of primitive background who can enter a battle rage.</set>
+			<set name="primary">Strength</set>
+		</setters>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_BARBARIAN">
+			<prerequisite>Strength 13</prerequisite>
+			<requirements>[str:13]</requirements>
+			<setters><set name="multiclass proficiencies">Shields, simple weapons, martial weapons</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_STRENGTH" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CONSTITUTION" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<select type="Proficiency" name="Skill Proficiency (Barbarian)" supports="Skill,Barbarian" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_BARBARIAN" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RAGE" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_UNARMORED_DEFENSE" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RECKLESS_ATTACK" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_DANGER_SENSE" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_EXTRA_ATTACK" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_FAST_MOVEMENT" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_FERAL_INSTINCT" level="7" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_BRUTAL_CRITICAL" level="9" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RELENTLESS_RAGE" level="11" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PERSISTENT_RAGE" level="15" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_INDOMITABLE_MIGHT" level="18" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PRIMAL_CHAMPION" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PRIMAL_PATH" level="3" />
+		</rules>
+	</element>
+
+	<element name="Rage" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RAGE">
+		<description><p>On your turn you can enter a rage as a bonus action. While raging (and not wearing heavy armor) you have advantage on Strength checks and saving throws, a bonus to melee weapon damage rolls using Strength, and resistance to bludgeoning, piercing and slashing damage. You can’t cast or concentrate on spells. Rage lasts 1 minute and ends early if you are knocked unconscious or haven’t attacked or taken damage since your last turn.</p></description>
+		<sheet>
+			<description usage="{{rage:count}}/Long Rest" action="Bonus Action">Bonus action: advantage on Strength checks and saves, +{{rage:damage}} melee damage, resistance to bludgeoning, piercing and slashing damage.</description>
+		</sheet>
+		<rules>
+			<stat name="rage:count" value="2" level="1" />
+			<stat name="rage:count" value="1" level="3" />
+			<stat name="rage:count" value="1" level="6" />
+			<stat name="rage:count" value="1" level="12" />
+			<stat name="rage:count" value="1" level="17" />
+			<stat name="rage:count" value="93" level="20" />
+			<stat name="rage:damage" value="2" level="1" />
+			<stat name="rage:damage" value="1" level="9" />
+			<stat name="rage:damage" value="1" level="16" />
+		</rules>
+	</element>
+
+	<element name="Unarmored Defense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_UNARMORED_DEFENSE">
+		<description><p>While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.</p></description>
+		<rules>
+			<stat name="ac:barbarian" value="10" />
+			<stat name="ac:barbarian" value="dexterity:modifier" />
+			<stat name="ac:barbarian" value="constitution:modifier" />
+			<stat name="ac:calculation" value="ac:barbarian" bonus="calculation" equipped="[armor:none]" alt="Unarmored Defense" />
+		</rules>
+	</element>
+
+	<element name="Reckless Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RECKLESS_ATTACK">
+		<description><p>When you make your first attack on your turn, you can attack recklessly: you gain advantage on melee weapon attack rolls using Strength this turn, but attack rolls against you have advantage until your next turn.</p></description>
+	</element>
+
+	<element name="Danger Sense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_DANGER_SENSE">
+		<description><p>You have advantage on Dexterity saving throws against effects you can see, such as traps and spells, while you aren’t blinded, deafened or incapacitated.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Barbarian 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Extra Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_EXTRA_ATTACK">
+		<description><p>You can attack twice, instead of once, whenever you take the Attack action on your turn.</p></description>
+	</element>
+
+	<element name="Fast Movement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_FAST_MOVEMENT">
+		<description><p>Your speed increases by 10 feet while you aren’t wearing heavy armor.</p></description>
+		<rules>
+			<stat name="speed:misc" value="10" equipped="![armor:heavy]" alt="Fast Movement" />
+		</rules>
+	</element>
+
+	<element name="Feral Instinct" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_FERAL_INSTINCT">
+		<description><p>You have advantage on initiative rolls. If you are surprised at the start of combat, you can act normally on your first turn if you enter your rage first.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Barbarian 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Brutal Critical" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_BRUTAL_CRITICAL">
+		<description><p>You can roll one additional weapon damage die when determining the extra damage for a critical hit with a melee attack. This increases to two additional dice at 13th level and three at 17th level.</p></description>
+		<sheet><description>Roll {{brutal critical:dice}} additional weapon damage dice on a melee critical hit.</description></sheet>
+		<rules>
+			<stat name="brutal critical:dice" value="1" level="9" />
+			<stat name="brutal critical:dice" value="1" level="13" />
+			<stat name="brutal critical:dice" value="1" level="17" />
+		</rules>
+	</element>
+
+	<element name="Relentless Rage" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_RELENTLESS_RAGE">
+		<description><p>If you drop to 0 hit points while raging and don’t die outright, you can make a DC 10 Constitution saving throw to drop to 1 hit point instead. Each use after the first increases the DC by 5 until you finish a short or long rest.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Barbarian 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Persistent Rage" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PERSISTENT_RAGE">
+		<description><p>Your rage is so fierce that it ends early only if you fall unconscious or if you choose to end it.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Barbarian 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Indomitable Might" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_INDOMITABLE_MIGHT">
+		<description><p>If your total for a Strength check is less than your Strength score, you can use that score in place of the total.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Barbarian 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Primal Champion" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PRIMAL_CHAMPION">
+		<description><p>Your Strength and Constitution scores increase by 4. Your maximum for those scores is now 24.</p></description>
+		<rules>
+			<stat name="strength" value="4" alt="Primal Champion" />
+			<stat name="constitution" value="4" alt="Primal Champion" />
+			<stat name="strength:max" value="4" />
+			<stat name="constitution:max" value="4" />
+		</rules>
+	</element>
+
+	<element name="Primal Path" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARBARIAN_PRIMAL_PATH">
+		<description><p>At 3rd level you choose a path that shapes the nature of your rage.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Primal Path" supports="Primal Path" />
+		</rules>
+	</element>
+
+	<element name="Frenzy" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_FRENZY">
+		<description><p>You can go into a frenzy when you rage. For the duration you can make a single melee weapon attack as a bonus action on each of your turns after this one. When your rage ends, you suffer one level of exhaustion.</p></description>
+	</element>
+
+	<element name="Mindless Rage" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_MINDLESS_RAGE">
+		<description><p>You can’t be charmed or frightened while raging. If you are charmed or frightened when you enter your rage, the effect is suspended for the duration of the rage.</p></description>
+	</element>
+
+	<element name="Intimidating Presence" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_INTIMIDATING_PRESENCE">
+		<description><p>You can use your action to frighten someone with your menacing presence: one creature within 30 feet that can see or hear you must succeed on a Wisdom saving throw (DC 8 + proficiency bonus + Charisma modifier) or be frightened until the end of your next turn.</p></description>
+	</element>
+
+	<element name="Retaliation" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_RETALIATION">
+		<description><p>When you take damage from a creature within 5 feet of you, you can use your reaction to make a melee weapon attack against that creature.</p></description>
+	</element>
+
+	<element name="Path of the Berserker" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_PATH_OF_THE_BERSERKER">
+		<supports>Primal Path, Barbarian</supports>
+		<description><p>For some barbarians, rage is a means to an end, and that end is violence. The Path of the Berserker is a path of untrammeled fury, slick with blood.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_FRENZY" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_MINDLESS_RAGE" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_INTIMIDATING_PRESENCE" level="10" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_PATH_OF_THE_BERSERKER_RETALIATION" level="14" />
+		</rules>
+	</element>
+</elements>

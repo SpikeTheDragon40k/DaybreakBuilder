@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Warlock</name>
+		<description>The warlock class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Warlock" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_WARLOCK">
+		<description><p>Warlocks are seekers of the knowledge that lies hidden in the fabric of the multiverse. Through pacts with mysterious beings of supernatural power, they unlock magical effects both subtle and spectacular.</p><p>Hit Dice: 1d8 per warlock level. Proficiencies: light armor, simple weapons. Saving throws: Wisdom, Charisma. Skills: choose two from Arcana, Deception, History, Intimidation, Investigation, Nature and Religion.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d8</set>
+			<set name="short">A wielder of magic derived from a bargain with an extraplanar entity.</set>
+			<set name="primary">Charisma</set>
+		</setters>
+		<spellcasting name="Warlock" ability="Charisma" prepare="false">
+			<list>Warlock</list>
+		</spellcasting>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_WARLOCK">
+			<prerequisite>Charisma 13</prerequisite>
+			<requirements>[cha:13]</requirements>
+			<setters><set name="multiclass proficiencies">Light armor, simple weapons</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_WARLOCK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_WARLOCK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM" requirements="!ID_WOTC_PHB_MULTICLASS_WARLOCK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA" requirements="!ID_WOTC_PHB_MULTICLASS_WARLOCK" />
+			<select type="Proficiency" name="Skill Proficiency (Warlock)" supports="Skill,Warlock" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_WARLOCK" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_PACT_MAGIC" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ELDRITCH_INVOCATIONS" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_PACT_BOON" level="3" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_6" level="11" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_7" level="13" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_8" level="15" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_9" level="17" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_ELDRITCH_MASTER" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WARLOCK_OTHERWORLDLY_PATRON" level="1" />
+			<stat name="warlock:spellcasting:slots:1" value="1" level="1" />
+			<stat name="warlock:spellcasting:slots:1" value="1" level="2" />
+			<stat name="warlock:spellcasting:slots:1" value="-2" level="3" />
+			<stat name="warlock:spellcasting:slots:2" value="2" level="3" />
+			<stat name="warlock:spellcasting:slots:2" value="-2" level="5" />
+			<stat name="warlock:spellcasting:slots:3" value="2" level="5" />
+			<stat name="warlock:spellcasting:slots:3" value="-2" level="7" />
+			<stat name="warlock:spellcasting:slots:4" value="2" level="7" />
+			<stat name="warlock:spellcasting:slots:4" value="-2" level="9" />
+			<stat name="warlock:spellcasting:slots:5" value="2" level="9" />
+			<stat name="warlock:spellcasting:slots:5" value="1" level="11" />
+			<stat name="warlock:spellcasting:slots:5" value="1" level="17" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS_SPELLCASTING_SLOTS_SOLO" requirements="ID_INTERNAL_GRANT_MULTICLASS" />
+			<stat name="warlock:spellcasting:cantrips known" value="2" level="1" />
+			<stat name="warlock:spellcasting:cantrips known" value="1" level="4" />
+			<stat name="warlock:spellcasting:cantrips known" value="1" level="10" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Warlock" name="Cantrip (Warlock)" level="1" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Warlock" name="Cantrip (Warlock)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Warlock" name="Cantrip (Warlock)" level="10" number="1" />
+			<stat name="warlock:spellcasting:spells known" value="2" level="1" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="2" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="3" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="4" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="5" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="6" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="7" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="8" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="9" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="11" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="13" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="15" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="17" />
+			<stat name="warlock:spellcasting:spells known" value="1" level="19" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="1" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="2" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="3" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="5" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="6" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="7" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="8" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="9" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="11" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="13" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="15" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="17" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Warlock" name="Spellcasting (Warlock)" level="19" number="1" />
+		</rules>
+	</element>
+
+	<element name="Pact Magic" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_PACT_MAGIC">
+		<description><p>Your arcane research and the magic bestowed on you by your patron have given you facility with spells. All your warlock spell slots are the same level and are regained on a short or long rest. Charisma is your spellcasting ability.</p></description>
+		<sheet display="false" />
+	</element>
+
+	<element name="Eldritch Invocations" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ELDRITCH_INVOCATIONS">
+		<description><p>In your study of occult lore, you have unearthed eldritch invocations, fragments of forbidden knowledge that imbue you with an abiding magical ability. You learn two at 2nd level and more as you gain levels. When you gain a level, you can replace one invocation you know.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="2" level="2" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="5" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="7" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="9" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="12" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="15" />
+			<select type="Class Feature" name="Eldritch Invocations" supports="Eldritch Invocation" number="1" level="18" />
+		</rules>
+	</element>
+
+	<element name="Pact Boon" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_PACT_BOON">
+		<description><p>Your otherworldly patron bestows a gift upon you for your loyal service.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Pact Boon" supports="Pact Boon" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Warlock 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Warlock 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Mystic Arcanum (6th level)" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_6">
+		<description><p>Your patron bestows upon you a magical secret called an arcanum. Choose one 6th-level spell from the warlock spell list. You can cast it once without expending a spell slot, and regain the ability on a long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Cast your 6th-level arcanum spell once without a slot.</description>
+		</sheet>
+		<rules>
+			<select type="Spell" name="Mystic Arcanum (6th level)" supports="Warlock,6" spellcasting="Warlock" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Warlock 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Mystic Arcanum (7th level)" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_7">
+		<description><p>Your patron bestows upon you a magical secret called an arcanum. Choose one 7th-level spell from the warlock spell list. You can cast it once without expending a spell slot, and regain the ability on a long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Cast your 7th-level arcanum spell once without a slot.</description>
+		</sheet>
+		<rules>
+			<select type="Spell" name="Mystic Arcanum (7th level)" supports="Warlock,7" spellcasting="Warlock" />
+		</rules>
+	</element>
+
+	<element name="Mystic Arcanum (8th level)" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_8">
+		<description><p>Your patron bestows upon you a magical secret called an arcanum. Choose one 8th-level spell from the warlock spell list. You can cast it once without expending a spell slot, and regain the ability on a long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Cast your 8th-level arcanum spell once without a slot.</description>
+		</sheet>
+		<rules>
+			<select type="Spell" name="Mystic Arcanum (8th level)" supports="Warlock,8" spellcasting="Warlock" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Warlock 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Mystic Arcanum (9th level)" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_MYSTIC_ARCANUM_9">
+		<description><p>Your patron bestows upon you a magical secret called an arcanum. Choose one 9th-level spell from the warlock spell list. You can cast it once without expending a spell slot, and regain the ability on a long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Cast your 9th-level arcanum spell once without a slot.</description>
+		</sheet>
+		<rules>
+			<select type="Spell" name="Mystic Arcanum (9th level)" supports="Warlock,9" spellcasting="Warlock" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Warlock 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Eldritch Master" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_ELDRITCH_MASTER">
+		<description><p>You can spend 1 minute entreating your patron to regain all your expended spell slots from Pact Magic. Once per long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Spend 1 minute to regain all Pact Magic spell slots.</description>
+		</sheet>
+	</element>
+
+	<element name="Otherworldly Patron" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WARLOCK_OTHERWORLDLY_PATRON">
+		<description><p>At 1st level you strike a bargain with an otherworldly being of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Otherworldly Patron" supports="Otherworldly Patron" />
+		</rules>
+	</element>
+
+	<element name="Expanded Spell List" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_EXPANDED_SPELL_LIST">
+		<description><p>The Fiend lets you choose from an expanded list of spells when you learn a warlock spell: burning hands, command, blindness/deafness, scorching ray, fireball, stinking cloud, fire shield, wall of fire, flame strike and hallow.</p></description>
+		<sheet display="false" />
+	</element>
+
+	<element name="Dark One’s Blessing" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_DARK_ONES_BLESSING">
+		<description><p>When you reduce a hostile creature to 0 hit points, you gain temporary hit points equal to your Charisma modifier + your warlock level (minimum 1).</p></description>
+		<sheet><description>Gain {{dark ones blessing:hp}} temporary hit points when you reduce a hostile creature to 0 hit points.</description></sheet>
+		<rules>
+			<stat name="dark ones blessing:hp" value="charisma:modifier" />
+			<stat name="dark ones blessing:hp" value="level:warlock" />
+		</rules>
+	</element>
+
+	<element name="Dark One’s Own Luck" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_DARK_ONES_OWN_LUCK">
+		<description><p>When you make an ability check or a saving throw, you can add a d10 to your roll, after seeing the roll but before the outcome. Once per short or long rest.</p></description>
+		<sheet>
+			<description usage="1/Short Rest">Add a d10 to an ability check or saving throw.</description>
+		</sheet>
+	</element>
+
+	<element name="Fiendish Resilience" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_FIENDISH_RESILIENCE">
+		<description><p>Choose one damage type when you finish a short or long rest. You gain resistance to that damage type until you choose a different one. Damage from magical weapons or silver weapons ignores this resistance.</p></description>
+	</element>
+
+	<element name="Hurl Through Hell" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_HURL_THROUGH_HELL">
+		<description><p>When you hit a creature with an attack, you can instantly transport it through the lower planes. It disappears and hurtles through a nightmare landscape, returning at the end of your next turn and taking 10d10 psychic damage if it isn’t a fiend. Once per long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">On a hit, banish the target through the lower planes until the end of your next turn (10d10 psychic damage).</description>
+		</sheet>
+	</element>
+
+	<element name="The Fiend" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_OTHERWORLDLY_PATRON_FIEND">
+		<supports>Otherworldly Patron, Warlock</supports>
+		<description><p>You have made a pact with a fiend from the lower planes of existence, a being whose aims are evil.</p></description>
+		<sheet display="false" />
+		<spellcasting name="Warlock" extend="true">
+			<extend>ID_PHB_SPELL_BURNING_HANDS,ID_PHB_SPELL_COMMAND,ID_PHB_SPELL_BLINDNESS_DEAFNESS,ID_PHB_SPELL_SCORCHING_RAY,ID_PHB_SPELL_FIREBALL,ID_PHB_SPELL_STINKING_CLOUD,ID_PHB_SPELL_FIRE_SHIELD,ID_PHB_SPELL_WALL_OF_FIRE,ID_PHB_SPELL_FLAME_STRIKE,ID_PHB_SPELL_HALLOW</extend>
+		</spellcasting>
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_EXPANDED_SPELL_LIST" level="1" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_DARK_ONES_BLESSING" level="1" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_DARK_ONES_OWN_LUCK" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_FIENDISH_RESILIENCE" level="10" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THE_FIEND_HURL_THROUGH_HELL" level="14" />
+		</rules>
+	</element>
+
+	<element name="Agonizing Blast" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_AGONIZING_BLAST">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>eldritch blast cantrip</prerequisite>
+		<requirements>ID_PHB_SPELL_ELDRITCH_BLAST</requirements>
+		<description><p>Prerequisite: eldritch blast cantrip. When you cast eldritch blast, add your Charisma modifier to the damage it deals on a hit.</p></description>
+		<sheet><description>When you cast eldritch blast, add your Charisma modifier to the damage it deals on a hit.</description></sheet>
+	</element>
+
+	<element name="Armor of Shadows" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_ARMOR_OF_SHADOWS">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast mage armor on yourself at will, without expending a spell slot or material components.</p></description>
+		<sheet><description>You can cast mage armor on yourself at will, without expending a spell slot or material components.</description></sheet>
+	</element>
+
+	<element name="Ascendant Step" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_ASCENDANT_STEP">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>9th level</prerequisite>
+		<requirements>[level:9]</requirements>
+		<description><p>Prerequisite: 9th level. You can cast levitate on yourself at will, without expending a spell slot or material components.</p></description>
+		<sheet><description>You can cast levitate on yourself at will, without expending a spell slot or material components.</description></sheet>
+	</element>
+
+	<element name="Beast Speech" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_BEAST_SPEECH">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast speak with animals at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast speak with animals at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Beguiling Influence" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_BEGUILING_INFLUENCE">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You gain proficiency in the Deception and Persuasion skills.</p></description>
+		<sheet><description>You gain proficiency in the Deception and Persuasion skills.</description></sheet>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_DECEPTION" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_PERSUASION" />
+		</rules>
+	</element>
+
+	<element name="Bewitching Whispers" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_BEWITCHING_WHISPERS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>7th level</prerequisite>
+		<requirements>[level:7]</requirements>
+		<description><p>Prerequisite: 7th level. You can cast compulsion once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast compulsion once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Book of Ancient Secrets" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_BOOK_OF_ANCIENT_SECRETS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>Pact of the Tome</prerequisite>
+		<requirements>ID_SRD_PACT_BOON_PACT_OF_THE_TOME</requirements>
+		<description><p>Prerequisite: Pact of the Tome. You can inscribe magic rituals in your Book of Shadows. Choose two 1st-level ritual spells from any class’s list; you can add others you find later.</p></description>
+		<sheet><description>You can inscribe magic rituals in your Book of Shadows. Choose two 1st-level ritual spells from any class’s list; you can add others you find later.</description></sheet>
+	</element>
+
+	<element name="Chains of Carceri" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_CHAINS_OF_CARCERI">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>15th level, Pact of the Chain</prerequisite>
+		<requirements>[level:15],ID_SRD_PACT_BOON_PACT_OF_THE_CHAIN</requirements>
+		<description><p>Prerequisite: 15th level, Pact of the Chain. You can cast hold monster at will on a celestial, fiend or elemental, without expending a spell slot.</p></description>
+		<sheet><description>You can cast hold monster at will on a celestial, fiend or elemental, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Devil’s Sight" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_DEVIL_S_SIGHT">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can see normally in darkness, both magical and nonmagical, to a distance of 120 feet.</p></description>
+		<sheet><description>You can see normally in darkness, both magical and nonmagical, to a distance of 120 feet.</description></sheet>
+	</element>
+
+	<element name="Dreadful Word" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_DREADFUL_WORD">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>7th level</prerequisite>
+		<requirements>[level:7]</requirements>
+		<description><p>Prerequisite: 7th level. You can cast confusion once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast confusion once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Eldritch Sight" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_ELDRITCH_SIGHT">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast detect magic at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast detect magic at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Eldritch Spear" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_ELDRITCH_SPEAR">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>eldritch blast cantrip</prerequisite>
+		<requirements>ID_PHB_SPELL_ELDRITCH_BLAST</requirements>
+		<description><p>Prerequisite: eldritch blast cantrip. When you cast eldritch blast, its range is 300 feet.</p></description>
+		<sheet><description>When you cast eldritch blast, its range is 300 feet.</description></sheet>
+	</element>
+
+	<element name="Eyes of the Rune Keeper" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_EYES_OF_THE_RUNE_KEEPER">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can read all writing.</p></description>
+		<sheet><description>You can read all writing.</description></sheet>
+	</element>
+
+	<element name="Fiendish Vigor" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_FIENDISH_VIGOR">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast false life on yourself at will as a 1st-level spell, without expending a spell slot or material components.</p></description>
+		<sheet><description>You can cast false life on yourself at will as a 1st-level spell, without expending a spell slot or material components.</description></sheet>
+	</element>
+
+	<element name="Gaze of Two Minds" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_GAZE_OF_TWO_MINDS">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can use your action to touch a willing humanoid and perceive through its senses until the end of your next turn.</p></description>
+		<sheet><description>You can use your action to touch a willing humanoid and perceive through its senses until the end of your next turn.</description></sheet>
+	</element>
+
+	<element name="Lifedrinker" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_LIFEDRINKER">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>12th level, Pact of the Blade</prerequisite>
+		<requirements>[level:12],ID_SRD_PACT_BOON_PACT_OF_THE_BLADE</requirements>
+		<description><p>Prerequisite: 12th level, Pact of the Blade. When you hit a creature with your pact weapon, it takes extra necrotic damage equal to your Charisma modifier (minimum 1).</p></description>
+		<sheet><description>When you hit a creature with your pact weapon, it takes extra necrotic damage equal to your Charisma modifier (minimum 1).</description></sheet>
+	</element>
+
+	<element name="Mask of Many Faces" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_MASK_OF_MANY_FACES">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast disguise self at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast disguise self at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Master of Myriad Forms" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_MASTER_OF_MYRIAD_FORMS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>15th level</prerequisite>
+		<requirements>[level:15]</requirements>
+		<description><p>Prerequisite: 15th level. You can cast alter self at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast alter self at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Minions of Chaos" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_MINIONS_OF_CHAOS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>9th level</prerequisite>
+		<requirements>[level:9]</requirements>
+		<description><p>Prerequisite: 9th level. You can cast conjure elemental once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast conjure elemental once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Mire the Mind" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_MIRE_THE_MIND">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>5th level</prerequisite>
+		<requirements>[level:5]</requirements>
+		<description><p>Prerequisite: 5th level. You can cast slow once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast slow once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Misty Visions" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_MISTY_VISIONS">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast silent image at will, without expending a spell slot or material components.</p></description>
+		<sheet><description>You can cast silent image at will, without expending a spell slot or material components.</description></sheet>
+	</element>
+
+	<element name="One with Shadows" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_ONE_WITH_SHADOWS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>5th level</prerequisite>
+		<requirements>[level:5]</requirements>
+		<description><p>Prerequisite: 5th level. When you are in an area of dim light or darkness, you can use your action to become invisible until you move or take an action or a reaction.</p></description>
+		<sheet><description>When you are in an area of dim light or darkness, you can use your action to become invisible until you move or take an action or a reaction.</description></sheet>
+	</element>
+
+	<element name="Otherworldly Leap" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_OTHERWORLDLY_LEAP">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>9th level</prerequisite>
+		<requirements>[level:9]</requirements>
+		<description><p>Prerequisite: 9th level. You can cast jump on yourself at will, without expending a spell slot or material components.</p></description>
+		<sheet><description>You can cast jump on yourself at will, without expending a spell slot or material components.</description></sheet>
+	</element>
+
+	<element name="Repelling Blast" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_REPELLING_BLAST">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>eldritch blast cantrip</prerequisite>
+		<requirements>ID_PHB_SPELL_ELDRITCH_BLAST</requirements>
+		<description><p>Prerequisite: eldritch blast cantrip. When you hit a creature with eldritch blast, you can push it up to 10 feet away from you in a straight line.</p></description>
+		<sheet><description>When you hit a creature with eldritch blast, you can push it up to 10 feet away from you in a straight line.</description></sheet>
+	</element>
+
+	<element name="Sculptor of Flesh" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_SCULPTOR_OF_FLESH">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>7th level</prerequisite>
+		<requirements>[level:7]</requirements>
+		<description><p>Prerequisite: 7th level. You can cast polymorph once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast polymorph once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Sign of Ill Omen" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_SIGN_OF_ILL_OMEN">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>5th level</prerequisite>
+		<requirements>[level:5]</requirements>
+		<description><p>Prerequisite: 5th level. You can cast bestow curse once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast bestow curse once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Thief of Five Fates" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_THIEF_OF_FIVE_FATES">
+		<supports>Eldritch Invocation</supports>
+		<description><p>You can cast bane once using a warlock spell slot. You can’t do so again until you finish a long rest.</p></description>
+		<sheet><description>You can cast bane once using a warlock spell slot. You can’t do so again until you finish a long rest.</description></sheet>
+	</element>
+
+	<element name="Thirsting Blade" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_THIRSTING_BLADE">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>5th level, Pact of the Blade</prerequisite>
+		<requirements>[level:5],ID_SRD_PACT_BOON_PACT_OF_THE_BLADE</requirements>
+		<description><p>Prerequisite: 5th level, Pact of the Blade. You can attack with your pact weapon twice, instead of once, whenever you take the Attack action on your turn.</p></description>
+		<sheet><description>You can attack with your pact weapon twice, instead of once, whenever you take the Attack action on your turn.</description></sheet>
+	</element>
+
+	<element name="Visions of Distant Realms" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_VISIONS_OF_DISTANT_REALMS">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>15th level</prerequisite>
+		<requirements>[level:15]</requirements>
+		<description><p>Prerequisite: 15th level. You can cast arcane eye at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast arcane eye at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Voice of the Chain Master" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_VOICE_OF_THE_CHAIN_MASTER">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>Pact of the Chain</prerequisite>
+		<requirements>ID_SRD_PACT_BOON_PACT_OF_THE_CHAIN</requirements>
+		<description><p>Prerequisite: Pact of the Chain. You can communicate telepathically with your familiar and perceive through its senses as long as you are on the same plane of existence.</p></description>
+		<sheet><description>You can communicate telepathically with your familiar and perceive through its senses as long as you are on the same plane of existence.</description></sheet>
+	</element>
+
+	<element name="Whispers of the Grave" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_WHISPERS_OF_THE_GRAVE">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>9th level</prerequisite>
+		<requirements>[level:9]</requirements>
+		<description><p>Prerequisite: 9th level. You can cast speak with dead at will, without expending a spell slot.</p></description>
+		<sheet><description>You can cast speak with dead at will, without expending a spell slot.</description></sheet>
+	</element>
+
+	<element name="Witch Sight" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_ELDRITCH_INVOCATION_WITCH_SIGHT">
+		<supports>Eldritch Invocation</supports>
+		<prerequisite>15th level</prerequisite>
+		<requirements>[level:15]</requirements>
+		<description><p>Prerequisite: 15th level. You can see the true form of any shapechanger or creature concealed by illusion or transmutation magic while it is within 30 feet of you and within line of sight.</p></description>
+		<sheet><description>You can see the true form of any shapechanger or creature concealed by illusion or transmutation magic while it is within 30 feet of you and within line of sight.</description></sheet>
+	</element>
+
+	<element name="Pact of the Chain" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_PACT_BOON_PACT_OF_THE_CHAIN">
+		<supports>Pact Boon</supports>
+		<description><p>You learn the find familiar spell and can cast it as a ritual. Your familiar can take the form of an imp, pseudodragon, quasit or sprite, and can attack when you forgo one of your own attacks.</p></description>
+		<sheet><description>You learn the find familiar spell and can cast it as a ritual. Your familiar can take the form of an imp, pseudodragon, quasit or sprite, and can attack when you forgo one of your own attacks.</description></sheet>
+		<rules>
+			<grant type="Spell" id="ID_PHB_SPELL_FIND_FAMILIAR" spellcasting="Warlock" prepared="true" />
+		</rules>
+	</element>
+
+	<element name="Pact of the Blade" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_PACT_BOON_PACT_OF_THE_BLADE">
+		<supports>Pact Boon</supports>
+		<description><p>You can use your action to create a pact weapon in your empty hand, choosing its form each time. You are proficient with it, and it counts as magical. You can also bond with a magic weapon to make it your pact weapon.</p></description>
+		<sheet><description>You can use your action to create a pact weapon in your empty hand, choosing its form each time. You are proficient with it, and it counts as magical. You can also bond with a magic weapon to make it your pact weapon.</description></sheet>
+	</element>
+
+	<element name="Pact of the Tome" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_PACT_BOON_PACT_OF_THE_TOME">
+		<supports>Pact Boon</supports>
+		<description><p>Your patron gives you a Book of Shadows. Choose three cantrips from any class’s spell list; while the book is on your person you can cast them at will, and they count as warlock spells for you.</p></description>
+		<sheet><description>Your patron gives you a Book of Shadows. Choose three cantrips from any class’s spell list; while the book is on your person you can cast them at will, and they count as warlock spells for you.</description></sheet>
+		<rules>
+			<select type="Spell" name="Book of Shadows Cantrips" supports="0" number="3" spellcasting="Warlock" />
+		</rules>
+	</element>
+</elements>

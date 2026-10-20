@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Monk</name>
+		<description>The monk class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Monk" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_MONK">
+		<description><p>Monks make careful study of a magical energy they call ki, channeling it into their strikes and movement.</p><p>Hit Dice: 1d8 per monk level. Proficiencies: simple weapons, shortswords; one artisan’s tool or musical instrument. Saving throws: Strength, Dexterity. Skills: choose two from Acrobatics, Athletics, History, Insight, Religion and Stealth.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d8</set>
+			<set name="short">A master of martial arts, harnessing the power of the body in pursuit of physical and spiritual perfection.</set>
+			<set name="primary">Dexterity and Wisdom</set>
+		</setters>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_MONK">
+			<prerequisite>Dexterity 13 and Wisdom 13</prerequisite>
+			<requirements>[dex:13],[wis:13]</requirements>
+			<setters><set name="multiclass proficiencies">Simple weapons, shortswords</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_STRENGTH" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_DEXTERITY" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<select type="Proficiency" name="Skill Proficiency (Monk)" supports="Skill,Monk" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<select name="Tool Proficiency (Monk)" supports="Artisan||Musical Instrument" type="Proficiency" requirements="!ID_WOTC_PHB_MULTICLASS_MONK" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_UNARMORED_DEFENSE" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_MARTIAL_ARTS" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_KI" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_UNARMORED_MOVEMENT" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_DEFLECT_MISSILES" level="3" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_SLOW_FALL" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_EXTRA_ATTACK" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_STUNNING_STRIKE" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_KI_EMPOWERED_STRIKES" level="6" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_EVASION" level="7" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_STILLNESS_OF_MIND" level="7" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_PURITY_OF_BODY" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_TONGUE_OF_THE_SUN_AND_MOON" level="13" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_DIAMOND_SOUL" level="14" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_TIMELESS_BODY" level="15" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_EMPTY_BODY" level="18" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_PERFECT_SELF" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_MONK_MONASTIC_TRADITION" level="3" />
+		</rules>
+	</element>
+
+	<element name="Unarmored Defense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_UNARMORED_DEFENSE">
+		<description><p>While you are wearing no armor and not wielding a shield, your AC equals 10 + your Dexterity modifier + your Wisdom modifier.</p></description>
+		<rules>
+			<stat name="ac:monk" value="10" />
+			<stat name="ac:monk" value="dexterity:modifier" />
+			<stat name="ac:monk" value="wisdom:modifier" />
+			<stat name="ac:calculation" value="ac:monk" bonus="calculation" equipped="[armor:none],[shield:none]" alt="Unarmored Defense" />
+		</rules>
+	</element>
+
+	<element name="Martial Arts" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_MARTIAL_ARTS">
+		<description><p>While unarmed or wielding only monk weapons (shortswords and simple melee weapons without the two-handed or heavy property) and not wearing armor or a shield: you can use Dexterity instead of Strength for attack and damage rolls, roll a martial arts die in place of normal damage, and make one unarmed strike as a bonus action after taking the Attack action.</p></description>
+		<sheet><description>Martial arts die d{{martial arts:die}}; use Dexterity for monk weapons; bonus action unarmed strike after the Attack action.</description></sheet>
+		<rules>
+			<stat name="martial arts:die" value="4" level="1" />
+			<stat name="martial arts:die" value="2" level="5" />
+			<stat name="martial arts:die" value="2" level="11" />
+			<stat name="martial arts:die" value="2" level="17" />
+		</rules>
+	</element>
+
+	<element name="Ki" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_KI">
+		<description><p>You have a number of ki points equal to your monk level, regained after a short or long rest. Your ki save DC is 8 + proficiency bonus + Wisdom modifier. Flurry of Blows: after the Attack action, spend 1 ki to make two unarmed strikes as a bonus action. Patient Defense: spend 1 ki to Dodge as a bonus action. Step of the Wind: spend 1 ki to Disengage or Dash as a bonus action, and your jump distance is doubled for the turn.</p></description>
+		<sheet>
+			<description usage="Short Rest">{{level:monk}} ki points; ki save DC {{ki:dc}}. Flurry of Blows, Patient Defense, Step of the Wind.</description>
+		</sheet>
+		<rules>
+			<stat name="ki:dc" value="8" />
+			<stat name="ki:dc" value="proficiency" />
+			<stat name="ki:dc" value="wisdom:modifier" />
+		</rules>
+	</element>
+
+	<element name="Unarmored Movement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_UNARMORED_MOVEMENT">
+		<description><p>Your speed increases while you are not wearing armor or wielding a shield: +10 feet at 2nd level, rising to +30 feet at 18th level. At 9th level you can move along vertical surfaces and across liquids on your turn without falling.</p></description>
+		<rules>
+			<stat name="monk:unarmored movement" value="10" level="2" />
+			<stat name="monk:unarmored movement" value="5" level="6" />
+			<stat name="monk:unarmored movement" value="5" level="10" />
+			<stat name="monk:unarmored movement" value="5" level="14" />
+			<stat name="monk:unarmored movement" value="5" level="18" />
+			<stat name="speed:misc" value="monk:unarmored movement" equipped="[armor:none],[shield:none]" alt="Unarmored Movement" />
+		</rules>
+	</element>
+
+	<element name="Deflect Missiles" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_DEFLECT_MISSILES">
+		<description><p>You can use your reaction to deflect or catch a missile when hit by a ranged weapon attack, reducing the damage by 1d10 + Dexterity modifier + monk level. If reduced to 0 and you have a free hand, you can catch it and spend 1 ki to throw it back.</p></description>
+	</element>
+
+	<element name="Slow Fall" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_SLOW_FALL">
+		<description><p>You can use your reaction when you fall to reduce any falling damage you take by an amount equal to five times your monk level.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Monk 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Extra Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_EXTRA_ATTACK">
+		<description><p>You can attack twice, instead of once, whenever you take the Attack action on your turn.</p></description>
+	</element>
+
+	<element name="Stunning Strike" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_STUNNING_STRIKE">
+		<description><p>When you hit another creature with a melee weapon attack, you can spend 1 ki point to attempt a stunning strike. The target must succeed on a Constitution saving throw or be stunned until the end of your next turn.</p></description>
+	</element>
+
+	<element name="Ki-Empowered Strikes" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_KI_EMPOWERED_STRIKES">
+		<description><p>Your unarmed strikes count as magical for the purpose of overcoming resistance and immunity to nonmagical attacks and damage.</p></description>
+	</element>
+
+	<element name="Evasion" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_EVASION">
+		<description><p>When you are subjected to an effect that allows a Dexterity saving throw for half damage, you take no damage on a success and only half damage on a failure.</p></description>
+	</element>
+
+	<element name="Stillness of Mind" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_STILLNESS_OF_MIND">
+		<description><p>You can use your action to end one effect on yourself that is causing you to be charmed or frightened.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Monk 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Purity of Body" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_PURITY_OF_BODY">
+		<description><p>Your mastery of ki makes you immune to disease and poison.</p></description>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_IMMUNITY_POISON" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Monk 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Tongue of the Sun and Moon" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_TONGUE_OF_THE_SUN_AND_MOON">
+		<description><p>You understand all spoken languages, and any creature that can understand a language can understand what you say.</p></description>
+	</element>
+
+	<element name="Diamond Soul" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_DIAMOND_SOUL">
+		<description><p>You gain proficiency in all saving throws. Additionally, whenever you make a saving throw and fail, you can spend 1 ki point to reroll it and take the second result.</p></description>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_STRENGTH" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_DEXTERITY" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CONSTITUTION" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_INTELLIGENCE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA" />
+		</rules>
+	</element>
+
+	<element name="Timeless Body" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_TIMELESS_BODY">
+		<description><p>Your ki sustains you so that you suffer none of the frailty of old age, and you can’t be aged magically. You no longer need food or water.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Monk 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Empty Body" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_EMPTY_BODY">
+		<description><p>You can spend 4 ki points to become invisible for 1 minute, with resistance to all damage but force damage. You can also spend 8 ki points to cast astral projection without material components.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Monk 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Perfect Self" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_PERFECT_SELF">
+		<description><p>When you roll for initiative and have no ki points remaining, you regain 4 ki points.</p></description>
+	</element>
+
+	<element name="Monastic Tradition" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_MONK_MONASTIC_TRADITION">
+		<description><p>At 3rd level you commit yourself to a monastic tradition.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Monastic Tradition" supports="Monastic Tradition" />
+		</rules>
+	</element>
+
+	<element name="Open Hand Technique" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_OPEN_HAND_TECHNIQUE">
+		<description><p>Whenever you hit with a Flurry of Blows attack, you can impose one effect: the target must succeed on a Dexterity save or be knocked prone; make a Strength save or be pushed 15 feet; or it can’t take reactions until the end of your next turn.</p></description>
+	</element>
+
+	<element name="Wholeness of Body" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_WHOLENESS_OF_BODY">
+		<description><p>As an action, you can regain hit points equal to three times your monk level. You must finish a long rest before you can use this feature again.</p></description>
+		<sheet>
+			<description usage="1/Long Rest" action="Action">Regain hit points equal to three times your monk level.</description>
+		</sheet>
+	</element>
+
+	<element name="Tranquility" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_TRANQUILITY">
+		<description><p>At the end of a long rest, you gain the effect of a sanctuary spell that lasts until the start of your next long rest (DC 8 + Wisdom modifier + proficiency bonus).</p></description>
+	</element>
+
+	<element name="Quivering Palm" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_QUIVERING_PALM">
+		<description><p>When you hit a creature with an unarmed strike, you can spend 3 ki points to start lethal vibrations. Later, you can use an action to end them: the target must make a Constitution saving throw, dropping to 0 hit points on a failure or taking 10d10 necrotic damage on a success.</p></description>
+	</element>
+
+	<element name="Way of the Open Hand" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_WAY_OF_THE_OPEN_HAND">
+		<supports>Monastic Tradition, Monk</supports>
+		<description><p>Monks of the Way of the Open Hand are the ultimate masters of martial arts combat, whether armed or unarmed.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_OPEN_HAND_TECHNIQUE" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_WHOLENESS_OF_BODY" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_TRANQUILITY" level="11" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_WAY_OF_THE_OPEN_HAND_QUIVERING_PALM" level="17" />
+		</rules>
+	</element>
+</elements>

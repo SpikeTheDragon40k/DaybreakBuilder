@@ -9,7 +9,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { characters, settings } from "../platform";
 import { loadAllContent, type LoadedContent } from "./content";
 
-export type Page = "characters" | "build" | "sheet" | "equipment" | "compendium" | "content";
+export type Page = "characters" | "build" | "spells" | "sheet" | "equipment" | "compendium" | "content";
 
 interface OpenCharacter {
   id: string;

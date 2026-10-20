@@ -311,7 +311,45 @@ export function parseElementNode(node: XmlElement, file: string | undefined, war
     const p = def.setters.find((s) => s.name.toLowerCase() === "prerequisite");
     if (p) def.prerequisite = p.value;
   }
+  if (def.type === "Spell") addSpellSupports(def);
+  if (def.type === "Companion") {
+    // Companions can be filtered by creature type, size and challenge rating.
+    for (const key of ["type", "size", "challenge"]) {
+      const v = def.setters.find((s) => s.name === key)?.value?.trim();
+      if (v && !def.supports.includes(v)) def.supports.push(v);
+    }
+  }
   return def;
+}
+
+/**
+ * Spells implicitly support their level ("0" for cantrips), school, ritual tag,
+ * casting time and components, so selects can filter with e.g.
+ * supports="Wizard,0" or "$(spellcasting:list),Evocation".
+ */
+function addSpellSupports(def: ElementDef): void {
+  const get = (name: string) => def.setters.find((s) => s.name === name)?.value?.trim();
+  const add = (s: string | undefined) => {
+    if (s && !def.supports.includes(s)) def.supports.push(s);
+  };
+  const level = parseInt(get("level") ?? "", 10);
+  if (Number.isFinite(level)) add(String(level));
+  const school = get("school");
+  add(school);
+  add(school?.toLowerCase());
+  const isTrue = (name: string) => (get(name) ?? "").toLowerCase() === "true";
+  if (isTrue("isRitual")) {
+    add("Ritual");
+    add("ID_INTERNAL_SUPPORT_RITUAL");
+  }
+  const time = (get("time") ?? "").toLowerCase();
+  if (time.includes("bonus action")) add("ID_INTERNAL_SUPPORT_BONUS_ACTION");
+  else if (time.includes("reaction")) add("ID_INTERNAL_SUPPORT_REACTION");
+  else if (time.includes("action")) add("ID_INTERNAL_SUPPORT_ACTION");
+  if (isTrue("hasVerbalComponent")) add("ID_INTERNAL_SUPPORT_VERBAL");
+  if (isTrue("hasSomaticComponent")) add("ID_INTERNAL_SUPPORT_SOMATIC");
+  if (isTrue("hasMaterialComponent")) add("ID_INTERNAL_SUPPORT_MATERIAL");
+  if (isTrue("isConcentration")) add("ID_INTERNAL_SUPPORT_CONCENTRATION");
 }
 
 function parseInfo(root: XmlElement): ElementsFileInfo {

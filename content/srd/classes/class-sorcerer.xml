@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Sorcerer</name>
+		<description>The sorcerer class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Sorcerer" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_SORCERER">
+		<description><p>Sorcerers carry a magical birthright conferred upon them by an exotic bloodline, some otherworldly influence or exposure to unknown cosmic forces.</p><p>Hit Dice: 1d6 per sorcerer level. Proficiencies: daggers, darts, slings, quarterstaffs, light crossbows. Saving throws: Constitution, Charisma. Skills: choose two from Arcana, Deception, Insight, Intimidation, Persuasion and Religion.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d6</set>
+			<set name="short">A spellcaster who draws on inherent magic from a gift or bloodline.</set>
+			<set name="primary">Charisma</set>
+		</setters>
+		<spellcasting name="Sorcerer" ability="Charisma" prepare="false">
+			<list>Sorcerer</list>
+		</spellcasting>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_SORCERER">
+			<prerequisite>Charisma 13</prerequisite>
+			<requirements>[cha:13]</requirements>
+			<setters><set name="multiclass proficiencies">—</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DAGGER" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DART" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SLING" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_QUARTERSTAFF" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_LIGHT" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CONSTITUTION" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<select type="Proficiency" name="Skill Proficiency (Sorcerer)" supports="Skill,Sorcerer" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_SORCERER" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_SPELLCASTING" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_FONT_OF_MAGIC" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_3" level="3" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_10" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_17" level="17" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_SORCEROUS_RESTORATION" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_SORCERER_SORCEROUS_ORIGIN" level="1" />
+			<stat name="sorcerer:spellcasting:slots:1" value="2" level="1" />
+			<stat name="sorcerer:spellcasting:slots:1" value="1" level="2" />
+			<stat name="sorcerer:spellcasting:slots:1" value="1" level="3" />
+			<stat name="sorcerer:spellcasting:slots:2" value="2" level="3" />
+			<stat name="sorcerer:spellcasting:slots:2" value="1" level="4" />
+			<stat name="sorcerer:spellcasting:slots:3" value="2" level="5" />
+			<stat name="sorcerer:spellcasting:slots:3" value="1" level="6" />
+			<stat name="sorcerer:spellcasting:slots:4" value="1" level="7" />
+			<stat name="sorcerer:spellcasting:slots:4" value="1" level="8" />
+			<stat name="sorcerer:spellcasting:slots:4" value="1" level="9" />
+			<stat name="sorcerer:spellcasting:slots:5" value="1" level="9" />
+			<stat name="sorcerer:spellcasting:slots:5" value="1" level="10" />
+			<stat name="sorcerer:spellcasting:slots:5" value="1" level="18" />
+			<stat name="sorcerer:spellcasting:slots:6" value="1" level="11" />
+			<stat name="sorcerer:spellcasting:slots:6" value="1" level="19" />
+			<stat name="sorcerer:spellcasting:slots:7" value="1" level="13" />
+			<stat name="sorcerer:spellcasting:slots:7" value="1" level="20" />
+			<stat name="sorcerer:spellcasting:slots:8" value="1" level="15" />
+			<stat name="sorcerer:spellcasting:slots:9" value="1" level="17" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS_SPELLCASTING_SLOTS_FULL" requirements="ID_INTERNAL_GRANT_MULTICLASS" />
+			<stat name="sorcerer:spellcasting:cantrips known" value="4" level="1" />
+			<stat name="sorcerer:spellcasting:cantrips known" value="1" level="4" />
+			<stat name="sorcerer:spellcasting:cantrips known" value="1" level="10" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Sorcerer" name="Cantrip (Sorcerer)" level="1" number="4" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Sorcerer" name="Cantrip (Sorcerer)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Sorcerer" name="Cantrip (Sorcerer)" level="10" number="1" />
+			<stat name="sorcerer:spellcasting:spells known" value="2" level="1" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="2" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="3" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="4" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="5" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="6" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="7" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="8" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="9" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="10" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="11" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="13" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="15" />
+			<stat name="sorcerer:spellcasting:spells known" value="1" level="17" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="1" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="2" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="3" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="5" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="6" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="7" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="8" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="9" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="10" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="11" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="13" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="15" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Sorcerer" name="Spellcasting (Sorcerer)" level="17" number="1" />
+		</rules>
+	</element>
+
+	<element name="Spellcasting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_SPELLCASTING">
+		<description><p>An event in your past, or in the life of a parent or ancestor, left an indelible mark on you, infusing you with arcane magic. Charisma is your spellcasting ability, and you can use an arcane focus.</p></description>
+		<sheet display="false" />
+	</element>
+
+	<element name="Font of Magic" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_FONT_OF_MAGIC">
+		<description><p>You have a number of sorcery points equal to your sorcerer level, regained on a long rest. As a bonus action you can expend a spell slot to gain sorcery points equal to its level, or spend sorcery points to create a spell slot (1st: 2 points, 2nd: 3, 3rd: 5, 4th: 6, 5th: 7; no higher than 5th level).</p></description>
+		<sheet>
+			<description usage="Long Rest">{{level:sorcerer}} sorcery points; convert between sorcery points and spell slots as a bonus action.</description>
+		</sheet>
+	</element>
+
+	<element name="Metamagic" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_3">
+		<description><p>You gain the ability to twist your spells to suit your needs. You learn two Metamagic options, another at 10th level and another at 17th level. Only one Metamagic option can be used on a spell when you cast it, unless otherwise noted.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Metamagic" supports="Metamagic" number="2" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Sorcerer 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Sorcerer 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Metamagic" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_10">
+		<description><p>You learn one additional Metamagic option.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Metamagic (10)" supports="Metamagic" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Sorcerer 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Sorcerer 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Metamagic" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_METAMAGIC_17">
+		<description><p>You learn one additional Metamagic option.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Metamagic (17)" supports="Metamagic" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Sorcerer 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Sorcerous Restoration" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_SORCEROUS_RESTORATION">
+		<description><p>You regain 4 expended sorcery points whenever you finish a short rest.</p></description>
+	</element>
+
+	<element name="Sorcerous Origin" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_SORCERER_SORCEROUS_ORIGIN">
+		<description><p>Choose a sorcerous origin, which describes the source of your innate magical power.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Sorcerous Origin" supports="Sorcerous Origin" />
+		</rules>
+	</element>
+
+	<element name="Dragon Ancestor" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRAGON_ANCESTOR">
+		<description><p>You choose one type of dragon as your ancestor. You can speak, read and write Draconic, and when you interact with dragons your proficiency bonus is doubled for Charisma checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype Feature" name="Dragon Ancestor" supports="Dragon Ancestor" />
+			<grant type="Language" id="ID_LANGUAGE_DRACONIC" />
+		</rules>
+	</element>
+
+	<element name="Draconic Resilience" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRACONIC_RESILIENCE">
+		<description><p>Your hit point maximum increases by 1 for each sorcerer level. When you aren’t wearing armor, your AC equals 13 + your Dexterity modifier.</p></description>
+		<rules>
+			<stat name="hp" value="1" level="1" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="2" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="3" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="4" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="5" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="6" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="7" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="8" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="9" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="10" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="11" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="12" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="13" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="14" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="15" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="16" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="17" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="18" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="19" alt="Draconic Resilience" />
+			<stat name="hp" value="1" level="20" alt="Draconic Resilience" />
+			<stat name="ac:draconic" value="13" />
+			<stat name="ac:draconic" value="dexterity:modifier" />
+			<stat name="ac:calculation" value="ac:draconic" bonus="calculation" equipped="[armor:none]" alt="Draconic Resilience" />
+		</rules>
+	</element>
+
+	<element name="Elemental Affinity" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_ELEMENTAL_AFFINITY">
+		<description><p>When you cast a spell that deals damage of the type associated with your draconic ancestry, you can add your Charisma modifier to one damage roll of that spell, and spend 1 sorcery point to gain resistance to that damage type for 1 hour.</p></description>
+	</element>
+
+	<element name="Dragon Wings" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRAGON_WINGS">
+		<description><p>As a bonus action you can sprout a pair of dragon wings, gaining a flying speed equal to your current speed, until you dismiss them. You can’t do so while wearing armor not made to accommodate them.</p></description>
+	</element>
+
+	<element name="Draconic Presence" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRACONIC_PRESENCE">
+		<description><p>As an action, spend 5 sorcery points to exude an aura of awe or fear (your choice) to 60 feet for 1 minute. Hostile creatures starting their turn in the aura must succeed on a Wisdom save or be charmed (awe) or frightened (fear) until the aura ends.</p></description>
+	</element>
+
+	<element name="Draconic Bloodline" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_DRACONIC_BLOODLINE">
+		<supports>Sorcerous Origin, Sorcerer</supports>
+		<description><p>Your innate magic comes from draconic magic that was mingled with your blood or that of your ancestors.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRAGON_ANCESTOR" level="1" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRACONIC_RESILIENCE" level="1" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_ELEMENTAL_AFFINITY" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRAGON_WINGS" level="14" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_DRACONIC_BLOODLINE_DRACONIC_PRESENCE" level="18" />
+		</rules>
+	</element>
+
+	<element name="Dragon Ancestor (Black)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_BLACK">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a black dragon, associated with acid damage.</p></description>
+		<sheet><description>Black dragon ancestry (acid).</description></sheet>
+		<setters>
+			<set name="damage type">Acid</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Blue)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_BLUE">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a blue dragon, associated with lightning damage.</p></description>
+		<sheet><description>Blue dragon ancestry (lightning).</description></sheet>
+		<setters>
+			<set name="damage type">Lightning</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Brass)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_BRASS">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a brass dragon, associated with fire damage.</p></description>
+		<sheet><description>Brass dragon ancestry (fire).</description></sheet>
+		<setters>
+			<set name="damage type">Fire</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Bronze)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_BRONZE">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a bronze dragon, associated with lightning damage.</p></description>
+		<sheet><description>Bronze dragon ancestry (lightning).</description></sheet>
+		<setters>
+			<set name="damage type">Lightning</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Copper)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_COPPER">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a copper dragon, associated with acid damage.</p></description>
+		<sheet><description>Copper dragon ancestry (acid).</description></sheet>
+		<setters>
+			<set name="damage type">Acid</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Gold)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_GOLD">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a gold dragon, associated with fire damage.</p></description>
+		<sheet><description>Gold dragon ancestry (fire).</description></sheet>
+		<setters>
+			<set name="damage type">Fire</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Green)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_GREEN">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a green dragon, associated with poison damage.</p></description>
+		<sheet><description>Green dragon ancestry (poison).</description></sheet>
+		<setters>
+			<set name="damage type">Poison</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Red)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_RED">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a red dragon, associated with fire damage.</p></description>
+		<sheet><description>Red dragon ancestry (fire).</description></sheet>
+		<setters>
+			<set name="damage type">Fire</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (Silver)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_SILVER">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a silver dragon, associated with cold damage.</p></description>
+		<sheet><description>Silver dragon ancestry (cold).</description></sheet>
+		<setters>
+			<set name="damage type">Cold</set>
+		</setters>
+	</element>
+
+	<element name="Dragon Ancestor (White)" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_DRAGON_ANCESTOR_WHITE">
+		<supports>Dragon Ancestor</supports>
+		<description><p>Your draconic ancestor was a white dragon, associated with cold damage.</p></description>
+		<sheet><description>White dragon ancestry (cold).</description></sheet>
+		<setters>
+			<set name="damage type">Cold</set>
+		</setters>
+	</element>
+
+	<element name="Careful Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_CAREFUL_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>When you cast a spell that forces other creatures to make a saving throw, you can spend 1 sorcery point to let up to your Charisma modifier creatures automatically succeed.</p></description>
+		<sheet><description>When you cast a spell that forces other creatures to make a saving throw, you can spend 1 sorcery point to let up to your Charisma modifier creatures automatically succeed.</description></sheet>
+	</element>
+
+	<element name="Distant Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_DISTANT_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>Spend 1 sorcery point to double the range of a spell with a range of 5 feet or more, or make a touch spell’s range 30 feet.</p></description>
+		<sheet><description>Spend 1 sorcery point to double the range of a spell with a range of 5 feet or more, or make a touch spell’s range 30 feet.</description></sheet>
+	</element>
+
+	<element name="Empowered Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_EMPOWERED_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>When you roll damage for a spell, spend 1 sorcery point to reroll up to your Charisma modifier damage dice. You can use this even if you already used a different Metamagic option on the spell.</p></description>
+		<sheet><description>When you roll damage for a spell, spend 1 sorcery point to reroll up to your Charisma modifier damage dice. You can use this even if you already used a different Metamagic option on the spell.</description></sheet>
+	</element>
+
+	<element name="Extended Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_EXTENDED_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>Spend 1 sorcery point to double the duration of a spell with a duration of 1 minute or longer, to a maximum of 24 hours.</p></description>
+		<sheet><description>Spend 1 sorcery point to double the duration of a spell with a duration of 1 minute or longer, to a maximum of 24 hours.</description></sheet>
+	</element>
+
+	<element name="Heightened Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_HEIGHTENED_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>Spend 3 sorcery points to give one target of a spell disadvantage on its first saving throw against the spell.</p></description>
+		<sheet><description>Spend 3 sorcery points to give one target of a spell disadvantage on its first saving throw against the spell.</description></sheet>
+	</element>
+
+	<element name="Quickened Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_QUICKENED_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>Spend 2 sorcery points to change a spell’s casting time from 1 action to 1 bonus action.</p></description>
+		<sheet><description>Spend 2 sorcery points to change a spell’s casting time from 1 action to 1 bonus action.</description></sheet>
+	</element>
+
+	<element name="Subtle Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_SUBTLE_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>Spend 1 sorcery point to cast a spell without any somatic or verbal components.</p></description>
+		<sheet><description>Spend 1 sorcery point to cast a spell without any somatic or verbal components.</description></sheet>
+	</element>
+
+	<element name="Twinned Spell" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_METAMAGIC_TWINNED_SPELL">
+		<supports>Metamagic</supports>
+		<description><p>When you cast a spell that targets only one creature and doesn’t have a range of self, spend sorcery points equal to the spell’s level (1 for a cantrip) to target a second creature.</p></description>
+		<sheet><description>When you cast a spell that targets only one creature and doesn’t have a range of self, spend sorcery points equal to the spell’s level (1 for a cantrip) to target a second creature.</description></sheet>
+	</element>
+</elements>

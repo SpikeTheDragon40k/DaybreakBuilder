@@ -9,3 +9,5 @@ export * from "./resolver.js";
 export * from "./sheet.js";
 export * from "./content.js";
 export * from "./aurora-import.js";
+export * from "./spellcasting.js";
+export * from "./companion.js";

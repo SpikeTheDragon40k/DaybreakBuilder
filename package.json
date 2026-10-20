@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "npm run build -w @dndbuilder/engine && npm run build -w @dndbuilder/desktop",
-    "test": "npm test -w @dndbuilder/engine",
+    "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "dev": "npm run dev -w @dndbuilder/desktop",
     "tauri": "npm run tauri -w @dndbuilder/desktop"

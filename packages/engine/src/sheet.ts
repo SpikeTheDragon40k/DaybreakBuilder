@@ -1,6 +1,16 @@
 import { ABILITIES, ABILITY_ABBR, SKILLS, getSetter, type Ability, type ElementDef } from "./model.js";
 import { meetsRequirements, type ResolvedCharacter, type ResolvedNode } from "./resolver.js";
 import type { StatPart } from "./stats.js";
+import { buildCompanionSheet, type CompanionSheet } from "./companion.js";
+import {
+  casterSpells,
+  findCasters,
+  multiclassSpellSlots,
+  preparableSpells,
+  preparedLimit,
+  spellLevel,
+  type PrepareMode,
+} from "./spellcasting.js";
 
 export interface AbilityRow {
   ability: Ability;
@@ -35,14 +45,17 @@ export interface FeatureRow {
 export interface SpellcastingRow {
   name: string;
   ability: string;
+  mode: PrepareMode;
   attack: number;
   dc: number;
   prepare: boolean;
   slots: number[];
   cantripsKnown?: number;
   spellsKnown?: number;
+  /** Maximum number of prepared spells, if the caster prepares. */
   prepareCount?: number;
-  spells: { id: string; name: string; level: number; alwaysPrepared: boolean }[];
+  preparedCount: number;
+  spells: { id: string; name: string; level: number; alwaysPrepared: boolean; prepared: boolean }[];
 }
 
 export interface CharacterSheet {
@@ -74,6 +87,9 @@ export interface CharacterSheet {
   languages: string[];
   features: FeatureRow[];
   spellcasting: SpellcastingRow[];
+  companion: CompanionSheet | null;
+  /** Shared slots when several classes contribute to the multiclass caster level. */
+  multiclassSpellcasting: { casterLevel: number; slots: number[] } | null;
   conditions: string[];
   warnings: string[];
 }
@@ -107,6 +123,10 @@ export function substitute(rc: ResolvedCharacter, text: string): string {
     return `{{${name}}}`;
   };
   return text.replace(/\{\{([^}]+)\}\}/g, (_, n: string) => repl(n)).replace(/\$\(([^)]+)\)/g, (_, n: string) => repl(n));
+}
+
+function optionalSubstitute(rc: ResolvedCharacter, text: string | undefined): string | undefined {
+  return text === undefined ? undefined : substitute(rc, text);
 }
 
 function originOf(node: ResolvedNode): string {
@@ -218,14 +238,15 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
         type: el.type,
         source: el.source,
         text: substitute(rc, best?.text ?? firstParagraph(el.description)),
-        usage: best?.usage ?? el.sheet?.usage,
-        action: best?.action ?? el.sheet?.action,
+        usage: optionalSubstitute(rc, best?.usage ?? el.sheet?.usage),
+        action: optionalSubstitute(rc, best?.action ?? el.sheet?.action),
         origin: originOf(node),
       });
     }
   }
 
-  const spellcasting = buildSpellcasting(rc);
+  const { rows: spellcasting, multiclass: multiclassSpellcasting } = buildSpellcasting(rc);
+  const companionNode = rc.nodes.find((n) => n.element.type === "Companion");
 
   const warnings: string[] = rc.issues.filter((i) => i.severity !== "info").map((i) => i.message);
   for (const p of rc.selections) {
@@ -282,54 +303,56 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
     languages: unique(languages),
     features,
     spellcasting,
+    multiclassSpellcasting,
+    companion: companionNode ? buildCompanionSheet(companionNode.element, s, rc.registry) : null,
     conditions: unique(conditions),
     warnings: unique(warnings),
   };
 }
 
-function buildSpellcasting(rc: ResolvedCharacter): SpellcastingRow[] {
+function buildSpellcasting(rc: ResolvedCharacter): { rows: SpellcastingRow[]; multiclass: { casterLevel: number; slots: number[] } | null } {
   const s = rc.stats;
-  const rows: SpellcastingRow[] = [];
-  for (const node of rc.nodes) {
-    const sc = node.element.spellcasting;
-    if (!sc || sc.extend || !sc.name || rows.some((r) => r.name === sc.name)) continue;
-    const abbr = sc.ability.slice(0, 3).toLowerCase();
-    const name = sc.name.toLowerCase();
+  const casters = findCasters(rc);
+  const multiclass = multiclassSpellSlots(rc);
+  const rows = casters.map((caster): SpellcastingRow => {
+    const abbr = caster.ability.slice(0, 3).toLowerCase();
+    const name = caster.name.toLowerCase();
     const slots: number[] = [];
     for (let i = 1; i <= 9; i++) slots.push(s.get(`${name}:spellcasting:slots:${i}`));
     const opt = (stat: string) => (s.has(stat) ? s.get(stat) : undefined);
-    rows.push({
-      name: sc.name,
-      ability: sc.ability,
+    const known = casterSpells(rc, caster, casters);
+    const prepared = new Set(rc.state.preparedSpells[caster.name] ?? []);
+    const preparable = caster.mode === "list" ? preparableSpells(rc, caster) : [];
+    const spells = known.map((sp) => ({
+      id: sp.element.id,
+      name: sp.element.name,
+      level: sp.level,
+      alwaysPrepared: sp.alwaysPrepared,
+      prepared: caster.mode === "known" || sp.alwaysPrepared || prepared.has(sp.element.id),
+    }));
+    // "List" casters prepare from the whole class list; include those choices.
+    for (const el of preparable) {
+      if (prepared.has(el.id) && !spells.some((x) => x.id === el.id)) {
+        spells.push({ id: el.id, name: el.name, level: spellLevel(el), alwaysPrepared: false, prepared: true });
+      }
+    }
+    spells.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+    return {
+      name: caster.name,
+      ability: caster.ability,
+      mode: caster.mode,
       attack: s.get(`spellcasting:attack:${abbr}`) + s.get(`${name}:spellcasting:attack`),
       dc: s.get(`spellcasting:dc:${abbr}`) + s.get(`${name}:spellcasting:dc`),
-      prepare: sc.prepare,
-      slots,
+      prepare: caster.mode !== "known",
+      slots: multiclass && slots.some((n) => n > 0) && caster.mode !== "known" ? multiclass.slots : slots,
       cantripsKnown: opt(`${name}:spellcasting:cantrips known`),
       spellsKnown: opt(`${name}:spellcasting:spells known`),
-      prepareCount: opt(`${name}:spellcasting:prepare`),
-      spells: [],
-    });
-  }
-  // Spells chosen or granted, attributed to a caster by their select/grant "spellcasting" attribute.
-  for (const node of rc.nodes) {
-    if (node.element.type !== "Spell") continue;
-    let caster: string | undefined;
-    let always = false;
-    if (node.via.kind === "select") caster = node.via.point.rule.spellcasting;
-    if (node.via.kind === "grant") {
-      caster = node.via.rule.setters.spellcasting;
-      always = (node.via.rule.setters.prepared ?? "").toLowerCase() === "true";
-    }
-    const row = rows.find((r) => r.name.toLowerCase() === (caster ?? "").toLowerCase()) ?? rows[0];
-    if (!row) continue;
-    const level = parseInt(getSetter(node.element, "level") ?? "0", 10) || 0;
-    if (!row.spells.some((sp) => sp.id === node.element.id)) {
-      row.spells.push({ id: node.element.id, name: node.element.name, level, alwaysPrepared: always });
-    }
-  }
-  for (const r of rows) r.spells.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
-  return rows;
+      prepareCount: preparedLimit(rc, caster),
+      preparedCount: spells.filter((x) => x.level > 0 && x.prepared && !x.alwaysPrepared).length,
+      spells,
+    };
+  });
+  return { rows, multiclass };
 }
 
 /** Short sheet text for elements without a <sheet> description: the first paragraph. */

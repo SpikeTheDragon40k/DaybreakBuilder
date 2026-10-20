@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Bard</name>
+		<description>The bard class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Bard" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_BARD">
+		<description><p>Whether scholar, skald or scoundrel, a bard weaves magic through words and music to inspire allies, demoralize foes, manipulate minds and heal wounds.</p><p>Hit Dice: 1d8 per bard level. Proficiencies: light armor; simple weapons, hand crossbows, longswords, rapiers, shortswords; three musical instruments. Saving throws: Dexterity, Charisma. Skills: choose any three.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d8</set>
+			<set name="short">An inspiring magician whose power echoes the music of creation.</set>
+			<set name="primary">Charisma</set>
+		</setters>
+		<spellcasting name="Bard" ability="Charisma" prepare="false">
+			<list>Bard</list>
+		</spellcasting>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_BARD">
+			<prerequisite>Charisma 13</prerequisite>
+			<requirements>[cha:13]</requirements>
+			<setters><set name="multiclass proficiencies">Light armor, one skill of your choice, one musical instrument of your choice</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" />
+				<select type="Proficiency" name="Skill Proficiency (Bard Multiclass)" supports="Skill" number="1" />
+				<select name="Musical Instrument (Bard Multiclass)" supports="Musical Instrument" type="Proficiency" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HAND" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_RAPIER" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_DEXTERITY" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<select type="Proficiency" name="Skill Proficiency (Bard)" supports="Skill" number="3" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<select name="Musical Instruments (Bard)" supports="Musical Instrument" number="3" type="Proficiency" requirements="!ID_WOTC_PHB_MULTICLASS_BARD" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_SPELLCASTING" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_BARDIC_INSPIRATION" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_JACK_OF_ALL_TRADES" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_SONG_OF_REST" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_EXPERTISE_3" level="3" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_FONT_OF_INSPIRATION" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_COUNTERCHARM" level="6" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_EXPERTISE_10" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_10" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_14" level="14" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_18" level="18" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_SUPERIOR_INSPIRATION" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_BARD_BARD_COLLEGE" level="3" />
+			<stat name="bard:spellcasting:slots:1" value="2" level="1" />
+			<stat name="bard:spellcasting:slots:1" value="1" level="2" />
+			<stat name="bard:spellcasting:slots:1" value="1" level="3" />
+			<stat name="bard:spellcasting:slots:2" value="2" level="3" />
+			<stat name="bard:spellcasting:slots:2" value="1" level="4" />
+			<stat name="bard:spellcasting:slots:3" value="2" level="5" />
+			<stat name="bard:spellcasting:slots:3" value="1" level="6" />
+			<stat name="bard:spellcasting:slots:4" value="1" level="7" />
+			<stat name="bard:spellcasting:slots:4" value="1" level="8" />
+			<stat name="bard:spellcasting:slots:4" value="1" level="9" />
+			<stat name="bard:spellcasting:slots:5" value="1" level="9" />
+			<stat name="bard:spellcasting:slots:5" value="1" level="10" />
+			<stat name="bard:spellcasting:slots:5" value="1" level="18" />
+			<stat name="bard:spellcasting:slots:6" value="1" level="11" />
+			<stat name="bard:spellcasting:slots:6" value="1" level="19" />
+			<stat name="bard:spellcasting:slots:7" value="1" level="13" />
+			<stat name="bard:spellcasting:slots:7" value="1" level="20" />
+			<stat name="bard:spellcasting:slots:8" value="1" level="15" />
+			<stat name="bard:spellcasting:slots:9" value="1" level="17" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS_SPELLCASTING_SLOTS_FULL" requirements="ID_INTERNAL_GRANT_MULTICLASS" />
+			<stat name="bard:spellcasting:cantrips known" value="2" level="1" />
+			<stat name="bard:spellcasting:cantrips known" value="1" level="4" />
+			<stat name="bard:spellcasting:cantrips known" value="1" level="10" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Bard" name="Cantrip (Bard)" level="1" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Bard" name="Cantrip (Bard)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Bard" name="Cantrip (Bard)" level="10" number="1" />
+			<stat name="bard:spellcasting:spells known" value="4" level="1" />
+			<stat name="bard:spellcasting:spells known" value="1" level="2" />
+			<stat name="bard:spellcasting:spells known" value="1" level="3" />
+			<stat name="bard:spellcasting:spells known" value="1" level="4" />
+			<stat name="bard:spellcasting:spells known" value="1" level="5" />
+			<stat name="bard:spellcasting:spells known" value="1" level="6" />
+			<stat name="bard:spellcasting:spells known" value="1" level="7" />
+			<stat name="bard:spellcasting:spells known" value="1" level="8" />
+			<stat name="bard:spellcasting:spells known" value="1" level="9" />
+			<stat name="bard:spellcasting:spells known" value="2" level="10" />
+			<stat name="bard:spellcasting:spells known" value="1" level="11" />
+			<stat name="bard:spellcasting:spells known" value="1" level="13" />
+			<stat name="bard:spellcasting:spells known" value="2" level="14" />
+			<stat name="bard:spellcasting:spells known" value="1" level="15" />
+			<stat name="bard:spellcasting:spells known" value="1" level="17" />
+			<stat name="bard:spellcasting:spells known" value="2" level="18" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="1" number="4" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="2" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="3" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="5" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="6" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="7" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="8" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="9" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="10" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="11" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="13" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="14" number="2" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="15" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="17" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),$(spellcasting:slots)" spellcasting="Bard" name="Spellcasting (Bard)" level="18" number="2" />
+		</rules>
+	</element>
+
+	<element name="Spellcasting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_SPELLCASTING">
+		<description><p>You have learned to untangle and reshape the fabric of reality in harmony with your wishes and music. Charisma is your spellcasting ability, and you can use a musical instrument as a spellcasting focus.</p></description>
+		<sheet display="false" />
+	</element>
+
+	<element name="Bardic Inspiration" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_BARDIC_INSPIRATION">
+		<description><p>As a bonus action, you can inspire one creature other than yourself within 60 feet who can hear you. It gains a Bardic Inspiration die it can add to one ability check, attack roll or saving throw within the next 10 minutes. You can do this a number of times equal to your Charisma modifier (minimum once), regaining uses on a long rest (short rest from 5th level). The die is a d6, becoming a d8 at 5th level, a d10 at 10th and a d12 at 15th.</p></description>
+		<sheet>
+			<description usage="{{bardic inspiration:count}}/Rest" action="Bonus Action">Grant a d{{bardic inspiration:die}} to a creature within 60 feet.</description>
+		</sheet>
+		<rules>
+			<stat name="bardic inspiration:die" value="6" level="1" />
+			<stat name="bardic inspiration:die" value="2" level="5" />
+			<stat name="bardic inspiration:die" value="2" level="10" />
+			<stat name="bardic inspiration:die" value="2" level="15" />
+			<stat name="bardic inspiration:count" value="charisma:modifier" minimum="1" />
+		</rules>
+	</element>
+
+	<element name="Jack of All Trades" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_JACK_OF_ALL_TRADES">
+		<description><p>You can add half your proficiency bonus, rounded down, to any ability check you make that doesn’t already include your proficiency bonus.</p></description>
+	</element>
+
+	<element name="Song of Rest" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_SONG_OF_REST">
+		<description><p>If you or any friendly creatures who can hear your performance regain hit points by spending Hit Dice at the end of a short rest, each of those creatures regains an extra 1d6 hit points. The die increases to d8 at 9th level, d10 at 13th and d12 at 17th.</p></description>
+		<sheet><description>Allies spending Hit Dice during a short rest regain an extra 1d{{song of rest:die}} hit points.</description></sheet>
+		<rules>
+			<stat name="song of rest:die" value="6" level="2" />
+			<stat name="song of rest:die" value="2" level="9" />
+			<stat name="song of rest:die" value="2" level="13" />
+			<stat name="song of rest:die" value="2" level="17" />
+		</rules>
+	</element>
+
+	<element name="Expertise" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_EXPERTISE_3">
+		<description><p>Choose two of your skill proficiencies. Your proficiency bonus is doubled for any ability check you make that uses either of them. At 10th level you choose two more.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Expertise (Bard)" supports="Skill Expertise" number="2" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Bard 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Font of Inspiration" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_FONT_OF_INSPIRATION">
+		<description><p>You regain all of your expended uses of Bardic Inspiration when you finish a short or long rest.</p></description>
+	</element>
+
+	<element name="Countercharm" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_COUNTERCHARM">
+		<description><p>As an action, you can start a performance that lasts until the end of your next turn. During that time, you and friendly creatures within 30 feet have advantage on saving throws against being frightened or charmed.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Bard 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Expertise" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_EXPERTISE_10">
+		<description><p>Choose two more of your skill proficiencies to gain the benefits of Expertise.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Expertise (Bard 10)" supports="Skill Expertise" number="2" />
+		</rules>
+	</element>
+
+	<element name="Magical Secrets" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_10">
+		<description><p>Choose two spells from any classes, including this one. A spell you choose must be of a level you can cast, or a cantrip. The chosen spells count as bard spells for you.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Spell" name="Magical Secrets (10)" supports="(0)||($(spellcasting:slots))" number="2" spellcasting="Bard" level="10" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Bard 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Magical Secrets" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_14">
+		<description><p>Choose two spells from any classes, including this one. A spell you choose must be of a level you can cast, or a cantrip. The chosen spells count as bard spells for you.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Spell" name="Magical Secrets (14)" supports="(0)||($(spellcasting:slots))" number="2" spellcasting="Bard" level="14" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Bard 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Magical Secrets" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_MAGICAL_SECRETS_18">
+		<description><p>Choose two spells from any classes, including this one. A spell you choose must be of a level you can cast, or a cantrip. The chosen spells count as bard spells for you.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Spell" name="Magical Secrets (18)" supports="(0)||($(spellcasting:slots))" number="2" spellcasting="Bard" level="18" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Bard 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Superior Inspiration" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_SUPERIOR_INSPIRATION">
+		<description><p>When you roll initiative and have no uses of Bardic Inspiration left, you regain one use.</p></description>
+	</element>
+
+	<element name="Bard College" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_BARD_BARD_COLLEGE">
+		<description><p>At 3rd level you delve into the advanced techniques of a bard college of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Bard College" supports="Bard College" />
+		</rules>
+	</element>
+
+	<element name="Bonus Proficiencies" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_BONUS_PROFICIENCIES">
+		<description><p>You gain proficiency with three skills of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Bonus Proficiencies (College of Lore)" supports="Skill" number="3" />
+		</rules>
+	</element>
+
+	<element name="Cutting Words" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_CUTTING_WORDS">
+		<description><p>When a creature you can see within 60 feet makes an attack roll, ability check or damage roll, you can use your reaction to expend one Bardic Inspiration and subtract the roll from the creature’s result, after it rolls but before the outcome is known.</p></description>
+		<sheet>
+			<description action="Reaction">Expend Bardic Inspiration to subtract the die from a creature’s roll.</description>
+		</sheet>
+	</element>
+
+	<element name="Additional Magical Secrets" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_ADDITIONAL_MAGICAL_SECRETS">
+		<description><p>You learn two spells of your choice from any class. They must be of a level you can cast or cantrips, and count as bard spells for you.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Spell" name="Additional Magical Secrets" supports="(0)||($(spellcasting:slots))" number="2" spellcasting="Bard" level="6" />
+		</rules>
+	</element>
+
+	<element name="Peerless Skill" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_PEERLESS_SKILL">
+		<description><p>When you make an ability check, you can expend one use of Bardic Inspiration and add the die to the check, after rolling but before knowing the outcome.</p></description>
+	</element>
+
+	<element name="College of Lore" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_COLLEGE_OF_LORE">
+		<supports>Bard College, Bard</supports>
+		<description><p>Bards of the College of Lore know something about most things, collecting bits of knowledge from scholarly tomes and peasant tales alike.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_BONUS_PROFICIENCIES" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_CUTTING_WORDS" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_ADDITIONAL_MAGICAL_SECRETS" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_COLLEGE_OF_LORE_PEERLESS_SKILL" level="14" />
+		</rules>
+	</element>
+</elements>

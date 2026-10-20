@@ -41,6 +41,7 @@ export interface Platform {
   fetchText(url: string): Promise<string>;
   pickTextFiles(extensions: string[], multiple: boolean): Promise<PickedFile[]>;
   saveTextFile(defaultName: string, content: string, extension: string): Promise<boolean>;
+  saveBinaryFile(defaultName: string, data: Uint8Array, extension: string, mime: string): Promise<boolean>;
   /** Desktop only: XML files from the user's custom content folder. */
   readCustomFolder?(): Promise<{ folder: string; files: StoredFile[] }>;
   openCustomFolder?(): Promise<void>;
@@ -130,15 +131,23 @@ const web: Platform = {
     });
   },
   async saveTextFile(defaultName, content) {
-    const url = URL.createObjectURL(new Blob([content], { type: "text/plain;charset=utf-8" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = defaultName;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadBlob(defaultName, new Blob([content], { type: "text/plain;charset=utf-8" }));
+    return true;
+  },
+  async saveBinaryFile(defaultName, data, _extension, mime) {
+    downloadBlob(defaultName, new Blob([data as BlobPart], { type: mime }));
     return true;
   },
 };
+
+function downloadBlob(name: string, blob: Blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 async function createTauriPlatform(): Promise<Platform> {
   const { invoke } = await import("@tauri-apps/api/core");
@@ -163,6 +172,12 @@ async function createTauriPlatform(): Promise<Platform> {
       const path = await dialog.save({ defaultPath: defaultName, filters: [{ name: extension.toUpperCase(), extensions: [extension] }] });
       if (!path) return false;
       await invoke("write_text_file", { path, content });
+      return true;
+    },
+    async saveBinaryFile(defaultName, data, extension) {
+      const path = await dialog.save({ defaultPath: defaultName, filters: [{ name: extension.toUpperCase(), extensions: [extension] }] });
+      if (!path) return false;
+      await invoke("write_binary_file", { path, data: Array.from(data) });
       return true;
     },
     async readCustomFolder() {
