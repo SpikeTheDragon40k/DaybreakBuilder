@@ -224,6 +224,7 @@ export function SheetPage() {
                 <div key={f.id} className="feature">
                   <h4>
                     {f.name}
+                    {f.category && <span className="badge feat-category">{f.category} feat</span>}
                     {f.origin && <span className="muted small"> · {f.origin}</span>}
                     {f.usage && <span className="muted small"> · {units.text(f.usage)}</span>}
                     {f.action && <span className="muted small"> · {f.action}</span>}

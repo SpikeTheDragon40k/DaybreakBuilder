@@ -170,6 +170,41 @@ Used by `requirements`, `supports` and `equipped`.
 * Because requirements can depend on any element or statistic, the engine rebuilds
   the tree until the set of element ids and the ability scores stop changing.
 
+## 2024 rules: backgrounds and Origin feats
+
+The 2024 rules move ability score increases and a feat from the species to the
+background. Content written for Aurora expresses this with ordinary rules, and the
+built-in core content (`content/core/background-ability-scores.xml`) defines the
+shared elements it relies on, with the same ids as the community content:
+
+* **Feat categories** are `<supports>` keywords: `Origin`, `General`,
+  `Fighting Style`, `Epic Boon`. `featCategory()` reads them; the builder shows the
+  category in pickers and on the sheet, and the picker filters by it.
+* **A background's Origin feat** is a `<grant type="Feat" id="…"/>`, or a
+  `<select type="Feat" supports="Origin"/>` when the player chooses (custom
+  backgrounds, the human's Versatile trait). Nothing else is needed.
+* **Ability scores**: the background grants the combination element for its three
+  abilities, `ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_<A>_<B>_<C>` (abilities
+  abbreviated and in sheet order, e.g. `INT_WIS_CHA`). The player then picks
+  "+2, +1" (two selects, which can't pick the same ability twice) or "+1, +1, +1".
+  A custom background selects the combination with
+  `supports="Custom Background Ability Score Combination"`.
+* **Species increases**: the background also grants the marker
+  `ID_INTERNAL_GRANTS_BACKGROUND_ASI`. Older species make their increases conditional
+  on it (`requirements="!ID_INTERNAL_GRANTS_BACKGROUND_ASI"`), so a 2014 species with a
+  2024 background follows the 2024 rule. The bundled SRD 5.1 races do this too.
+
+```xml
+<element name="Temple Hand" type="Background" source="…" id="ID_…_BACKGROUND_TEMPLE_HAND">
+  <rules>
+    <grant type="Ability Score Improvement" id="ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_INT_WIS_CHA" />
+    <grant type="Feat" id="ID_…_FEAT_ALERT" />
+    <grant type="Proficiency" id="ID_PROFICIENCY_SKILL_INSIGHT" />
+    <grant type="Grants" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+  </rules>
+</element>
+```
+
 ## Character files
 
 dndbuilder saves characters as JSON (`CharacterState` in `character.ts`). The state

@@ -10,7 +10,9 @@ function trait(key, name, text, rules = [], extra = {}) {
 }
 
 const lang = (id) => grant({ type: "Language", id });
-const asi = (ability, value) => stat({ name: ability, value, alt: "Racial Ability Score Increase" });
+// Under the 2024 rules the background grants the ability score increases instead.
+const NO_BACKGROUND_ASI = "!ID_INTERNAL_GRANTS_BACKGROUND_ASI";
+const asi = (ability, value) => stat({ name: ability, value, alt: "Racial Ability Score Increase", requirements: NO_BACKGROUND_ASI });
 const speed = (v) => stat({ name: "innate speed", value: v, bonus: "base" });
 const size = (s) => grant({ type: "Size", id: `ID_SIZE_${s.toUpperCase()}` });
 const darkvision = grant({ type: "Vision", id: "ID_VISION_DARKVISION" });
@@ -308,7 +310,7 @@ function halfElf() {
 Ability Score Increase: Charisma +2 and two other ability scores of your choice +1. Speed 30 feet. Darkvision, Fey Ancestry and Skill Versatility. You speak Common, Elvish and one extra language.`,
       rules: [
         asi("charisma", 2),
-        select({ type: "Ability Score Improvement", name: "Ability Score Increase (Half-Elf)", number: 2, supports: "Ability Score Improvement,Class,!Charisma" }),
+        select({ type: "Ability Score Improvement", name: "Ability Score Increase (Half-Elf)", number: 2, supports: "Ability Score Improvement,Class,!Charisma", requirements: NO_BACKGROUND_ASI }),
         speed(30),
         size("Medium"),
         darkvision,

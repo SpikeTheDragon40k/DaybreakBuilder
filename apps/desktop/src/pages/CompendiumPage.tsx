@@ -1,4 +1,4 @@
-import type { ElementDef } from "@dndbuilder/engine";
+import { featCategory, type ElementDef } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
 import { ElementDetail } from "../components/ElementDetail";
 import { useApp } from "../state/app";
@@ -55,7 +55,8 @@ export function CompendiumPage() {
             <li key={el.id} className={selected?.id === el.id ? "selected" : ""} onClick={() => setSelected(el)}>
               <span className="grow">{el.name}</span>
               <span className="muted small">
-                {el.type} · {el.source}
+                {el.type}
+                {featCategory(el) ? ` (${featCategory(el)})` : ""} · {el.source}
               </span>
             </li>
           ))}

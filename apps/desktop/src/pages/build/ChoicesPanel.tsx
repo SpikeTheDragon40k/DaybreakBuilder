@@ -1,4 +1,4 @@
-import { selectionOptions, type ResolvedNode, type SelectionPoint } from "@dndbuilder/engine";
+import { featCategory, selectionOptions, type ResolvedNode, type SelectionPoint } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
@@ -12,11 +12,13 @@ interface Section {
   title: string;
   order: number;
   points: SelectionPoint[];
+  /** Feats granted outright (such as a 2024 background's Origin feat), shown read-only. */
+  granted: ResolvedNode[];
 }
 
-function sectionOf(point: SelectionPoint): { key: string; title: string; order: number } {
+function sectionOf(owner: ResolvedNode): { key: string; title: string; order: number } {
   let top: ResolvedNode | undefined;
-  for (let n: ResolvedNode | undefined = point.owner; n; n = n.parent) {
+  for (let n: ResolvedNode | undefined = owner; n; n = n.parent) {
     if (SECTION_TYPES.has(n.element.type)) top = n;
   }
   if (top) {
@@ -25,12 +27,12 @@ function sectionOf(point: SelectionPoint): { key: string; title: string; order: 
     const title = t === "Race" ? `Race: ${top.element.name}` : t === "Background" ? `Background: ${top.element.name}` : top.element.name;
     return { key: top.path, title, order };
   }
-  if (point.owner.element.type === "Level" && !point.owner.parent) {
-    return point.owner.element.id === "ID_LEVEL_1"
+  if (owner.element.type === "Level" && !owner.parent) {
+    return owner.element.id === "ID_LEVEL_1"
       ? { key: "origin", title: "Origin", order: 0 }
-      : { key: point.owner.path, title: `Level ${point.owner.element.name}`, order: 5 };
+      : { key: owner.path, title: `Level ${owner.element.name}`, order: 5 };
   }
-  let root = point.owner;
+  let root = owner;
   while (root.parent) root = root.parent;
   return { key: root.path, title: root.element.name, order: 6 };
 }
@@ -40,12 +42,18 @@ export function ChoicesPanel() {
 
   const sections = useMemo(() => {
     const map = new Map<string, Section>();
+    const sectionFor = (owner: ResolvedNode) => {
+      const s = sectionOf(owner);
+      let sec = map.get(s.key);
+      if (!sec) map.set(s.key, (sec = { ...s, points: [], granted: [] }));
+      return sec;
+    };
+    for (const n of resolved.nodes) {
+      if (n.element.type === "Feat" && n.via.kind === "grant" && n.parent) sectionFor(n.parent).granted.push(n);
+    }
     for (const p of resolved.selections) {
       if (p.rule.type === "Class") continue;
-      const s = sectionOf(p);
-      let sec = map.get(s.key);
-      if (!sec) map.set(s.key, (sec = { ...s, points: [] }));
-      sec.points.push(p);
+      sectionFor(p.owner).points.push(p);
     }
     return [...map.values()].sort((a, b) => a.order - b.order);
   }, [resolved]);
@@ -59,12 +67,32 @@ export function ChoicesPanel() {
       {sections.map((s) => (
         <div key={s.key} className="choice-section">
           <h3>{s.title}</h3>
+          {s.granted.map((n) => (
+            <GrantedFeatRow key={n.path} node={n} />
+          ))}
           {s.points.map((p) => (
             <SelectionRow key={p.key} point={p} />
           ))}
         </div>
       ))}
     </section>
+  );
+}
+
+function GrantedFeatRow({ node }: { node: ResolvedNode }) {
+  const category = featCategory(node.element);
+  return (
+    <div className="choice-row">
+      <div className="choice-label">
+        <span>{category === "Origin" ? "Origin Feat" : "Feat"}</span>
+        <span className="muted small"> granted</span>
+      </div>
+      <div className="choice-slots">
+        <span className="granted" title={`Granted by ${node.parent?.element.name ?? ""}`}>
+          {node.element.name}
+        </span>
+      </div>
+    </div>
   );
 }
 

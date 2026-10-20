@@ -131,6 +131,17 @@ export function allowsDuplicate(el: ElementDef): boolean {
   return (getSetter(el, "allow duplicate") ?? "").trim().toLowerCase() === "true";
 }
 
+/** Feat categories introduced by the 2024 rules, as content tags them in `<supports>`. */
+export const FEAT_CATEGORIES = ["Origin", "General", "Fighting Style", "Epic Boon"] as const;
+export type FeatCategory = (typeof FEAT_CATEGORIES)[number];
+
+/** The 2024 category of a feat ("Origin" for feats a background can grant), if its content declares one. */
+export function featCategory(el: Pick<ElementDef, "type" | "supports">): FeatCategory | undefined {
+  if (el.type !== "Feat") return undefined;
+  const tags = new Set(el.supports.map((s) => s.trim().toLowerCase()));
+  return FEAT_CATEGORIES.find((c) => tags.has(c.toLowerCase()));
+}
+
 export const ABILITIES = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"] as const;
 export type Ability = (typeof ABILITIES)[number];
 

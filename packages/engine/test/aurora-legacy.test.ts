@@ -116,6 +116,41 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     expect(wiz.slots[0]).toBe(2);
     expect(rc.issues.filter((i) => i.severity === "error")).toEqual([]);
   });
+
+  it("2024: the background grants its Origin feat and ability score increases", () => {
+    const acolyte = "ID_WOTC_PHB24_BACKGROUND_ACOLYTE";
+    const combo = "ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_INT_WIS_CHA";
+    const state = hillDwarfFighter(1);
+    state.selections[selectionKey("ID_LEVEL_1", "Background")] = [acolyte];
+    state.selections[selectionKey(`ID_LEVEL_1/${acolyte}/${combo}`, "Ability Score Improvement Option")] = [`${combo}_1`];
+    let rc = resolveCharacter(registry, state);
+    const plus2 = rc.selections.find((p) => p.rule.name === "Background Ability Score Improvement +2")!;
+    const plus1 = rc.selections.find((p) => p.rule.name === "Background Ability Score Improvement +1")!;
+    state.selections[plus2.key] = ["ID_WOTC_TCOE_OPTION_CUSTOMIZED_ASI_WISDOM_INCREASE_2"];
+    state.selections[plus1.key] = ["ID_WOTC_TCOE_OPTION_CUSTOMIZED_ASI_CHARISMA_INCREASE_1"];
+    rc = resolveCharacter(registry, state);
+    const sheet = buildSheet(rc);
+    const score = (a: string) => sheet.abilities.find((x) => x.ability === a)?.score;
+    // WIS 12 + 2, CHA 10 + 1; the 2014 dwarf's own CON +2 / WIS +1 give way to the background.
+    expect([score("wisdom"), score("charisma"), score("constitution")]).toEqual([14, 11, 14]);
+    // The Acolyte's feat is the Cleric option of Magic Initiate, with its own choices.
+    expect(rc.selections.map((p) => p.rule.name)).toContain("Spellcasting Ability (Magic Initiate)");
+
+    state.selections[selectionKey("ID_LEVEL_1", "Background")] = ["ID_WOTC_PHB24_BACKGROUND_CRIMINAL"];
+    const criminal = buildSheet(resolveCharacter(registry, state));
+    expect(criminal.features.find((f) => f.name === "Alert")).toMatchObject({ category: "Origin", origin: "Criminal" });
+  });
+
+  it("2024: Origin feat choices offer only Origin feats", () => {
+    const state = hillDwarfFighter(1);
+    state.selections[selectionKey("ID_LEVEL_1", "Background")] = ["ID_WOTC_DMG24_BACKGROUND_CUSTOM"];
+    const rc = resolveCharacter(registry, state);
+    const point = rc.selections.find((p) => p.rule.name === "Origin Feat (Custom Background)")!;
+    const options = selectionOptions(rc, point);
+    expect(options.length).toBeGreaterThan(5);
+    expect(options.every((o) => o.element.supports.includes("Origin"))).toBe(true);
+    expect(options.map((o) => o.element.name)).toEqual(expect.arrayContaining(["Alert", "Lucky", "Tough"]));
+  });
 });
 
 export { auroraLegacyDir };

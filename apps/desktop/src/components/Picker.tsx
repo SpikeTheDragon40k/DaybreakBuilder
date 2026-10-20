@@ -1,4 +1,4 @@
-import type { ContentRegistry, ElementDef, SelectionOption } from "@dndbuilder/engine";
+import { featCategory, FEAT_CATEGORIES, type ContentRegistry, type ElementDef, type SelectionOption } from "@dndbuilder/engine";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ElementDetail } from "./ElementDetail";
 
@@ -28,15 +28,18 @@ export function Picker({ title, options, current, registry, onPick, onClose, all
 
   const sources = useMemo(() => [...new Set(options.map((o) => o.element.source))].sort(), [options]);
   const [source, setSource] = useState("");
+  const categories = useMemo(() => FEAT_CATEGORIES.filter((c) => options.some((o) => featCategory(o.element) === c)), [options]);
+  const [category, setCategory] = useState("");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return options
       .filter((o) => showUnavailable || o.available || o.element.id === current)
       .filter((o) => !source || o.element.source === source)
+      .filter((o) => !category || featCategory(o.element) === category)
       .filter((o) => !q || o.element.name.toLowerCase().includes(q))
       .sort((a, b) => Number(b.available) - Number(a.available) || a.element.name.localeCompare(b.element.name));
-  }, [options, query, showUnavailable, source, current]);
+  }, [options, query, showUnavailable, source, category, current]);
 
   const unavailableCount = options.filter((o) => !o.available).length;
 
@@ -61,6 +64,16 @@ export function Picker({ title, options, current, registry, onPick, onClose, all
               ))}
             </select>
           )}
+          {categories.length > 1 && (
+            <select value={category} onChange={(e) => setCategory(e.target.value)} aria-label="Feat category">
+              <option value="">All feat categories</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          )}
           {unavailableCount > 0 && (
             <label className="check">
               <input type="checkbox" checked={showUnavailable} onChange={(e) => setShowUnavailable(e.target.checked)} />
@@ -80,7 +93,7 @@ export function Picker({ title, options, current, registry, onPick, onClose, all
                 onDoubleClick={() => o.available && onPick(o.element.id)}
               >
                 <span className="name">{o.element.name}</span>
-                <span className="muted small">{o.reason ?? o.element.source}</span>
+                <span className="muted small">{o.reason ?? [featCategory(o.element), o.element.source].filter(Boolean).join(" · ")}</span>
               </li>
             ))}
           </ul>

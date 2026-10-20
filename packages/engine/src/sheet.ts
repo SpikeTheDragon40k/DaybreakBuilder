@@ -1,4 +1,4 @@
-import { ABILITIES, ABILITY_ABBR, SKILLS, getSetter, type Ability, type ElementDef } from "./model.js";
+import { ABILITIES, ABILITY_ABBR, SKILLS, featCategory, getSetter, type Ability, type ElementDef, type FeatCategory } from "./model.js";
 import { meetsRequirements, type ResolvedCharacter, type ResolvedNode } from "./resolver.js";
 import type { StatPart } from "./stats.js";
 import { buildCompanionSheet, type CompanionSheet } from "./companion.js";
@@ -41,6 +41,8 @@ export interface FeatureRow {
   usage?: string;
   action?: string;
   origin: string;
+  /** Feat category such as "Origin" (2024 rules). */
+  category?: FeatCategory;
 }
 
 export interface SpellcastingRow {
@@ -243,6 +245,7 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
         usage: optionalSubstitute(rc, best?.usage ?? el.sheet?.usage),
         action: optionalSubstitute(rc, best?.action ?? el.sheet?.action),
         origin: originOf(node),
+        category: featCategory(el),
       });
     }
   }

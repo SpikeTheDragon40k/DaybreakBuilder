@@ -10,6 +10,8 @@ from-scratch reimplementation of the rules engine, with a modern UI that you can
 * loads Aurora `.xml` element files and `.index` content indexes, including updates from the AuroraLegacy repository;
 * builds characters with races, classes, multiclassing, backgrounds, feats, ASIs, spells and equipment, driven entirely
   by content rules;
+* supports the 2024 rules' backgrounds with imported 2024 content: Origin feats, background ability score increases
+  (+2/+1 or +1/+1/+1) and feat categories;
 * computes the full sheet (abilities, saves, skills, AC, HP, speeds, proficiencies, features, spellcasting) with
   breakdowns showing where each number comes from;
 * imports Aurora `.dnd5e` character files;
