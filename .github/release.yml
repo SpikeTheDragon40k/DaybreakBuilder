@@ -1,0 +1,18 @@
+# Categories for automatically generated release notes (by pull request label).
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+    authors:
+      - github-actions[bot]
+  categories:
+    - title: New features
+      labels: [feature, enhancement]
+    - title: Rules and content
+      labels: [rules, content]
+    - title: Bug fixes
+      labels: [bug, fix]
+    - title: Maintenance
+      labels: [chore, ci, dependencies, docs]
+    - title: Other changes
+      labels: ["*"]

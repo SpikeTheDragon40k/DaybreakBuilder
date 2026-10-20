@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useApp, type Page } from "./state/app";
+import { setTheme, storedTheme, type Theme } from "./theme";
 import { BuildPage } from "./pages/BuildPage";
 import { CharactersPage } from "./pages/CharactersPage";
 import { CompendiumPage } from "./pages/CompendiumPage";
@@ -37,6 +39,7 @@ export function App() {
           </button>
         ))}
         <span className="spacer" />
+        <ThemeSwitch />
         {character && (
           <span className="muted small">
             {character.state.name} · {saving ? "saving…" : "saved"}
@@ -58,5 +61,32 @@ export function App() {
         {current === "content" && <ContentPage />}
       </main>
     </div>
+  );
+}
+
+const THEMES: { theme: Theme; label: string }[] = [
+  { theme: "system", label: "Auto" },
+  { theme: "light", label: "Light" },
+  { theme: "dark", label: "Dark" },
+];
+
+function ThemeSwitch() {
+  const [theme, setThemeState] = useState<Theme>(storedTheme);
+  return (
+    <span className="theme-switch" role="group" aria-label="Theme">
+      {THEMES.map((t) => (
+        <button
+          key={t.theme}
+          aria-pressed={theme === t.theme}
+          title={t.theme === "system" ? "Follow the system setting" : `${t.label} theme`}
+          onClick={() => {
+            setTheme(t.theme);
+            setThemeState(t.theme);
+          }}
+        >
+          {t.label}
+        </button>
+      ))}
+    </span>
   );
 }

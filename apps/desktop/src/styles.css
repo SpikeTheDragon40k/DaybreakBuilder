@@ -10,6 +10,9 @@
   --accent-soft: #f3e3e1;
   --ok: #2d6a3e;
   --error: #a3261c;
+  --warn: #c9962c;
+  --backdrop: rgba(0, 0, 0, 0.45);
+  --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   --radius: 6px;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   color-scheme: light;
@@ -20,19 +23,46 @@
   background: var(--bg);
 }
 
+/*
+ * Dark palette. Applied when the user picks "Dark", or picks "System" (no
+ * data-theme attribute) and the OS prefers dark. The two blocks must match.
+ */
+:root[data-theme="dark"] {
+  --bg: #141317;
+  --panel: #1e1d23;
+  --panel-2: #26252c;
+  --text: #ece8e1;
+  --muted: #a7a197;
+  --border: #393740;
+  --accent: #e57368;
+  --accent-text: #1a1012;
+  --accent-soft: #3d2523;
+  --ok: #7cc893;
+  --error: #ff8a7e;
+  --warn: #d9a53a;
+  --backdrop: rgba(0, 0, 0, 0.65);
+  --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #17161a;
-    --panel: #212026;
-    --panel-2: #1b1a1f;
-    --text: #ebe7e0;
-    --muted: #a39d93;
-    --border: #36343c;
-    --accent: #d0584e;
-    --accent-text: #ffffff;
-    --accent-soft: #3a2422;
-    --ok: #6fbf84;
-    --error: #ff7b6e;
+  :root:not([data-theme]) {
+    --bg: #141317;
+    --panel: #1e1d23;
+    --panel-2: #26252c;
+    --text: #ece8e1;
+    --muted: #a7a197;
+    --border: #393740;
+    --accent: #e57368;
+    --accent-text: #1a1012;
+    --accent-soft: #3d2523;
+    --ok: #7cc893;
+    --error: #ff8a7e;
+    --warn: #d9a53a;
+    --backdrop: rgba(0, 0, 0, 0.65);
+    --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     color-scheme: dark;
   }
 }
@@ -310,7 +340,7 @@ ul.plain {
   padding: 0.5rem 0.8rem;
   margin: 0 0 1rem;
   border: 1px solid var(--border);
-  border-left: 4px solid #c9962c;
+  border-left: 4px solid var(--warn);
   border-radius: var(--radius);
   background: var(--panel);
   columns: 2;
@@ -445,7 +475,7 @@ ul.plain {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -460,7 +490,7 @@ ul.plain {
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--modal-shadow);
 }
 .modal-header,
 .modal-footer {
@@ -803,11 +833,17 @@ ul.plain {
 }
 
 @media print {
-  :root {
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme]) {
     --bg: #fff;
     --panel: #fff;
     --text: #000;
+    --panel-2: #fff;
+    --muted: #555;
     --border: #999;
+    --accent: #8b1e1e;
+    --accent-soft: #f3e3e1;
     color-scheme: light;
   }
   .no-print {
@@ -875,4 +911,25 @@ ul.plain {
 }
 .feature-text {
   margin: 0.2rem 0;
+}
+
+/* Theme switcher */
+.theme-switch {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-left: 0.5rem;
+}
+.theme-switch button {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.theme-switch button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--text);
 }
