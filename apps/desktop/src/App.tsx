@@ -8,6 +8,7 @@ import { CharactersPage } from "./pages/CharactersPage";
 import { CompendiumPage } from "./pages/CompendiumPage";
 import { ContentPage } from "./pages/ContentPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
+import { PartyPage } from "./pages/PartyPage";
 import { SheetPage } from "./pages/SheetPage";
 import { SpellsPage } from "./pages/SpellsPage";
 
@@ -17,6 +18,7 @@ const TABS: { page: Page; label: string; needsCharacter: boolean }[] = [
   { page: "equipment", label: "Equipment", needsCharacter: true },
   { page: "spells", label: "Spells", needsCharacter: true },
   { page: "sheet", label: "Sheet", needsCharacter: true },
+  { page: "party", label: "Party", needsCharacter: false },
   { page: "compendium", label: "Compendium", needsCharacter: false },
   { page: "content", label: "Content", needsCharacter: false },
 ];
@@ -61,6 +63,7 @@ export function App() {
         {current === "equipment" && ready && <EquipmentPage />}
         {current === "spells" && ready && <SpellsPage />}
         {current === "sheet" && ready && <SheetPage />}
+        {current === "party" && <PartyPage />}
         {current === "compendium" && <CompendiumPage />}
         {current === "content" && <ContentPage />}
       </main>
