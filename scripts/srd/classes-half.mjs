@@ -19,6 +19,7 @@ export function paladin() {
     hd: "d10",
     short: "A holy warrior bound to a sacred oath.",
     primary: "Strength and Charisma",
+    wealth: "5d4x10",
     text: `Whether sworn before a god’s altar or in a glade before nature spirits, a paladin’s oath is a powerful bond, and a source of power that turns a devout warrior into a blessed champion.
 
 Hit Dice: 1d10 per paladin level. Proficiencies: all armor, shields, simple and martial weapons. Saving throws: Wisdom, Charisma. Skills: choose two from Athletics, Insight, Intimidation, Medicine, Persuasion and Religion.`,
@@ -157,6 +158,7 @@ export function ranger() {
     hd: "d10",
     short: "A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.",
     primary: "Dexterity and Wisdom",
+    wealth: "5d4x10",
     text: `Far from the bustle of cities, rangers keep their unending watch over the wilderness, hunting the monsters that threaten it.
 
 Hit Dice: 1d10 per ranger level. Proficiencies: light and medium armor, shields, simple and martial weapons. Saving throws: Strength, Dexterity. Skills: choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth and Survival.`,

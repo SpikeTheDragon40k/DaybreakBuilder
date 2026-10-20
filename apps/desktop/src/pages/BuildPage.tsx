@@ -1,4 +1,5 @@
 import { PortraitButton } from "../components/Portrait";
+import { StartingWealthCard } from "../components/StartingWealthCard";
 import { useCharacter } from "../state/app";
 import { AbilityEditor } from "./build/AbilityEditor";
 import { ChoicesPanel } from "./build/ChoicesPanel";
@@ -34,6 +35,7 @@ export function BuildPage() {
           {sheet.warnings.length > 8 && <li className="muted">…and {sheet.warnings.length - 8} more</li>}
         </ul>
       )}
+      {character.state.levels[0] && !character.state.startingWealth && <StartingWealthCard />}
       <div className="build-columns">
         <div className="col">
           <LevelPanel />

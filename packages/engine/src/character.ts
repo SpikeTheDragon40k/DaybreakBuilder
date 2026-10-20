@@ -1,3 +1,4 @@
+import type { StartingWealthTaken } from "./currency.js";
 import type { Ability } from "./model.js";
 
 export type EquipSlot = "armor" | "main" | "offhand" | "worn";
@@ -78,6 +79,8 @@ export interface CharacterState {
   options: Record<string, boolean>;
   inventory: InventoryItem[];
   currency: Currency;
+  /** The starting wealth taken (see `takeStartingWealth`); absent until the player picks one. */
+  startingWealth?: StartingWealthTaken;
   /** Sources the user excluded, by source element name. */
   excludedSources: string[];
   /** Prepared spell ids per caster name (for casters that prepare spells). */

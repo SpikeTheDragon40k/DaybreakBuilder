@@ -15,6 +15,7 @@
 			<set name="hd">d10</set>
 			<set name="short">A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.</set>
 			<set name="primary">Dexterity and Wisdom</set>
+			<set name="starting wealth">5d4x10</set>
 		</setters>
 		<spellcasting name="Ranger" ability="Wisdom" prepare="false">
 			<list>Ranger</list>

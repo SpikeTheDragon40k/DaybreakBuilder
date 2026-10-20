@@ -15,6 +15,7 @@
 			<set name="hd">d10</set>
 			<set name="short">A master of martial combat, skilled with a variety of weapons and armor.</set>
 			<set name="primary">Strength or Dexterity</set>
+			<set name="starting wealth">5d4x10</set>
 		</setters>
 		<multiclass id="ID_WOTC_PHB_MULTICLASS_FIGHTER">
 			<prerequisite>Strength 13 or Dexterity 13</prerequisite>

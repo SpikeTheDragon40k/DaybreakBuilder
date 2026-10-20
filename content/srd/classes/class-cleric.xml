@@ -15,6 +15,7 @@
 			<set name="hd">d8</set>
 			<set name="short">A priestly champion who wields divine magic in service of a higher power.</set>
 			<set name="primary">Wisdom</set>
+			<set name="starting wealth">5d4x10</set>
 		</setters>
 		<spellcasting name="Cleric" ability="Wisdom" prepare="true">
 			<list known="true">Cleric</list>

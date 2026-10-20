@@ -15,6 +15,7 @@
 			<set name="hd">d8</set>
 			<set name="short">A scoundrel who uses stealth and trickery to overcome obstacles and enemies.</set>
 			<set name="primary">Dexterity</set>
+			<set name="starting wealth">4d4x10</set>
 		</setters>
 		<multiclass id="ID_WOTC_PHB_MULTICLASS_ROGUE">
 			<prerequisite>Dexterity 13</prerequisite>

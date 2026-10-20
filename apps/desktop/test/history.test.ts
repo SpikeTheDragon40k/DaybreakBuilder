@@ -125,4 +125,24 @@ describe("character history", () => {
     expect(h.past).toHaveLength(MAX_HISTORY);
     expect(h.past[0].state.experience).toBe(5);
   });
+
+  it("labels purchases, sales and starting wealth", () => {
+    const a = newCharacter();
+    a.currency.gp = 10;
+    const b = structuredClone(a);
+    b.inventory.push({ uid: "1", id: "ID_ROPE", quantity: 1 });
+    b.currency.gp = 9;
+    expect(describeChange(a, b)?.label).toBe("Bought ID_ROPE");
+    const c = structuredClone(b);
+    c.inventory = [];
+    c.currency.sp = 5;
+    expect(describeChange(b, c)?.label).toBe("Sold ID_ROPE");
+    const d = structuredClone(a);
+    d.startingWealth = { option: "average", gp: 120 };
+    d.currency.gp = 130;
+    expect(describeChange(a, d)?.label).toBe("Starting wealth: 120 gp");
+    const e = structuredClone(a);
+    e.currency = { ...e.currency, gp: 9, sp: 7 };
+    expect(describeChange(a, e)?.label).toBe("Spent 3 sp");
+  });
 });
