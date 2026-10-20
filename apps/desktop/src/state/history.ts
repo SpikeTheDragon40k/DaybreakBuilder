@@ -1,4 +1,4 @@
-import type { CharacterState, ContentRegistry } from "@dndbuilder/engine";
+import { currencyValue, formatPrice, type CharacterState, type ContentRegistry } from "@dndbuilder/engine";
 
 /** A character state the user can go back to, labelled with the change that came after it. */
 export interface HistoryEntry {
@@ -94,12 +94,17 @@ export function describeChange(before: CharacterState, after: CharacterState, re
       changes.push({ key: `options.${key}`, label: `${after.options[key] ? "Enabled" : "Disabled"} ${name(key)}` });
   }
 
+  // Coins changing together with the inventory is a purchase or a sale, labelled on the item.
+  const paid = currencyValue(before.currency) - currencyValue(after.currency);
+  const traded = paid !== 0 && JSON.stringify(before.inventory) !== JSON.stringify(after.inventory);
   const beforeItems = new Map(before.inventory.map((i) => [i.uid, i]));
   const afterItems = new Map(after.inventory.map((i) => [i.uid, i]));
   for (const item of after.inventory) {
     const old = beforeItems.get(item.uid);
     const label = item.name || name(item.id);
-    if (!old) changes.push({ key: `inventory.add`, label: `Added ${label}` });
+    if (!old) changes.push({ key: `inventory.add`, label: `${paid > 0 ? "Bought" : "Added"} ${label}` });
+    else if (old.quantity !== item.quantity && paid !== 0)
+      changes.push({ key: `inventory.trade`, label: `${paid > 0 ? "Bought" : "Sold"} ${label}` });
     else if (old.quantity !== item.quantity) changes.push({ key: `inventory.qty.${item.uid}`, label: `${label} ×${item.quantity}` });
     else if (old.equipped !== item.equipped)
       changes.push({ key: `inventory.equip.${item.uid}`, label: item.equipped ? `Equipped ${label}` : `Unequipped ${label}` });
@@ -109,10 +114,19 @@ export function describeChange(before: CharacterState, after: CharacterState, re
       changes.push({ key: `inventory.notes.${item.uid}`, label: `Edited ${label}` });
   }
   for (const item of before.inventory) {
-    if (!afterItems.has(item.uid)) changes.push({ key: "inventory.remove", label: `Removed ${item.name || name(item.id)}` });
+    if (!afterItems.has(item.uid))
+      changes.push({ key: "inventory.remove", label: `${paid < 0 ? "Sold" : "Removed"} ${item.name || name(item.id)}` });
   }
-  for (const c of Object.keys(after.currency) as (keyof CharacterState["currency"])[]) {
-    if (before.currency[c] !== after.currency[c]) changes.push({ key: `currency.${c}`, label: `${after.currency[c]} ${c}` });
+  if (JSON.stringify(before.startingWealth) !== JSON.stringify(after.startingWealth)) {
+    changes.push({
+      key: "startingWealth",
+      label: after.startingWealth ? `Starting wealth: ${after.startingWealth.gp} gp` : "Cleared starting wealth",
+    });
+  } else if (!traded) {
+    const coins = (Object.keys(after.currency) as (keyof CharacterState["currency"])[]).filter((c) => before.currency[c] !== after.currency[c]);
+    if (coins.length > 1)
+      changes.push({ key: "currency", label: paid > 0 ? `Spent ${formatPrice(paid)}` : paid < 0 ? `Received ${formatPrice(-paid)}` : "Exchanged coins" });
+    for (const c of coins.length === 1 ? coins : []) changes.push({ key: `currency.${c}`, label: `${after.currency[c]} ${c}` });
   }
 
   if (JSON.stringify(before.excludedSources) !== JSON.stringify(after.excludedSources))

@@ -15,6 +15,7 @@
 			<set name="hd">d8</set>
 			<set name="short">A priest of the Old Faith, wielding the powers of nature and adopting animal forms.</set>
 			<set name="primary">Wisdom</set>
+			<set name="starting wealth">2d4x10</set>
 		</setters>
 		<spellcasting name="Druid" ability="Wisdom" prepare="true">
 			<list known="true">Druid</list>

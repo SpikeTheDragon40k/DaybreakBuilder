@@ -150,7 +150,7 @@ export function improvementOptions() {
 
 /**
  * def: {
- *   name, hd, short, text, primary, saves, armor, weapons, tools, skillCount, toolSelect,
+ *   name, hd, short, text, primary, wealth (starting gold dice, e.g. "5d4x10"), saves, armor, weapons, tools, skillCount, toolSelect,
  *   equipment, multiclass: { prerequisite, requirements, proficiencies, skillCount, text },
  *   asiLevels, features: [{ level, name, text, short, usage, action, rules, sheet }],
  *   spellcasting: { ability, prepare, listKnown, slots: "full"|"half"|"pact", cantrips(lv), known(lv),
@@ -290,7 +290,12 @@ export function buildClass(def) {
       source: SOURCE,
       text: def.text,
       sheet: false,
-      setters: [["hd", def.hd], ["short", def.short], ...(def.primary ? [["primary", def.primary]] : [])],
+      setters: [
+        ["hd", def.hd],
+        ["short", def.short],
+        ...(def.primary ? [["primary", def.primary]] : []),
+        ...(def.wealth ? [["starting wealth", def.wealth]] : []),
+      ],
       body: [spellBody, mcBody].filter(Boolean).join("\n"),
       rules,
     }),

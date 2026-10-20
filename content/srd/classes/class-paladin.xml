@@ -15,6 +15,7 @@
 			<set name="hd">d10</set>
 			<set name="short">A holy warrior bound to a sacred oath.</set>
 			<set name="primary">Strength and Charisma</set>
+			<set name="starting wealth">5d4x10</set>
 		</setters>
 		<spellcasting name="Paladin" ability="Charisma" prepare="true">
 			<list known="true">Paladin</list>

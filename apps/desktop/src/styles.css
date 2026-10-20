@@ -1292,6 +1292,42 @@ ul.plain {
   padding-top: 0.3rem;
 }
 
+/* Starting wealth and currency */
+.starting-wealth {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--warn);
+  background: var(--panel-2);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0.75rem;
+}
+.starting-wealth.taken {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-left-color: var(--ok);
+}
+.starting-wealth p {
+  margin: 0.25rem 0 0.5rem;
+}
+.wealth-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.currency-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+}
+.currency-quick input {
+  width: 6rem;
+}
+.currency {
+  flex-wrap: wrap;
+
 /* Party */
 .party-page {
   display: grid;

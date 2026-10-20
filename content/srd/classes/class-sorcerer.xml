@@ -15,6 +15,7 @@
 			<set name="hd">d6</set>
 			<set name="short">A spellcaster who draws on inherent magic from a gift or bloodline.</set>
 			<set name="primary">Charisma</set>
+			<set name="starting wealth">3d4x10</set>
 		</setters>
 		<spellcasting name="Sorcerer" ability="Charisma" prepare="false">
 			<list>Sorcerer</list>

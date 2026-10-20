@@ -205,6 +205,28 @@ shared elements it relies on, with the same ids as the community content:
 </element>
 ```
 
+## Starting wealth and prices
+
+Items are priced by their `cost` setter (`<set name="cost" currency="gp">5</set>`); the
+Equipment tab uses it to buy (paying with the largest coins that fit and taking change)
+and to sell for half.
+
+A new character picks its starting wealth from its starting class and background
+(`startingWealth` in `currency.ts`):
+
+* Class: the `starting wealth` setter, either dice (`5d4x10`, the 2014 "Starting Wealth
+  by Class") or a fixed amount (`155`, the 2024 gold taken instead of the class's
+  equipment). Without it, the PHB table is used by class name (the 2024 table when the
+  element's source mentions 2024).
+* Background: the `starting gold` setter (gold that comes with its equipment) and
+  `starting gold instead` (2024 option B). Without them, the amounts are read from the
+  description's "Equipment:" text: "a pouch containing 15 gp" or "(A) …, 8 GP; or (B) 50 GP".
+
+With dice (2014 rules) the choice is equipment plus the background's pouch, or rolled /
+average gold instead of all of it. With fixed amounts (2024 rules) class and background
+are each taken as equipment or gold. The choice is saved as `startingWealth` on the
+character so the gold is granted once and can be changed or removed.
+
 ## Character files
 
 dndbuilder saves characters as JSON (`CharacterState` in `character.ts`). The state

@@ -14,7 +14,10 @@ export function backgrounds() {
 
 Skill Proficiencies: Insight, Religion. Languages: two of your choice. Equipment: a holy symbol, a prayer book or prayer wheel, 5 sticks of incense, vestments, a set of common clothes and a pouch containing 15 gp.`,
       sheet: false,
-      setters: [["short", "You have spent your life in the service of a temple."]],
+      setters: [
+        ["short", "You have spent your life in the service of a temple."],
+        ["starting gold", "15"],
+      ],
       rules: [
         grant({ type: "Proficiency", id: skillId("Insight") }),
         grant({ type: "Proficiency", id: skillId("Religion") }),

@@ -4,7 +4,7 @@
  * not redistributable): a summary page, then spellcasting, companion and
  * background pages as needed. Long sections flow onto continuation pages.
  */
-import { attackDetails, convertUnits, formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
+import { attackDetails, convertUnits, currencyValue, formatCurrency, formatModifier, formatPrice, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
@@ -372,10 +372,10 @@ export async function characterSheetPdf(
     const flags = [item.equipped && "equipped", item.attuned && "attuned"].filter(Boolean).join(", ");
     mid.paragraph(`${item.quantity > 1 ? `${item.quantity}x ` : ""}${name}${flags ? ` (${flags})` : ""}`, { gap: 0 });
   }
-  const coins = (["pp", "gp", "ep", "sp", "cp"] as const).filter((c) => state.currency[c]).map((c) => `${state.currency[c]} ${c}`);
-  if (coins.length) {
+  const worth = currencyValue(state.currency);
+  if (worth > 0) {
     mid.space(3);
-    mid.paragraph(`Coins: ${coins.join(", ")}`, { color: pal.muted });
+    mid.paragraph(`Coins: ${formatCurrency(state.currency)} (worth ${formatPrice(worth)})`, { color: pal.muted });
   }
   if (sheet.warnings.length) {
     mid.heading("Open choices");

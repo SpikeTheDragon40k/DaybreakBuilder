@@ -15,6 +15,7 @@
 			<set name="hd">d8</set>
 			<set name="short">A wielder of magic derived from a bargain with an extraplanar entity.</set>
 			<set name="primary">Charisma</set>
+			<set name="starting wealth">4d4x10</set>
 		</setters>
 		<spellcasting name="Warlock" ability="Charisma" prepare="false">
 			<list>Warlock</list>

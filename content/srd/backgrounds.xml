@@ -13,6 +13,7 @@
 		<sheet display="false" />
 		<setters>
 			<set name="short">You have spent your life in the service of a temple.</set>
+			<set name="starting gold">15</set>
 		</setters>
 		<rules>
 			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_INSIGHT" />

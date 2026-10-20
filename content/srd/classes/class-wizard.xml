@@ -15,6 +15,7 @@
 			<set name="hd">d6</set>
 			<set name="short">A scholarly magic-user capable of manipulating the structures of reality.</set>
 			<set name="primary">Intelligence</set>
+			<set name="starting wealth">4d4x10</set>
 		</setters>
 		<spellcasting name="Wizard" ability="Intelligence" prepare="true">
 			<list>Wizard</list>

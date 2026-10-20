@@ -15,6 +15,7 @@
 			<set name="hd">d8</set>
 			<set name="short">An inspiring magician whose power echoes the music of creation.</set>
 			<set name="primary">Charisma</set>
+			<set name="starting wealth">5d4x10</set>
 		</setters>
 		<spellcasting name="Bard" ability="Charisma" prepare="false">
 			<list>Bard</list>

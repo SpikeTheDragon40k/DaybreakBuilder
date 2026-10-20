@@ -20,6 +20,7 @@ export function bard() {
     hd: "d8",
     short: "An inspiring magician whose power echoes the music of creation.",
     primary: "Charisma",
+    wealth: "5d4x10",
     text: `Whether scholar, skald or scoundrel, a bard weaves magic through words and music to inspire allies, demoralize foes, manipulate minds and heal wounds.
 
 Hit Dice: 1d8 per bard level. Proficiencies: light armor; simple weapons, hand crossbows, longswords, rapiers, shortswords; three musical instruments. Saving throws: Dexterity, Charisma. Skills: choose any three.`,
@@ -120,6 +121,7 @@ export function cleric() {
     hd: "d8",
     short: "A priestly champion who wields divine magic in service of a higher power.",
     primary: "Wisdom",
+    wealth: "5d4x10",
     text: `Clerics are intermediaries between the mortal world and the distant planes of the gods, channeling divine magic to heal, protect and smite.
 
 Hit Dice: 1d8 per cleric level. Proficiencies: light and medium armor, shields, simple weapons. Saving throws: Wisdom, Charisma. Skills: choose two from History, Insight, Medicine, Persuasion and Religion.`,
@@ -206,6 +208,7 @@ export function druid() {
     hd: "d8",
     short: "A priest of the Old Faith, wielding the powers of nature and adopting animal forms.",
     primary: "Wisdom",
+    wealth: "2d4x10",
     text: `Druids revere nature above all, gaining their spells and other magical powers either from the force of nature itself or from a nature deity.
 
 Hit Dice: 1d8 per druid level. Proficiencies: light and medium armor and shields (druids will not wear armor or use shields made of metal); clubs, daggers, darts, javelins, maces, quarterstaffs, scimitars, sickles, slings, spears; herbalism kit. Saving throws: Intelligence, Wisdom. Skills: choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion and Survival.`,
@@ -296,6 +299,7 @@ export function sorcerer() {
     hd: "d6",
     short: "A spellcaster who draws on inherent magic from a gift or bloodline.",
     primary: "Charisma",
+    wealth: "3d4x10",
     text: `Sorcerers carry a magical birthright conferred upon them by an exotic bloodline, some otherworldly influence or exposure to unknown cosmic forces.
 
 Hit Dice: 1d6 per sorcerer level. Proficiencies: daggers, darts, slings, quarterstaffs, light crossbows. Saving throws: Constitution, Charisma. Skills: choose two from Arcana, Deception, Insight, Intimidation, Persuasion and Religion.`,
@@ -431,6 +435,7 @@ export function warlock() {
     hd: "d8",
     short: "A wielder of magic derived from a bargain with an extraplanar entity.",
     primary: "Charisma",
+    wealth: "4d4x10",
     text: `Warlocks are seekers of the knowledge that lies hidden in the fabric of the multiverse. Through pacts with mysterious beings of supernatural power, they unlock magical effects both subtle and spectacular.
 
 Hit Dice: 1d8 per warlock level. Proficiencies: light armor, simple weapons. Saving throws: Wisdom, Charisma. Skills: choose two from Arcana, Deception, History, Intimidation, Investigation, Nature and Religion.`,
@@ -486,6 +491,7 @@ export function wizard() {
     hd: "d6",
     short: "A scholarly magic-user capable of manipulating the structures of reality.",
     primary: "Intelligence",
+    wealth: "4d4x10",
     text: `Wizards are supreme magic-users, defined and united as a class by the spells they cast, drawn from a spellbook of arcane formulas.
 
 Hit Dice: 1d6 per wizard level. Proficiencies: daggers, darts, slings, quarterstaffs, light crossbows. Saving throws: Intelligence, Wisdom. Skills: choose two from Arcana, History, Insight, Investigation, Medicine and Religion.`,

@@ -15,6 +15,7 @@
 			<set name="hd">d12</set>
 			<set name="short">A fierce warrior of primitive background who can enter a battle rage.</set>
 			<set name="primary">Strength</set>
+			<set name="starting wealth">2d4x10</set>
 		</setters>
 		<multiclass id="ID_WOTC_PHB_MULTICLASS_BARBARIAN">
 			<prerequisite>Strength 13</prerequisite>

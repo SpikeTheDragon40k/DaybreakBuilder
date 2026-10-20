@@ -1,4 +1,4 @@
-import { attackDetails, formatModifier, type StatPart } from "@dndbuilder/engine";
+import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, type StatPart } from "@dndbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";
@@ -152,10 +152,8 @@ export function SheetPage() {
                 ))}
               </ul>
               <div className="muted small">
-                {(["pp", "gp", "ep", "sp", "cp"] as const)
-                  .filter((c) => character.state.currency[c])
-                  .map((c) => `${character.state.currency[c]} ${c}`)
-                  .join(", ")}
+                {formatCurrency(character.state.currency)}
+                {currencyValue(character.state.currency) > 0 && ` (worth ${formatPrice(currencyValue(character.state.currency))})`}
               </div>
             </Box>
             {s.spellcasting.map((sc) => (

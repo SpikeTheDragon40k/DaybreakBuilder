@@ -24,6 +24,7 @@ export function barbarian() {
     hd: "d12",
     short: "A fierce warrior of primitive background who can enter a battle rage.",
     primary: "Strength",
+    wealth: "2d4x10",
     text: `Barbarians are defined by their rage: unbridled, unquenchable and unthinking fury. They are hardy warriors who shrug off blows and wade into battle.
 
 Hit Dice: 1d12 per barbarian level. Proficiencies: light and medium armor, shields, simple and martial weapons. Saving throws: Strength, Constitution. Skills: choose two from Animal Handling, Athletics, Intimidation, Nature, Perception and Survival.`,
@@ -115,6 +116,7 @@ export function fighter() {
     hd: "d10",
     short: "A master of martial combat, skilled with a variety of weapons and armor.",
     primary: "Strength or Dexterity",
+    wealth: "5d4x10",
     text: `Fighters share an unparalleled mastery with weapons and armor, and a thorough knowledge of the skills of combat.
 
 Hit Dice: 1d10 per fighter level. Proficiencies: all armor, shields, simple and martial weapons. Saving throws: Strength, Constitution. Skills: choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception and Survival.`,
@@ -214,6 +216,7 @@ export function monk() {
     hd: "d8",
     short: "A master of martial arts, harnessing the power of the body in pursuit of physical and spiritual perfection.",
     primary: "Dexterity and Wisdom",
+    wealth: "5d4",
     text: `Monks make careful study of a magical energy they call ki, channeling it into their strikes and movement.
 
 Hit Dice: 1d8 per monk level. Proficiencies: simple weapons, shortswords; one artisan’s tool or musical instrument. Saving throws: Strength, Dexterity. Skills: choose two from Acrobatics, Athletics, History, Insight, Religion and Stealth.`,
@@ -316,6 +319,7 @@ export function rogue() {
     hd: "d8",
     short: "A scoundrel who uses stealth and trickery to overcome obstacles and enemies.",
     primary: "Dexterity",
+    wealth: "4d4x10",
     text: `Rogues rely on skill, stealth and their foes’ vulnerabilities to get the upper hand in any situation.
 
 Hit Dice: 1d8 per rogue level. Proficiencies: light armor; simple weapons, hand crossbows, longswords, rapiers, shortswords; thieves’ tools. Saving throws: Dexterity, Intelligence. Skills: choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand and Stealth.`,
