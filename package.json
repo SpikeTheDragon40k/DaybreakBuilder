@@ -12,7 +12,8 @@
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "dev": "npm run dev -w @dndbuilder/desktop",
-    "tauri": "npm run tauri -w @dndbuilder/desktop"
+    "tauri": "npm run tauri -w @dndbuilder/desktop",
+    "validate-content": "tsx packages/engine/scripts/validate-content.ts"
   },
   "engines": {
     "node": ">=20"

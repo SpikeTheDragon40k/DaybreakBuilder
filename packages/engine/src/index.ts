@@ -11,3 +11,4 @@ export * from "./content.js";
 export * from "./aurora-import.js";
 export * from "./spellcasting.js";
 export * from "./companion.js";
+export * from "./validate.js";
