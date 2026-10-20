@@ -1,5 +1,6 @@
 import { importAuroraCharacter, loadCharacterJson, newCharacter } from "@dndbuilder/engine";
 import { useEffect, useState } from "react";
+import { Portrait } from "../components/Portrait";
 import { characters, getPlatform, type CharacterMeta } from "../platform";
 import { newId, useApp } from "../state/app";
 
@@ -64,9 +65,12 @@ export function CharactersPage() {
           {list.map((c) => (
             <li key={c.id}>
               <button className="card" onClick={() => open(c.id)}>
-                <span className="card-title">{c.name || "Unnamed"}</span>
-                <span className="muted">{c.summary || "—"}</span>
-                <span className="muted small">Edited {new Date(c.updatedAt).toLocaleString()}</span>
+                <Portrait src={c.portrait ?? ""} name={c.name} size={56} />
+                <span className="card-text">
+                  <span className="card-title">{c.name || "Unnamed"}</span>
+                  <span className="muted">{c.summary || "—"}</span>
+                  <span className="muted small">Edited {new Date(c.updatedAt).toLocaleString()}</span>
+                </span>
               </button>
               <div className="card-actions">
                 <button

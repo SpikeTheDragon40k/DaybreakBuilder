@@ -5,7 +5,7 @@ import { auroraLegacyDir, coreDir, hasAuroraLegacy, loadDirs } from "./helpers.j
 // Shape of a character file written by Aurora (trimmed to what the importer reads).
 const DND5E = `<?xml version="1.0" encoding="utf-8"?>
 <character version="1.19.331" preview="false">
-	<display-properties favorite="false"><name>Thorin</name><level>3</level></display-properties>
+	<display-properties favorite="false"><name>Thorin</name><level>3</level><portrait><local>C:\\Portraits\\thorin.png</local><base64>iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==</base64></portrait></display-properties>
 	<build>
 		<input>
 			<name>Thorin</name><gender>Male</gender><player-name>Ada</player-name><experience>900</experience>
@@ -74,5 +74,20 @@ describe.skipIf(!hasAuroraLegacy)("Aurora .dnd5e import", () => {
     expect(sheet.armorClass).toBe(16);
     // 10 + 7 + 5 rolled, +3 CON (16 → +3) per level, +1 per level from Dwarven Toughness.
     expect(sheet.maxHp).toBe(22 + 9 + 3);
+  });
+});
+
+describe("Aurora portrait import", () => {
+  const empty = new ContentRegistry();
+  empty.finalize();
+
+  it("keeps the embedded portrait as a data URL", () => {
+    const { state } = importAuroraCharacter(DND5E, empty);
+    expect(state.portrait).toMatch(/^data:image\/png;base64,iVBOR/);
+  });
+
+  it("ignores a missing portrait", () => {
+    const { state } = importAuroraCharacter(DND5E.replace(/<portrait>.*<\/portrait>/, ""), empty);
+    expect(state.portrait).toBe("");
   });
 });
