@@ -2,6 +2,7 @@ import { selectionOptions, type ResolvedNode, type SelectionPoint } from "@dndbu
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
+import { useUnits } from "../../units";
 
 const SECTION_TYPES = new Set(["Race", "Class", "Multiclass", "Background"]);
 const TOP_LEVEL_LABEL: Record<string, string> = { Race: "Race", Background: "Background", Alignment: "Alignment", Deity: "Deity" };
@@ -70,6 +71,7 @@ export function ChoicesPanel() {
 function SelectionRow({ point }: { point: SelectionPoint }) {
   const { resolved, content, update } = useCharacter();
   const [slot, setSlot] = useState<number | null>(null);
+  const units = useUnits();
   const rule = point.rule;
   const options = useMemo(() => (slot !== null ? selectionOptions(resolved, point) : []), [slot, resolved, point]);
   const missing = point.chosen.filter((c) => c === null).length;
@@ -108,7 +110,7 @@ function SelectionRow({ point }: { point: SelectionPoint }) {
               <option value="">Choose…</option>
               {rule.items.map((it) => (
                 <option key={it.id} value={String(it.id)}>
-                  {it.text}
+                  {units.text(it.text)}
                 </option>
               ))}
             </select>

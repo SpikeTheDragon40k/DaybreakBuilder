@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApp, type Page } from "./state/app";
 import { setTheme, storedTheme, type Theme } from "./theme";
+import { setUnits, useUnits } from "./units";
 import { BuildPage } from "./pages/BuildPage";
 import { CharactersPage } from "./pages/CharactersPage";
 import { CompendiumPage } from "./pages/CompendiumPage";
@@ -39,6 +40,7 @@ export function App() {
           </button>
         ))}
         <span className="spacer" />
+        <UnitSwitch />
         <ThemeSwitch />
         {character && (
           <span className="muted small">
@@ -69,6 +71,20 @@ const THEMES: { theme: Theme; label: string }[] = [
   { theme: "light", label: "Light" },
   { theme: "dark", label: "Dark" },
 ];
+
+function UnitSwitch() {
+  const { system } = useUnits();
+  return (
+    <span className="theme-switch" role="group" aria-label="Units">
+      <button aria-pressed={system === "imperial"} title="Feet and pounds" onClick={() => setUnits("imperial")}>
+        ft
+      </button>
+      <button aria-pressed={system === "metric"} title="Meters and kilograms (5 ft = 1.5 m)" onClick={() => setUnits("metric")}>
+        m
+      </button>
+    </span>
+  );
+}
 
 function ThemeSwitch() {
   const [theme, setThemeState] = useState<Theme>(storedTheme);

@@ -1,6 +1,7 @@
 import type { ContentRegistry } from "@dndbuilder/engine";
 import DOMPurify from "dompurify";
 import { useMemo } from "react";
+import { useUnits } from "../units";
 
 /**
  * Element descriptions are HTML fragments. Aurora lets one element embed
@@ -21,9 +22,14 @@ function escapeHtml(s: string): string {
 }
 
 export function Html({ html, registry, className }: { html: string; registry?: ContentRegistry; className?: string }) {
+  const units = useUnits();
   const clean = useMemo(
-    () => DOMPurify.sanitize(expandDescription(html, registry), { FORBID_TAGS: ["style", "script", "iframe", "form"], FORBID_ATTR: ["style"] }),
-    [html, registry],
+    () =>
+      DOMPurify.sanitize(units.text(expandDescription(html, registry)), {
+        FORBID_TAGS: ["style", "script", "iframe", "form"],
+        FORBID_ATTR: ["style"],
+      }),
+    [html, registry, units],
   );
   return <div className={`html ${className ?? ""}`} dangerouslySetInnerHTML={{ __html: clean }} />;
 }

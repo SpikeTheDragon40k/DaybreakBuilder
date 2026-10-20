@@ -4,7 +4,7 @@
  * not redistributable): a summary page, then spellcasting, companion and
  * background pages as needed. Long sections flow onto continuation pages.
  */
-import { formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry } from "@dndbuilder/engine";
+import { convertUnits, formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFPage } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
@@ -159,8 +159,11 @@ class Ctx {
     public fonts: Fonts,
     public size: [number, number],
     public characterName: string,
+    units: UnitSystem,
   ) {
-    this.clean = makeSanitizer(fonts.regular);
+    // Every string drawn passes through here: convert measurements, then make it encodable.
+    const sanitize = makeSanitizer(fonts.regular);
+    this.clean = (s: string) => sanitize(convertUnits(s, units));
   }
 
   newPage(): PDFPage {
@@ -206,6 +209,8 @@ function cleanProf(items: string[]): string {
 
 export interface PdfOptions {
   paper?: PaperSize;
+  /** Show distances and weights in feet/pounds (default) or meters/kilograms. */
+  units?: UnitSystem;
 }
 
 export async function characterSheetPdf(
@@ -223,7 +228,7 @@ export async function characterSheetPdf(
     bold: await doc.embedFont(StandardFonts.HelveticaBold),
     italic: await doc.embedFont(StandardFonts.HelveticaOblique),
   };
-  const ctx = new Ctx(doc, fonts, SIZES[options.paper ?? "letter"], sheet.name);
+  const ctx = new Ctx(doc, fonts, SIZES[options.paper ?? "letter"], sheet.name, options.units ?? "imperial");
   const page = ctx.newPage();
   const W = page.getWidth();
   const H = page.getHeight();
