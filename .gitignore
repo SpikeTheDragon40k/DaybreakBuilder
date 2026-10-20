@@ -6,3 +6,6 @@ apps/desktop/src-tauri/gen/
 .DS_Store
 # local copies of third-party content used for testing
 fixtures/external/
+
+# books converted for personal use (see .claude/skills/convert-pdf)
+converted/

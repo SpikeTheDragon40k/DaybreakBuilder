@@ -71,6 +71,27 @@ npm test
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
+## Writing and converting content
+
+Check your own XML (homebrew, or books you own converted for personal use) before loading it:
+
+```sh
+npm run validate-content -- ~/Documents/dndbuilder/custom/my-homebrew
+npm run validate-content -- my-files/ --base other-pack/   # content that builds on another pack
+```
+
+The validator loads the bundled core and SRD content, then your files, and reports per file and line: broken XML,
+grants and choices that point at nothing, malformed requirements, missing spell or class data, and elements nothing
+can reach. It also puts every class, subclass, race, subrace and background on a test character (classes up to level
+20) with every choice made, so a clean run means the content is playable. Options: `--no-srd`, `--no-build`,
+`--strict` (fail on warnings), `--json`.
+
+**Converting a PDF with Claude Code:** the repository ships a project skill,
+[`.claude/skills/convert-pdf`](.claude/skills/convert-pdf/SKILL.md). Run `claude` in the repository and ask, for
+example, *"convert the spells on pages 211–289 of ~/books/phb.pdf"*. Claude reads the pages, writes the XML into your
+custom folder (outside the repository), runs the validator until it is clean, and checks the numbers against the page.
+Converted books are for your own use: don't commit them or share them.
+
 ## Releasing
 
 Releases are built by GitHub Actions (`.github/workflows/release.yml`) for Linux (`.deb`, `.rpm`, `.AppImage`) and
@@ -92,7 +113,7 @@ draft release is deleted; delete the tag (and revert the version commit) before 
 * Attacks section (weapon attack bonus and damage)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
-* Content authoring helpers (validation, live reload of the custom folder)
+* Live reload of the custom content folder
 
 Contributions are welcome. Please add a test in `packages/engine/test` for any rules behaviour you change.
 
