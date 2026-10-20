@@ -1,7 +1,7 @@
 {
   "name": "@dndbuilder/desktop",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@dndbuilder/engine": "0.5.0",
+    "@dndbuilder/engine": "0.6.0",
     "@tauri-apps/api": "^2.12.4",
     "@tauri-apps/plugin-dialog": "^2.8.3",
     "@tauri-apps/plugin-http": "^2.8.3",
