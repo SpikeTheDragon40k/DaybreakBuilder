@@ -1,10 +1,12 @@
 import { formatModifier, type CompanionSheet } from "@dndbuilder/engine";
+import { useUnits } from "../units";
 
 /** Monster-manual style stat block for the character's companion. */
 export function CompanionBlock({ c }: { c: CompanionSheet }) {
+  const units = useUnits();
   const speeds = [
-    `${c.speed.walk} ft.`,
-    ...(["climb", "swim", "fly", "burrow"] as const).filter((k) => c.speed[k] > 0).map((k) => `${k} ${c.speed[k]} ft.`),
+    units.distance(c.speed.walk),
+    ...(["climb", "swim", "fly", "burrow"] as const).filter((k) => c.speed[k] > 0).map((k) => `${k} ${units.distance(c.speed[k])}`),
   ];
   const saves = c.savingThrows.filter((s) => s.proficient);
   return (
@@ -53,7 +55,7 @@ export function CompanionBlock({ c }: { c: CompanionSheet }) {
       ))}
       {c.senses && (
         <p className="prof-line">
-          <strong>Senses</strong> {c.senses}
+          <strong>Senses</strong> {units.text(c.senses)}
         </p>
       )}
       <p className="prof-line">
@@ -80,7 +82,7 @@ export function CompanionBlock({ c }: { c: CompanionSheet }) {
             <h5>{title as string}</h5>
             {(list as CompanionSheet["traits"]).map((f) => (
               <p key={f.id} className="feature-text">
-                <strong>{f.name}.</strong> {f.text}
+                <strong>{f.name}.</strong> {units.text(f.text)}
               </p>
             ))}
           </div>

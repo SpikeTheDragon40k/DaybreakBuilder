@@ -71,6 +71,10 @@ npm test
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
+**Units:** the *ft / m* switch in the top bar shows distances and weights in meters and kilograms everywhere
+(sheet, descriptions, compendium, PDF export). It uses the convention of the game's metric editions, which keeps the
+5-foot grid: 5 ft = 1.5 m, 1 mile = 1.5 km, 1 inch = 2.5 cm, 1 lb = 0.5 kg. Content files stay in feet and pounds.
+
 ## Writing and converting content
 
 Check your own XML (homebrew, or books you own converted for personal use) before loading it:

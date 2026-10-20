@@ -4,12 +4,14 @@ import { getPlatform, settings } from "../platform";
 import type { PaperSize } from "../pdf/characterSheetPdf";
 import { CompanionBlock } from "../components/CompanionBlock";
 import { useCharacter } from "../state/app";
+import { useUnits } from "../units";
 
 const tip = (parts: StatPart[]) => parts.map((p) => `${p.source}: ${formatModifier(p.value)}`).join("\n");
 
 export function SheetPage() {
   const { sheet, character, content } = useCharacter();
   const [paper, setPaper] = useState<PaperSize>(() => settings.get<PaperSize>("paper", "letter"));
+  const units = useUnits();
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ export function SheetPage() {
     try {
       // Loaded on demand to keep the initial bundle small.
       const { characterSheetPdf } = await import("../pdf/characterSheetPdf");
-      const bytes = await characterSheetPdf(sheet, character.state, content.registry, { paper });
+      const bytes = await characterSheetPdf(sheet, character.state, content.registry, { paper, units: units.system });
       const platform = await getPlatform();
       const file = `${(sheet.name || "character").replace(/[\\/:*?"<>|]+/g, "_")}.pdf`;
       await platform.saveBinaryFile(file, bytes, "pdf", "application/pdf");
@@ -59,7 +61,7 @@ export function SheetPage() {
           <div className="headline-stats">
             <Stat label="Armor Class" value={s.armorClass} title={tip(s.armorClassBreakdown)} />
             <Stat label="Initiative" value={formatModifier(s.initiative)} />
-            <Stat label="Speed" value={`${s.speed.walk} ft.`} />
+            <Stat label="Speed" value={units.distance(s.speed.walk)} />
             <Stat label="Hit Points" value={s.maxHp} title={tip(s.hpBreakdown)} />
             <Stat label="Hit Dice" value={s.hitDice || "—"} />
             <Stat label="Proficiency" value={formatModifier(s.proficiencyBonus)} />
@@ -104,7 +106,7 @@ export function SheetPage() {
               <div>Passive Investigation {s.passiveInvestigation}</div>
               {s.vision.map((v) => (
                 <div key={v.name}>
-                  {v.name} {v.range ? `${v.range} ft.` : ""}
+                  {v.name} {v.range ? units.distance(v.range) : ""}
                 </div>
               ))}
             </Box>
@@ -121,7 +123,7 @@ export function SheetPage() {
               {(s.speed.climb || s.speed.swim || s.speed.fly || s.speed.burrow) > 0 && (
                 <ProfLine
                   label="Other speeds"
-                  items={(["climb", "swim", "fly", "burrow"] as const).filter((k) => s.speed[k] > 0).map((k) => `${k} ${s.speed[k]} ft.`)}
+                  items={(["climb", "swim", "fly", "burrow"] as const).filter((k) => s.speed[k] > 0).map((k) => `${k} ${units.distance(s.speed[k])}`)}
                 />
               )}
             </Box>
@@ -186,10 +188,10 @@ export function SheetPage() {
                   <h4>
                     {f.name}
                     {f.origin && <span className="muted small"> · {f.origin}</span>}
-                    {f.usage && <span className="muted small"> · {f.usage}</span>}
+                    {f.usage && <span className="muted small"> · {units.text(f.usage)}</span>}
                     {f.action && <span className="muted small"> · {f.action}</span>}
                   </h4>
-                  <p>{f.text}</p>
+                  <p>{units.text(f.text)}</p>
                 </div>
               ))}
             </Box>

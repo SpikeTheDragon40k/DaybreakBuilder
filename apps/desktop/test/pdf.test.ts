@@ -58,4 +58,18 @@ describe("character sheet PDF", () => {
       expect(Math.round(w)).toBe(paper === "letter" ? 612 : 595);
     });
   }
+
+  it("renders metric units when asked", async () => {
+    const state = wizard(5);
+    const sheet = buildSheet(resolveCharacter(registry, state));
+    const imperial = await characterSheetPdf(sheet, state, registry);
+    const metric = await characterSheetPdf(sheet, state, registry, { units: "metric" });
+    expect((await PDFDocument.load(metric)).getPageCount()).toBe((await PDFDocument.load(imperial)).getPageCount());
+    expect(Buffer.from(metric).equals(Buffer.from(imperial))).toBe(false);
+    if (process.env.PDF_OUT) {
+      const { writeFileSync } = await import("node:fs");
+      writeFileSync(join(process.env.PDF_OUT, "imperial.pdf"), imperial);
+      writeFileSync(join(process.env.PDF_OUT, "metric.pdf"), metric);
+    }
+  });
 });
