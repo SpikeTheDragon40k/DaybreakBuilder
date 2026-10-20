@@ -53,6 +53,8 @@ export interface CharacterState {
   name: string;
   playerName: string;
   experience: number;
+  /** Portrait image as a data URL (PNG or JPEG), or "" for none. */
+  portrait: string;
   details: CharacterDetails;
   abilityMethod: AbilityMethod;
   /** Base ability scores before racial bonuses, ASIs etc. */
@@ -89,6 +91,7 @@ export function newCharacter(): CharacterState {
     name: "New Character",
     playerName: "",
     experience: 0,
+    portrait: "",
     details: {
       gender: "",
       age: "",
@@ -175,6 +178,7 @@ export function loadCharacterJson(data: unknown): CharacterState {
     inventory: d.inventory ?? [],
     excludedSources: d.excludedSources ?? [],
     preparedSpells: d.preparedSpells ?? {},
+    portrait: typeof d.portrait === "string" ? d.portrait : "",
     version: 1,
   };
 }

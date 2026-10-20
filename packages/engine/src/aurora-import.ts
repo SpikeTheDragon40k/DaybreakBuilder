@@ -22,6 +22,16 @@ function text(el: XmlElement | undefined, name: string): string {
   return c ? textContent(c).trim() : "";
 }
 
+/** Aurora embeds the portrait file as base64; sniff its type from the first bytes. */
+function portraitDataUrl(base64: string): string {
+  const b = base64.replace(/\s+/g, "");
+  if (b.startsWith("iVBOR")) return `data:image/png;base64,${b}`;
+  if (b.startsWith("/9j/")) return `data:image/jpeg;base64,${b}`;
+  if (b.startsWith("R0lGOD")) return `data:image/gif;base64,${b}`;
+  if (b.startsWith("UklGR")) return `data:image/webp;base64,${b}`;
+  return "";
+}
+
 export function importAuroraCharacter(xml: string, registry: ContentRegistry): AuroraImportResult {
   const root = parseXml(xml);
   if (root.name !== "character") throw new Error("Not an Aurora character file");
@@ -43,6 +53,7 @@ export function importAuroraCharacter(xml: string, registry: ContentRegistry): A
   const org = input && firstChild(input, "organization");
   state.details.organization = text(org, "name");
   state.details.allies = text(org, "allies");
+  state.portrait = portraitDataUrl(text(firstChild(firstChild(root, "display-properties") ?? root, "portrait"), "base64"));
   const appearance = firstChild(build, "appearance");
   for (const k of ["age", "height", "weight", "eyes", "skin", "hair"] as const) state.details[k] = text(appearance, k);
   const currency = input && firstChild(input, "currency");

@@ -5,7 +5,7 @@
  * background pages as needed. Long sections flow onto continuation pages.
  */
 import { convertUnits, formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
-import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFPage } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
 
@@ -236,11 +236,22 @@ export async function characterSheetPdf(
 
   // Header.
   let y = H - MARGIN;
-  ctx.text(page, sheet.name || "Unnamed", MARGIN, y - 20, 20, bold, ACCENT);
+  let tx = MARGIN;
+  const portrait = await embedPortrait(doc, state.portrait);
+  if (portrait) {
+    // Fit inside the header band, keeping the aspect ratio.
+    const box = 48;
+    const scale = Math.min(box / portrait.width, box / portrait.height);
+    const pw = portrait.width * scale;
+    const ph = portrait.height * scale;
+    page.drawImage(portrait, { x: MARGIN + (box - pw) / 2, y: y - 50 + (box - ph) / 2, width: pw, height: ph });
+    tx += box + 8;
+  }
+  ctx.text(page, sheet.name || "Unnamed", tx, y - 20, 20, bold, ACCENT);
   const subtitle = [[sheet.race, sheet.subrace].filter(Boolean).join(" "), sheet.classSummary].filter(Boolean).join(" · ");
-  ctx.text(page, subtitle, MARGIN, y - 34, 10, regular);
+  ctx.text(page, subtitle, tx, y - 34, 10, regular);
   const meta = [sheet.background, sheet.alignment, sheet.size, sheet.deity].filter(Boolean).join(" · ");
-  ctx.text(page, meta, MARGIN, y - 46, 8, regular, MUTED);
+  ctx.text(page, meta, tx, y - 46, 8, regular, MUTED);
   const right = [state.playerName && `Player: ${state.playerName}`, `Level ${sheet.level}`, state.experience ? `XP ${state.experience}` : ""].filter(Boolean).join("   ");
   ctx.text(page, right, W - MARGIN - regular.widthOfTextAtSize(ctx.clean(right), 8), y - 20, 8, regular, MUTED);
   y -= 54;
@@ -434,6 +445,18 @@ export async function characterSheetPdf(
   }
 
   return doc.save();
+}
+
+/** Embed a PNG or JPEG data URL; other or broken images are left out of the PDF. */
+async function embedPortrait(doc: PDFDocument, dataUrl: string | undefined): Promise<PDFImage | null> {
+  const m = /^data:image\/(png|jpeg);base64,(.+)$/.exec(dataUrl ?? "");
+  if (!m) return null;
+  try {
+    const bytes = Uint8Array.from(atob(m[2]), (c) => c.charCodeAt(0));
+    return m[1] === "png" ? await doc.embedPng(bytes) : await doc.embedJpg(bytes);
+  } catch {
+    return null;
+  }
 }
 
 function stripHtml(html: string): string {

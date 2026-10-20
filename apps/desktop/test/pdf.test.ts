@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey, selectionOptions } from "@dndbuilder/engine";
-import { PDFDocument } from "pdf-lib";
+import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
 import { describe, expect, it } from "vitest";
 import { characterSheetPdf } from "../src/pdf/characterSheetPdf";
 
@@ -58,6 +58,21 @@ describe("character sheet PDF", () => {
       expect(Math.round(w)).toBe(paper === "letter" ? 612 : 595);
     });
   }
+
+  it("embeds the portrait in the header", async () => {
+    const pageImages = async (bytes: Uint8Array) => {
+      const res = (await PDFDocument.load(bytes)).getPage(0).node.Resources();
+      return res?.lookupMaybe(PDFName.of("XObject"), PDFDict)?.keys().length ?? 0;
+    };
+    const state = wizard(1);
+    const sheet = buildSheet(resolveCharacter(registry, state));
+    expect(await pageImages(await characterSheetPdf(sheet, state, registry))).toBe(0);
+    // 1x1 PNG.
+    state.portrait = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+    expect(await pageImages(await characterSheetPdf(sheet, state, registry))).toBe(1);
+    state.portrait = "data:image/png;base64,bm90IGFuIGltYWdl";
+    expect(await pageImages(await characterSheetPdf(sheet, state, registry))).toBe(0);
+  });
 
   it("renders metric units when asked", async () => {
     const state = wizard(5);

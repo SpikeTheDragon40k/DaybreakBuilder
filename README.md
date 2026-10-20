@@ -64,6 +64,9 @@ npm test
    you can also drop XML files into `Documents/dndbuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
+   Click the portrait square next to the name to pick a portrait from the built-in gallery or from an image file.
+   The portrait is saved inside the character and shows on the character list, the sheet and the PDF; portraits in
+   imported Aurora files come along too.
 4. **Equipment**: add items and equip armor, shields and weapons. AC updates automatically.
 5. **Spells**: prepare spells for each spellcasting class; slots, save DC and attack bonus are calculated for you.
 6. **Sheet**: the finished character. *Export PDF* writes a multi-page character sheet (US Letter or A4) with

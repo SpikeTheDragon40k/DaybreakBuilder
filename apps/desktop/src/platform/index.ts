@@ -24,6 +24,8 @@ export interface CharacterMeta {
   summary: string;
   level: number;
   updatedAt: string;
+  /** Filled in by `characters.list` from the saved state; not stored in the meta. */
+  portrait?: string;
 }
 
 interface CharacterRecord {
@@ -76,13 +78,14 @@ export const packs = {
 export const characters = {
   async list(): Promise<CharacterMeta[]> {
     const all = await idbAll<CharacterRecord>("characters");
-    return all.map((r) => r.meta).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    return all.map((r) => ({ ...r.meta, portrait: r.state.portrait })).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   },
   async load(id: string): Promise<CharacterState | undefined> {
     return (await idbGet<CharacterRecord>("characters", id))?.state;
   },
   async save(meta: CharacterMeta, state: CharacterState): Promise<void> {
-    await idbPut<CharacterRecord>("characters", meta.id, { meta, state });
+    const { portrait: _, ...stored } = meta;
+    await idbPut<CharacterRecord>("characters", meta.id, { meta: stored, state });
   },
   async remove(id: string): Promise<void> {
     await idbDelete("characters", id);

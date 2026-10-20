@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize } from "../pdf/characterSheetPdf";
 import { CompanionBlock } from "../components/CompanionBlock";
+import { Portrait } from "../components/Portrait";
 import { useCharacter } from "../state/app";
 import { useUnits } from "../units";
 
@@ -49,7 +50,8 @@ export function SheetPage() {
       </div>
       <article className="sheet">
         <header className="sheet-header">
-          <div>
+          {character.state.portrait && <Portrait src={character.state.portrait} name={s.name} size={110} className="sheet-portrait" />}
+          <div className="sheet-title">
             <h1>{s.name}</h1>
             <div>
               {[s.race, s.subrace].filter(Boolean).join(" ")} {s.classSummary && `· ${s.classSummary}`}
