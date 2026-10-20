@@ -60,3 +60,19 @@ jobs:
             apps/desktop/src-tauri/target/release/bundle/msi/*.msi
             apps/desktop/src-tauri/target/release/bundle/nsis/*.exe
           if-no-files-found: ignore
+      # The bare release binary embeds the UI, so it runs without installing anything
+      # (Windows 10/11 ship the WebView2 runtime). Its name turns on portable mode.
+      - name: Prepare portable Windows exe
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
+          mkdir -p portable
+          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "portable/dndbuilder_${version}_x64_portable.exe"
+          ls -l portable
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'Windows'
+        with:
+          name: dndbuilder-Windows-portable
+          path: portable/*.exe
+          if-no-files-found: error

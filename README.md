@@ -105,10 +105,23 @@ example, *"convert the spells on pages 211–289 of ~/books/phb.pdf"*. Claude re
 custom folder (outside the repository), runs the validator until it is clean, and checks the numbers against the page.
 Converted books are for your own use: don't commit them or share them.
 
+### Portable Windows version
+
+Every release also ships `dndbuilder_X.Y.Z_x64_portable.exe`: a single file that runs without installing anything
+(it needs the WebView2 runtime, which Windows 10 and 11 already include). Put it in any folder you can write to, for
+example on a USB stick, and run it. It keeps all of its data in a `dndbuilder-data` folder next to the exe: saved
+characters and settings in `webview`, your own XML content in `custom`. Move or copy the exe together with that
+folder to take everything with you.
+
+Portable mode is on whenever the exe's file name contains `portable`, or a file called `portable` or `portable.txt`
+sits next to it. If the folder isn't writable the app falls back to the normal locations (your Documents and AppData
+folders), like the installed version. Pull-request builds publish the same exe as the `dndbuilder-Windows-portable`
+CI artifact.
+
 ## Releasing
 
 Releases are built by GitHub Actions (`.github/workflows/release.yml`) for Linux (`.deb`, `.rpm`, `.AppImage`) and
-Windows (`.msi`, `.exe`), with a `SHA256SUMS.txt` and release notes generated from merged pull requests (grouped by
+Windows (`.msi`, `-setup.exe`, and a portable `_portable.exe`), with a `SHA256SUMS.txt` and release notes generated from merged pull requests (grouped by
 label, see `.github/release.yml`).
 
 * **One click:** Actions → *Release* → *Run workflow* on `main`, and enter the version (`0.2.0`, or `0.2.0-1` for a
