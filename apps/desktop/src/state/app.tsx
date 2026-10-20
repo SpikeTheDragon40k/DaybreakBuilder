@@ -10,7 +10,7 @@ import { characters, settings } from "../platform";
 import { loadAllContent, type LoadedContent } from "./content";
 import { emptyHistory, jump, record, redo as redoStep, undo as undoStep, type History } from "./history";
 
-export type Page = "characters" | "build" | "spells" | "sheet" | "equipment" | "compendium" | "content";
+export type Page = "characters" | "build" | "spells" | "sheet" | "equipment" | "compendium" | "content" | "party";
 
 interface OpenCharacter {
   id: string;

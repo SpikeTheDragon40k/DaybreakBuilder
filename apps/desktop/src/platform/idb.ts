@@ -1,8 +1,8 @@
 /** Tiny promise wrapper over IndexedDB (available in browsers and in the Tauri webview). */
 
 const DB_NAME = "dndbuilder";
-const DB_VERSION = 1;
-export const STORES = ["packs", "packFiles", "characters"] as const;
+const DB_VERSION = 2;
+export const STORES = ["packs", "packFiles", "characters", "parties"] as const;
 export type StoreName = (typeof STORES)[number];
 
 let dbPromise: Promise<IDBDatabase> | null = null;

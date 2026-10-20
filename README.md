@@ -73,6 +73,10 @@ npm test
 5. **Spells**: prepare spells for each spellcasting class; slots, save DC and attack bonus are calculated for you.
 6. **Sheet**: the finished character. *Export PDF* writes a multi-page character sheet (US Letter or A4) with
    spellcasting, companion and background pages.
+7. **Party** (for DMs): group saved characters into parties. The party view lines up AC, HP, initiative, speed,
+   passive Perception/Insight/Investigation, spell save DCs, senses and coin for every member, adds up the
+   encounter XP budget (DMG 2014 thresholds), and shows who speaks which language, who is best at each skill,
+   saving throw coverage and who needs light. Edits to a character show up in its parties automatically.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
