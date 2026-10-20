@@ -1,6 +1,6 @@
 [package]
 name = "dndbuilder"
-version = "0.2.0"
+version = "0.3.0"
 description = "Open-source D&D 5e character builder compatible with Aurora Builder content"
 authors = ["dndbuilder contributors"]
 license = "MIT"
