@@ -78,6 +78,8 @@ export interface CharacterState {
   currency: Currency;
   /** Sources the user excluded, by source element name. */
   excludedSources: string[];
+  /** Prepared spell ids per caster name (for casters that prepare spells). */
+  preparedSpells: Record<string, string[]>;
 }
 
 export function newCharacter(): CharacterState {
@@ -113,14 +115,20 @@ export function newCharacter(): CharacterState {
     inventory: [],
     currency: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
     excludedSources: [],
+    preparedSpells: {},
   };
 }
 
 /** Separator between element ids in a node path. */
 export const PATH_SEP = "/";
 
-export function selectionKey(path: string, ruleName: string): string {
-  return `${path}|${ruleName}`;
+/**
+ * Key under which a select rule's choices are stored. Several selects on one
+ * element may share a name at different levels (e.g. "Cantrip (Wizard)" at 1, 4
+ * and 10), so the level is part of the key when above 1.
+ */
+export function selectionKey(path: string, ruleName: string, level = 1): string {
+  return level > 1 ? `${path}|${ruleName}@${level}` : `${path}|${ruleName}`;
 }
 
 export function characterLevel(state: CharacterState): number {
@@ -166,6 +174,7 @@ export function loadCharacterJson(data: unknown): CharacterState {
     options: d.options ?? {},
     inventory: d.inventory ?? [],
     excludedSources: d.excludedSources ?? [],
+    preparedSpells: d.preparedSpells ?? {},
     version: 1,
   };
 }

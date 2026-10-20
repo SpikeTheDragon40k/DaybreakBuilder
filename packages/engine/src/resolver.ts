@@ -20,6 +20,7 @@ import {
   type StatRule,
 } from "./model.js";
 import type { ContentRegistry } from "./registry.js";
+import { spellcastingVariables, spellLevel } from "./spellcasting.js";
 import { StatValues, type StatContribution, type StatSeed } from "./stats.js";
 
 export type Scope =
@@ -277,7 +278,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
       } else {
         if (rule.type === "Multiclass") continue; // handled through state.levels
         if (!ruleAllowed(rule.requirements, node, false)) continue;
-        const key = selectionKey(node.path, rule.name);
+        const key = selectionKey(node.path, rule.name, rule.level);
         const point: SelectionPoint = { key, rule, owner: node, chosen: [], rejected: [] };
         node.selections.push(point);
         selections.push(point);
@@ -555,34 +556,22 @@ export interface SelectionOption {
   reason?: string;
 }
 
-/** Variables available to dynamic supports like "$(spellcasting:list)". */
-function supportsVariables(point: SelectionPoint): (name: string) => string | undefined {
-  return (name) => {
-    if (name === "spellcasting:list" || name === "spellcasting:name") {
-      for (let n: ResolvedNode | undefined = point.owner; n; n = n.parent) {
-        if (n.element.spellcasting) return name === "spellcasting:list" ? n.element.spellcasting.list ?? n.element.spellcasting.name : n.element.spellcasting.name;
-      }
-      if (point.rule.spellcasting) return point.rule.spellcasting;
-    }
-    if (name === "spellcasting:slots") {
-      // Highest spell level the owning caster can cast is not modeled yet; leave unresolved.
-      return undefined;
-    }
-    return undefined;
-  };
-}
-
 /** Candidates for a select rule, with availability. */
 export function selectionOptions(rc: ResolvedCharacter, point: SelectionPoint): SelectionOption[] {
   const { registry } = rc;
   const rule = point.rule;
   if (rule.type === "List") return [];
-  const vars = supportsVariables(point);
+  const dynamic = rule.supports?.includes("$(") ? spellcastingVariables(rc, point) : null;
+  const vars = dynamic?.vars;
   const has = (id: string) => (rc.ids.get(id) ?? 0) > 0;
   const out: SelectionOption[] = [];
   for (const el of registry.ofType(rule.type)) {
     if (rc.state.excludedSources.includes(el.source) && !point.chosen.includes(el.id)) continue;
-    if (!matchesSupports(rule.supports, el, vars)) continue;
+    const extra =
+      dynamic !== null &&
+      dynamic.extraIds.includes(el.id) &&
+      (!rule.supports!.includes("$(spellcasting:slots)") || dynamic.slotLevels.includes(spellLevel(el)));
+    if (!extra && !matchesSupports(rule.supports, el, vars)) continue;
     let available = true;
     let reason: string | undefined;
     if (el.requirements) {

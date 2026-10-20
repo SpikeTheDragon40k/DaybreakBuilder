@@ -829,3 +829,26 @@ ul.plain {
     break-inside: avoid;
   }
 }
+
+/* Spells */
+.spell-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.spell-list li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+.spell-list li:hover {
+  background: var(--panel-2);
+}
+.panel.sticky {
+  position: sticky;
+  top: 4rem;
+  max-height: calc(100vh - 5rem);
+  overflow: auto;
+}

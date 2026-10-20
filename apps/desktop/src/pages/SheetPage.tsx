@@ -118,7 +118,11 @@ export function SheetPage() {
                   <span>Ability: {sc.ability}</span>
                   <span>Spell attack: {formatModifier(sc.attack)}</span>
                   <span>Save DC: {sc.dc}</span>
-                  {sc.prepareCount !== undefined && <span>Prepared: {sc.prepareCount}</span>}
+                  {sc.prepareCount !== undefined && (
+                    <span>
+                      Prepared: {sc.preparedCount}/{sc.prepareCount}
+                    </span>
+                  )}
                 </div>
                 <div className="slots">
                   {sc.slots.map((n, i) =>
@@ -129,9 +133,9 @@ export function SheetPage() {
                     ) : null,
                   )}
                 </div>
-                {sc.spells.length > 0 && (
+                {sc.spells.some((sp) => sp.prepared) && (
                   <ul className="plain spells">
-                    {sc.spells.map((sp) => (
+                    {sc.spells.filter((sp) => sp.prepared).map((sp) => (
                       <li key={sp.id}>
                         <span className="muted small">{sp.level === 0 ? "C" : sp.level}</span> {sp.name}
                         {sp.alwaysPrepared && <span className="muted small"> (always)</span>}

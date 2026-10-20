@@ -120,7 +120,7 @@ export function importAuroraCharacter(xml: string, registry: ContentRegistry): A
           if (child.attrs.registered) walk(child, path + PATH_SEP + child.attrs.registered);
           continue;
         }
-        const key = selectionKey(path, name);
+        const key = selectionKey(path, name, parseInt(child.attrs.requiredLevel ?? "1", 10) || 1);
         const slot = Math.max(1, parseInt(child.attrs.number ?? "1", 10) || 1) - 1;
         const list = state.selections[key] ?? [];
         while (list.length <= slot) list.push(null);
