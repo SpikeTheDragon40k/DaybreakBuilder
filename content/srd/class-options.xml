@@ -12,6 +12,9 @@
 		<supports>Fighting Style, Fighter, Ranger</supports>
 		<description><p>You gain a +2 bonus to attack rolls you make with ranged weapons.</p></description>
 		<sheet><description>You gain a +2 bonus to attack rolls you make with ranged weapons.</description></sheet>
+		<rules>
+			<stat name="ranged:attack" value="2" alt="Archery" />
+		</rules>
 	</element>
 
 	<element name="Defense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_FIGHTING_STYLE_DEFENSE">

@@ -8,12 +8,15 @@ import {
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { characters, settings } from "../platform";
 import { loadAllContent, type LoadedContent } from "./content";
+import { emptyHistory, jump, record, redo as redoStep, undo as undoStep, type History } from "./history";
 
 export type Page = "characters" | "build" | "spells" | "sheet" | "equipment" | "compendium" | "content";
 
 interface OpenCharacter {
   id: string;
   state: CharacterState;
+  /** Undo/redo steps for this editing session (not saved). */
+  history: History;
 }
 
 interface AppState {
@@ -26,6 +29,10 @@ interface AppState {
   openCharacter: (id: string, state: CharacterState) => void;
   closeCharacter: () => void;
   update: (fn: (draft: CharacterState) => void) => void;
+  undo: () => void;
+  redo: () => void;
+  /** Go to a point of the history timeline (see `timeline`). */
+  jumpTo: (index: number) => void;
   resolved: ResolvedCharacter | null;
   sheet: CharacterSheet | null;
   saving: boolean;
@@ -108,7 +115,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const openCharacter = useCallback(
     (id: string, state: CharacterState) => {
-      setCharacter({ id, state });
+      setCharacter({ id, state, history: emptyHistory() });
       settings.set("lastCharacter", id);
       setPage("build");
     },
@@ -120,14 +127,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPage("characters");
   }, [setPage]);
 
+  // Element names for history labels; a ref so `update` keeps a stable identity.
+  const registryRef = useRef(content?.registry);
+  registryRef.current = content?.registry;
+
   const update = useCallback((fn: (draft: CharacterState) => void) => {
     setCharacter((cur) => {
       if (!cur) return cur;
       const draft = structuredClone(cur.state);
       fn(draft);
-      return { ...cur, state: draft };
+      // Keep one copy of an unchanged portrait instead of one per history step.
+      if (draft.portrait === cur.state.portrait) draft.portrait = cur.state.portrait;
+      const history = record(cur.history, cur.state, draft, registryRef.current);
+      if (history === cur.history) return cur;
+      return { ...cur, state: draft, history };
     });
   }, []);
+
+  const step = useCallback((fn: (h: History, s: CharacterState) => { history: History; state: CharacterState } | null) => {
+    setCharacter((cur) => {
+      const next = cur && fn(cur.history, cur.state);
+      return cur && next ? { ...cur, ...next } : cur;
+    });
+  }, []);
+  const undo = useCallback(() => step(undoStep), [step]);
+  const redo = useCallback(() => step(redoStep), [step]);
+  const jumpTo = useCallback((index: number) => step((h, s) => jump(h, s, index)), [step]);
 
   const value: AppState = {
     content,
@@ -139,6 +164,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     openCharacter,
     closeCharacter,
     update,
+    undo,
+    redo,
+    jumpTo,
     resolved,
     sheet,
     saving,

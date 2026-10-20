@@ -4,7 +4,7 @@
  * not redistributable): a summary page, then spellcasting, companion and
  * background pages as needed. Long sections flow onto continuation pages.
  */
-import { convertUnits, formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
+import { attackDetails, convertUnits, formatModifier, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
@@ -228,7 +228,8 @@ export async function characterSheetPdf(
     bold: await doc.embedFont(StandardFonts.HelveticaBold),
     italic: await doc.embedFont(StandardFonts.HelveticaOblique),
   };
-  const ctx = new Ctx(doc, fonts, SIZES[options.paper ?? "letter"], sheet.name, options.units ?? "imperial");
+  const units = options.units ?? "imperial";
+  const ctx = new Ctx(doc, fonts, SIZES[options.paper ?? "letter"], sheet.name, units);
   const page = ctx.newPage();
   const W = page.getWidth();
   const H = page.getHeight();
@@ -313,6 +314,16 @@ export async function characterSheetPdf(
   const col2 = col1 + col1w + 12;
   const col2w = 165;
   const mid = new Flow(ctx, page, col2, col2w, y, "Character sheet (continued)");
+  mid.heading("Attacks");
+  for (const a of sheet.attacks) {
+    mid.row([
+      { text: a.name, width: col2w - 85, font: bold },
+      { text: formatModifier(a.attack), width: 25, font: bold, align: "right" },
+      { text: a.damage, width: 60, align: "right" },
+    ]);
+    const details = attackDetails(a, units);
+    if (details) mid.paragraph(details, { size: 7, color: MUTED, gap: 2 });
+  }
   mid.heading("Proficiencies");
   const profLines: [string, string[]][] = [
     ["Armor", sheet.proficiencies.armor],

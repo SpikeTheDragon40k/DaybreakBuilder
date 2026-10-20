@@ -1,4 +1,4 @@
-import { formatModifier, type StatPart } from "@dndbuilder/engine";
+import { attackDetails, formatModifier, type StatPart } from "@dndbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize } from "../pdf/characterSheetPdf";
@@ -184,6 +184,31 @@ export function SheetPage() {
           </div>
 
           <div className="sheet-col wide">
+            <Box title="Attacks">
+              <table className="attacks">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Hit</th>
+                    <th>Damage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {s.attacks.map((a) => (
+                    <tr key={a.key} className={a.proficient ? undefined : "not-proficient"}>
+                      <td>
+                        {a.name}
+                        <div className="muted small">{attackDetails(a, units.system)}</div>
+                      </td>
+                      <td className="num" title={tip(a.attackBreakdown)}>
+                        {formatModifier(a.attack)}
+                      </td>
+                      <td>{a.damage}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Box>
             <Box title="Features & Traits">
               {s.features.map((f) => (
                 <div key={f.id} className="feature">

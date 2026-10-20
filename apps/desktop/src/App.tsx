@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HistoryControls } from "./components/HistoryControls";
 import { useApp, type Page } from "./state/app";
 import { setTheme, storedTheme, type Theme } from "./theme";
 import { setUnits, useUnits } from "./units";
@@ -40,6 +41,7 @@ export function App() {
           </button>
         ))}
         <span className="spacer" />
+        {ready && <HistoryControls />}
         <UnitSwitch />
         <ThemeSwitch />
         {character && (
