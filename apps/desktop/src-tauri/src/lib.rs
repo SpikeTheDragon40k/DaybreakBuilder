@@ -15,8 +15,33 @@ struct CustomContent {
     files: Vec<StoredFile>,
 }
 
+/// Portable mode keeps everything in a `dndbuilder-data` folder next to the executable, so
+/// the app can run from a USB stick without touching the user profile. It is on when the
+/// executable's name contains "portable" (the released `..._portable.exe`) or a file named
+/// `portable` / `portable.txt` sits next to it. Returns `None` when portable mode is off or
+/// the folder cannot be created (e.g. a read-only location), so the app falls back to the
+/// usual per-user folders.
+fn portable_data_dir() -> Option<PathBuf> {
+    let exe = std::env::current_exe().ok()?;
+    let dir = exe.parent()?;
+    let named_portable = exe
+        .file_stem()
+        .map(|s| s.to_string_lossy().to_lowercase().contains("portable"))
+        .unwrap_or(false);
+    let marker = dir.join("portable").is_file() || dir.join("portable.txt").is_file();
+    if !named_portable && !marker {
+        return None;
+    }
+    let data = dir.join("dndbuilder-data");
+    fs::create_dir_all(&data).ok()?;
+    Some(data)
+}
+
 /// Folder where users can drop their own XML content (like Aurora's "custom" folder).
 fn custom_content_dir(app: &tauri::AppHandle) -> Result<PathBuf, String> {
+    if let Some(data) = portable_data_dir() {
+        return Ok(data.join("custom"));
+    }
     let base = app
         .path()
         .document_dir()
@@ -109,6 +134,20 @@ pub fn run() {
             write_text_file,
             write_binary_file
         ])
+        // The main window is created here (`"create": false` in tauri.conf.json) so that in
+        // portable mode the webview profile, which holds the saved characters and settings,
+        // lives next to the executable instead of in the user's AppData.
+        .setup(|app| {
+            let portable = portable_data_dir();
+            for config in app.config().app.windows.clone() {
+                let mut builder = tauri::WebviewWindowBuilder::from_config(app.handle(), &config)?;
+                if let Some(data) = &portable {
+                    builder = builder.data_directory(data.join("webview"));
+                }
+                builder.build()?;
+            }
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running dndbuilder");
 }

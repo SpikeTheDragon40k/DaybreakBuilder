@@ -6,8 +6,9 @@ name: Release
 #  2. Bump locally (node scripts/version.mjs X.Y.Z), commit, then push a tag vX.Y.Z.
 #
 # Either way: tests run, a draft GitHub release is created with generated notes, Linux
-# (.deb, .rpm, .AppImage) and Windows (.msi, .exe) installers are built and attached
-# together with SHA256SUMS.txt, and the release is published.
+# (.deb, .rpm, .AppImage) and Windows (.msi, .exe) installers plus a portable Windows .exe
+# (no install, data kept next to it) are built and attached together with SHA256SUMS.txt,
+# and the release is published.
 
 on:
   workflow_dispatch:
@@ -151,6 +152,19 @@ jobs:
         with:
           projectPath: apps/desktop
           releaseId: ${{ needs.prepare.outputs.release_id }}
+      - name: Attach the portable Windows exe to the release
+        if: runner.os == 'Windows'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ needs.prepare.outputs.release_id }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          name="dndbuilder_${TAG#v}_x64_portable.exe"
+          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "$name"
+          gh api -X POST -H "Content-Type: application/octet-stream" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=$name" \
+            --input "$name" --jq .browser_download_url
 
   publish:
     name: Checksums and publish
