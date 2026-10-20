@@ -1,0 +1,20 @@
+{
+  "name": "dndbuilder",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Open-source, cross-platform D&D 5e character builder compatible with Aurora Builder content files",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @dndbuilder/engine && npm run build -w @dndbuilder/desktop",
+    "test": "npm test -w @dndbuilder/engine",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev": "npm run dev -w @dndbuilder/desktop",
+    "tauri": "npm run tauri -w @dndbuilder/desktop"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
