@@ -1075,3 +1075,69 @@ ul.plain {
   background: var(--accent-soft);
   color: var(--text);
 }
+
+/* Undo / redo / history */
+.history-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-right: 0.5rem;
+}
+.history-menu {
+  position: relative;
+}
+.history-menu summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+}
+.history-menu summary::-webkit-details-marker {
+  display: none;
+}
+.history-menu summary:hover,
+.history-menu[open] summary {
+  border-color: var(--border);
+}
+.history-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  width: min(22rem, calc(100vw - 2rem));
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--modal-shadow);
+  z-index: 20;
+}
+.history-list {
+  max-height: 55vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+}
+.history-note {
+  margin: 0;
+  padding: 0.35rem 0.6rem;
+  border-top: 1px solid var(--border);
+}
+.history-item {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  text-align: left;
+  background: transparent;
+  border-color: transparent;
+  padding: 0.25rem 0.5rem;
+}
+.history-item.current {
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+.history-item.undone {
+  opacity: 0.55;
+  font-style: italic;
+}

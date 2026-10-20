@@ -33,7 +33,16 @@ describe("weapon attacks", () => {
     // Equipped weapons come first; the unarmed strike is always last.
     expect(attacks.map((a) => a.name)).toEqual(["Longsword", "Longbow", "Rapier", "Unarmed Strike"]);
     const [sword, bow, rapier, unarmed] = attacks;
-    expect(sword).toMatchObject({ ability: "strength", attack: 5, damage: "1d8+3", versatile: "1d10+3", damageType: "slashing", reach: 5, proficient: true, equipped: "main" });
+    expect(sword).toMatchObject({
+      ability: "strength",
+      attack: 5,
+      damage: "1d8+3",
+      versatile: "1d10+3",
+      damageType: "slashing",
+      reach: 5,
+      proficient: true,
+      equipped: "main",
+    });
     expect(bow).toMatchObject({ ability: "dexterity", attack: 4, damage: "1d8+2", range: { normal: 150, long: 600 } });
     expect(bow.reach).toBeUndefined();
     // Finesse uses the better of STR and DEX.
