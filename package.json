@@ -1,7 +1,7 @@
 {
   "name": "dndbuilder",
   "private": true,
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Open-source, cross-platform D&D 5e character builder compatible with Aurora Builder content files",
   "workspaces": [
     "packages/*",

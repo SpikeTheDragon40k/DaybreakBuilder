@@ -1,6 +1,6 @@
 {
   "name": "@dndbuilder/engine",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Rules engine for Aurora-format D&D 5e content",
   "type": "module",
   "main": "src/index.ts",
