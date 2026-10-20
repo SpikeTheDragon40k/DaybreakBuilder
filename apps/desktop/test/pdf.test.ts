@@ -74,6 +74,22 @@ describe("character sheet PDF", () => {
     expect(await pageImages(await characterSheetPdf(sheet, state, registry))).toBe(0);
   });
 
+  it("renders each colour style", async () => {
+    const state = wizard(5);
+    const sheet = buildSheet(resolveCharacter(registry, state));
+    const out: Record<string, Uint8Array> = {};
+    for (const style of ["classic", "print", "dark"] as const) {
+      out[style] = await characterSheetPdf(sheet, state, registry, { style });
+      expect((await PDFDocument.load(out[style])).getPageCount()).toBe((await PDFDocument.load(out.classic)).getPageCount());
+    }
+    expect(Buffer.from(out.print).equals(Buffer.from(out.classic))).toBe(false);
+    expect(Buffer.from(out.dark).equals(Buffer.from(out.classic))).toBe(false);
+    if (process.env.PDF_OUT) {
+      const { writeFileSync } = await import("node:fs");
+      for (const [style, bytes] of Object.entries(out)) writeFileSync(join(process.env.PDF_OUT, `${style}.pdf`), bytes);
+    }
+  });
+
   it("renders metric units when asked", async () => {
     const state = wizard(5);
     const sheet = buildSheet(resolveCharacter(registry, state));
