@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Basics</name>
+		<description>Skills, saving throws, proficiencies, languages, alignments and senses.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="System Reference Document 5.1" type="Source" source="System Reference Document 5.1" id="ID_SOURCE_SRD_5_1">
+		<description><p>The System Reference Document 5.1 by Wizards of the Coast, released under the Creative Commons Attribution 4.0 license. It contains the core rules, nine races, the twelve classes with one subclass each, the Acolyte background, equipment, spells and magic items.</p></description>
+		<setters>
+			<set name="abbreviation">SRD</set>
+			<set name="url">https://dnd.wizards.com/resources/systems-reference-document</set>
+			<set name="official">true</set>
+			<set name="core">true</set>
+		</setters>
+	</element>
+
+	<element name="Acrobatics" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_ACROBATICS">
+		<supports>Skill, Dexterity, ID_PROFICIENCY_SKILL, Fighter, Monk, Rogue, Bard</supports>
+		<description><p>Staying on your feet in tricky situations: balancing, tumbling, flips and stunts. (Dexterity)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="acrobatics:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Acrobatics)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_ACROBATICS">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_ACROBATICS</requirements>
+		<description><p>Your proficiency bonus is doubled for Acrobatics checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="acrobatics:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Animal Handling" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_ANIMALHANDLING">
+		<supports>Skill, Wisdom, ID_PROFICIENCY_SKILL, Barbarian, Druid, Fighter, Ranger, Bard</supports>
+		<description><p>Calming, controlling or reading the intentions of animals. (Wisdom)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="animal handling:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Animal Handling)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_ANIMAL_HANDLING">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_ANIMALHANDLING</requirements>
+		<description><p>Your proficiency bonus is doubled for Animal Handling checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="animal handling:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Arcana" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_ARCANA">
+		<supports>Skill, Intelligence, ID_PROFICIENCY_SKILL, Druid, Sorcerer, Warlock, Wizard, Bard</supports>
+		<description><p>Recalling lore about spells, magic items, planes and arcane symbols. (Intelligence)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="arcana:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Arcana)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_ARCANA">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_ARCANA</requirements>
+		<description><p>Your proficiency bonus is doubled for Arcana checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="arcana:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Athletics" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_ATHLETICS">
+		<supports>Skill, Strength, ID_PROFICIENCY_SKILL, Barbarian, Fighter, Monk, Paladin, Ranger, Rogue, Bard</supports>
+		<description><p>Climbing, jumping, swimming and other feats of physical strength. (Strength)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="athletics:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Athletics)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_ATHLETICS">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_ATHLETICS</requirements>
+		<description><p>Your proficiency bonus is doubled for Athletics checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="athletics:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Deception" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_DECEPTION">
+		<supports>Skill, Charisma, ID_PROFICIENCY_SKILL, Rogue, Sorcerer, Warlock, Bard</supports>
+		<description><p>Convincingly hiding the truth, through words or actions. (Charisma)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="deception:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Deception)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_DECEPTION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_DECEPTION</requirements>
+		<description><p>Your proficiency bonus is doubled for Deception checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="deception:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="History" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_HISTORY">
+		<supports>Skill, Intelligence, ID_PROFICIENCY_SKILL, Cleric, Fighter, Monk, Warlock, Wizard, Bard</supports>
+		<description><p>Recalling lore about historical events, people, kingdoms and wars. (Intelligence)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="history:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (History)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_HISTORY">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_HISTORY</requirements>
+		<description><p>Your proficiency bonus is doubled for History checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="history:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Insight" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_INSIGHT">
+		<supports>Skill, Wisdom, ID_PROFICIENCY_SKILL, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Wizard, Bard</supports>
+		<description><p>Reading body language and determining true intentions. (Wisdom)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="insight:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Insight)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_INSIGHT">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_INSIGHT</requirements>
+		<description><p>Your proficiency bonus is doubled for Insight checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="insight:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Intimidation" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_INTIMIDATION">
+		<supports>Skill, Charisma, ID_PROFICIENCY_SKILL, Barbarian, Fighter, Paladin, Rogue, Sorcerer, Warlock, Bard</supports>
+		<description><p>Influencing others through threats, hostile actions or violence. (Charisma)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="intimidation:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Intimidation)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_INTIMIDATION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_INTIMIDATION</requirements>
+		<description><p>Your proficiency bonus is doubled for Intimidation checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="intimidation:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Investigation" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_INVESTIGATION">
+		<supports>Skill, Intelligence, ID_PROFICIENCY_SKILL, Ranger, Rogue, Warlock, Wizard, Bard</supports>
+		<description><p>Looking for clues and making deductions from them. (Intelligence)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="investigation:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Investigation)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_INVESTIGATION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_INVESTIGATION</requirements>
+		<description><p>Your proficiency bonus is doubled for Investigation checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="investigation:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Medicine" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_MEDICINE">
+		<supports>Skill, Wisdom, ID_PROFICIENCY_SKILL, Cleric, Druid, Paladin, Wizard, Bard</supports>
+		<description><p>Stabilizing a dying companion or diagnosing an illness. (Wisdom)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="medicine:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Medicine)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_MEDICINE">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_MEDICINE</requirements>
+		<description><p>Your proficiency bonus is doubled for Medicine checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="medicine:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Nature" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_NATURE">
+		<supports>Skill, Intelligence, ID_PROFICIENCY_SKILL, Barbarian, Druid, Ranger, Warlock, Bard</supports>
+		<description><p>Recalling lore about terrain, plants, animals and weather. (Intelligence)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="nature:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Nature)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_NATURE">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_NATURE</requirements>
+		<description><p>Your proficiency bonus is doubled for Nature checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="nature:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Perception" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_PERCEPTION">
+		<supports>Skill, Wisdom, ID_PROFICIENCY_SKILL, Barbarian, Druid, Fighter, Ranger, Rogue, Bard</supports>
+		<description><p>Spotting, hearing or otherwise noticing the presence of something. (Wisdom)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="perception:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Perception)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_PERCEPTION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_PERCEPTION</requirements>
+		<description><p>Your proficiency bonus is doubled for Perception checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="perception:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Performance" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_PERFORMANCE">
+		<supports>Skill, Charisma, ID_PROFICIENCY_SKILL, Rogue, Bard</supports>
+		<description><p>Delighting an audience with music, dance, acting or storytelling. (Charisma)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="performance:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Performance)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_PERFORMANCE">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_PERFORMANCE</requirements>
+		<description><p>Your proficiency bonus is doubled for Performance checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="performance:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Persuasion" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_PERSUASION">
+		<supports>Skill, Charisma, ID_PROFICIENCY_SKILL, Cleric, Paladin, Rogue, Sorcerer, Bard</supports>
+		<description><p>Influencing others with tact, social graces or good nature. (Charisma)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="persuasion:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Persuasion)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_PERSUASION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_PERSUASION</requirements>
+		<description><p>Your proficiency bonus is doubled for Persuasion checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="persuasion:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Religion" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_RELIGION">
+		<supports>Skill, Intelligence, ID_PROFICIENCY_SKILL, Cleric, Druid, Monk, Paladin, Sorcerer, Warlock, Wizard, Bard</supports>
+		<description><p>Recalling lore about deities, rites, prayers and religious hierarchies. (Intelligence)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="religion:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Religion)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_RELIGION">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_RELIGION</requirements>
+		<description><p>Your proficiency bonus is doubled for Religion checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="religion:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Sleight of Hand" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_SLEIGHTOFHAND">
+		<supports>Skill, Dexterity, ID_PROFICIENCY_SKILL, Rogue, Bard</supports>
+		<description><p>Acts of legerdemain or manual trickery, such as planting or concealing objects. (Dexterity)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="sleight of hand:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Sleight of Hand)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_SLEIGHT_OF_HAND">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_SLEIGHTOFHAND</requirements>
+		<description><p>Your proficiency bonus is doubled for Sleight of Hand checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="sleight of hand:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Stealth" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_STEALTH">
+		<supports>Skill, Dexterity, ID_PROFICIENCY_SKILL, Monk, Ranger, Rogue, Bard</supports>
+		<description><p>Concealing yourself from enemies and moving without being noticed. (Dexterity)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="stealth:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Stealth)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_STEALTH">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_STEALTH</requirements>
+		<description><p>Your proficiency bonus is doubled for Stealth checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="stealth:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Survival" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SKILL_SURVIVAL">
+		<supports>Skill, Wisdom, ID_PROFICIENCY_SKILL, Barbarian, Druid, Fighter, Ranger, Bard</supports>
+		<description><p>Following tracks, hunting, guiding a group and predicting the weather. (Wisdom)</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="survival:proficiency" value="proficiency" bonus="proficiency" />
+		</rules>
+	</element>
+
+	<element name="Skill Expertise (Survival)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_SKILL_EXPERTISE_SURVIVAL">
+		<supports>Expertise, Skill Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_SKILL_SURVIVAL</requirements>
+		<description><p>Your proficiency bonus is doubled for Survival checks.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="survival:proficiency" value="proficiency" bonus="double" />
+		</rules>
+	</element>
+
+	<element name="Tool Expertise (Thieves’ Tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_INTERNAL_PROFICIENCY_TOOL_EXPERTISE_THIEVES_TOOLS">
+		<supports>Expertise, Tool Expertise, ID_INTERNAL_SUPPORT_EXPERTISE</supports>
+		<requirements>ID_PROFICIENCY_TOOL_PROFICIENCY_THIEVES_TOOLS</requirements>
+		<description><p>Your proficiency bonus is doubled for checks using thieves’ tools.</p></description>
+		<sheet display="false" />
+	</element>
+
+	<element name="Saving Throw Proficiency (Strength)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_STRENGTH">
+		<supports>Saving Throw, Strength</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="strength:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Saving Throw Proficiency (Dexterity)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_DEXTERITY">
+		<supports>Saving Throw, Dexterity</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="dexterity:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Saving Throw Proficiency (Constitution)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_CONSTITUTION">
+		<supports>Saving Throw, Constitution</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="constitution:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Saving Throw Proficiency (Intelligence)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_INTELLIGENCE">
+		<supports>Saving Throw, Intelligence</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="intelligence:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Saving Throw Proficiency (Wisdom)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM">
+		<supports>Saving Throw, Wisdom</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="wisdom:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Saving Throw Proficiency (Charisma)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA">
+		<supports>Saving Throw, Charisma</supports>
+		<sheet display="false" />
+		<rules>
+			<stat name="charisma:save:proficiency" value="proficiency" bonus="proficiency" alt="Proficiency" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Simple Melee Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_MELEE_WEAPONS">
+		<supports>Weapon, Simple Weapon</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CLUB" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DAGGER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATCLUB" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_HANDAXE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_JAVELIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LIGHT_HAMMER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MACE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_QUARTERSTAFF" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SICKLE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SPEAR" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Simple Ranged Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_RANGED_WEAPONS">
+		<supports>Weapon, Simple Weapon</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_LIGHT" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DART" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTBOW" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SLING" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Simple Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS">
+		<supports>Weapon, Simple Weapons</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_MELEE_WEAPONS" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_RANGED_WEAPONS" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Martial Melee Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_MELEE_WEAPONS">
+		<supports>Weapon, Martial Weapon</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_BATTLEAXE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_FLAIL" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GLAIVE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATAXE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATSWORD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_HALBERD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LANCE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MAUL" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MORNINGSTAR" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_PIKE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_RAPIER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SCIMITAR" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_TRIDENT" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WAR_PICK" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WARHAMMER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WHIP" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Martial Ranged Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_RANGED_WEAPONS">
+		<supports>Weapon, Martial Weapon</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_BLOWGUN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HAND" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HEAVY" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGBOW" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_NET" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Martial Weapons)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS">
+		<supports>Weapon, Martial Weapons</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_MELEE_WEAPONS" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_RANGED_WEAPONS" />
+		</rules>
+	</element>
+
+	<element name="Weapon Proficiency (Club)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CLUB">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Dagger)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DAGGER">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Greatclub)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATCLUB">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Handaxe)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_HANDAXE">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Javelin)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_JAVELIN">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Light Hammer)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LIGHT_HAMMER">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Mace)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MACE">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Quarterstaff)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_QUARTERSTAFF">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Sickle)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SICKLE">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Spear)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SPEAR">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Light Crossbow)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_LIGHT">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Dart)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DART">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Shortbow)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTBOW">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Sling)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SLING">
+		<supports>Weapon, Simple, Simple Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Battleaxe)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_BATTLEAXE">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Flail)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_FLAIL">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Glaive)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GLAIVE">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Greataxe)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATAXE">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Greatsword)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATSWORD">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Halberd)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_HALBERD">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Lance)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LANCE">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Longsword)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Maul)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MAUL">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Morningstar)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MORNINGSTAR">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Pike)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_PIKE">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Rapier)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_RAPIER">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Scimitar)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SCIMITAR">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Shortsword)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Trident)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_TRIDENT">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (War Pick)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WAR_PICK">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Warhammer)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WARHAMMER">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Whip)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WHIP">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Blowgun)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_BLOWGUN">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Hand Crossbow)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HAND">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Heavy Crossbow)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HEAVY">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Longbow)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGBOW">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Net)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_NET">
+		<supports>Weapon, Martial, Martial Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Weapon Proficiency (Unarmed Strike)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_UNARMED_STRIKE">
+		<supports>Weapon</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Light Armor)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR">
+		<supports>Armor</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_PADDED" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LEATHER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_STUDDED_LEATHER" />
+		</rules>
+	</element>
+
+	<element name="Armor Proficiency (Medium Armor)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR">
+		<supports>Armor</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HIDE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_SHIRT" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SCALE_MAIL" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_BREASTPLATE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HALF_PLATE" />
+		</rules>
+	</element>
+
+	<element name="Armor Proficiency (Heavy Armor)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HEAVY_ARMOR">
+		<supports>Armor</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_RING_MAIL" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_MAIL" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SPLINT" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_PLATE" />
+		</rules>
+	</element>
+
+	<element name="Armor Proficiency (Padded)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_PADDED">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Leather)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LEATHER">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Studded Leather)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_STUDDED_LEATHER">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Hide)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HIDE">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Chain Shirt)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_SHIRT">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Scale Mail)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SCALE_MAIL">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Breastplate)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_BREASTPLATE">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Half Plate)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HALF_PLATE">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Ring Mail)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_RING_MAIL">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Chain Mail)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_MAIL">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Splint)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SPLINT">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Plate)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_PLATE">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Armor Proficiency (Shields)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS">
+		<supports>Armor</supports>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELD" />
+		</rules>
+	</element>
+
+	<element name="Armor Proficiency (Shield)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELD">
+		<supports>Armor</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Alchemist’s supplies)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_ALCHEMISTS_SUPPLIES">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Brewer’s supplies)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_BREWERS_SUPPLIES">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Calligrapher’s supplies)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_CALLIGRAPHERS_SUPPLIES">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Carpenter’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_CARPENTERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Cartographer’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_CARTOGRAPHERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Cobbler’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_COBBLERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Cook’s utensils)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_COOKS_UTENSILS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Glassblower’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_GLASSBLOWERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Jeweler’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_JEWELERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Leatherworker’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_LEATHERWORKERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Mason’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_MASONS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Painter’s supplies)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_PAINTERS_SUPPLIES">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Potter’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_POTTERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Smith’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_SMITHS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Tinker’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_TINKERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Weaver’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_WEAVERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Woodcarver’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_WOODCARVERS_TOOLS">
+		<supports>Tool, Artisan, Artisan’s Tools, Artisan's Tools</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Bagpipes)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_BAGPIPES">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Drum)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_DRUM">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Dulcimer)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_DULCIMER">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Flute)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_FLUTE">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Lute)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_LUTE">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Lyre)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_LYRE">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Horn)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_HORN">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Pan flute)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_PAN_FLUTE">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Shawm)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_SHAWM">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Viol)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_VIOL">
+		<supports>Tool, Musical Instrument</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Disguise kit)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_DISGUISE_KIT">
+		<supports>Tool, Kit</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Forgery kit)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_FORGERY_KIT">
+		<supports>Tool, Kit</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Herbalism kit)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_HERBALISM_KIT">
+		<supports>Tool, Kit</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Poisoner’s kit)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_POISONERS_KIT">
+		<supports>Tool, Kit</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Navigator’s tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_NAVIGATORS_TOOLS">
+		<supports>Tool, Tool</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Thieves’ tools)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_THIEVES_TOOLS">
+		<supports>Tool, Tool</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Vehicles (land))" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_VEHICLES_LAND">
+		<supports>Tool, Vehicle</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Vehicles (water))" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_TOOL_PROFICIENCY_VEHICLES_WATER">
+		<supports>Tool, Vehicle</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Dice set)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_GAMING_SET_PROFICIENCY_DICE_SET">
+		<supports>Tool, Gaming Set</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Dragonchess set)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_GAMING_SET_PROFICIENCY_DRAGONCHESS_SET">
+		<supports>Tool, Gaming Set</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Playing card set)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_GAMING_SET_PROFICIENCY_PLAYING_CARD_SET">
+		<supports>Tool, Gaming Set</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Tool Proficiency (Three-Dragon Ante set)" type="Proficiency" source="System Reference Document 5.1" id="ID_PROFICIENCY_GAMING_SET_PROFICIENCY_THREE_DRAGON_ANTE_SET">
+		<supports>Tool, Gaming Set</supports>
+		<sheet display="false" />
+	</element>
+
+	<element name="Common" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_COMMON">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Humans. Script: Common.</p></description>
+		<setters>
+			<set name="speakers">Humans</set>
+			<set name="script">Common</set>
+		</setters>
+	</element>
+
+	<element name="Dwarvish" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_DWARVISH">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Dwarves. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Dwarves</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Elvish" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_ELVISH">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Elves. Script: Elvish.</p></description>
+		<setters>
+			<set name="speakers">Elves</set>
+			<set name="script">Elvish</set>
+		</setters>
+	</element>
+
+	<element name="Giant" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_GIANT">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Ogres, giants. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Ogres, giants</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Gnomish" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_GNOMISH">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Gnomes. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Gnomes</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Goblin" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_GOBLIN">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Goblinoids. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Goblinoids</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Halfling" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_HALFLING">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Halflings. Script: Common.</p></description>
+		<setters>
+			<set name="speakers">Halflings</set>
+			<set name="script">Common</set>
+		</setters>
+	</element>
+
+	<element name="Orc" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_ORC">
+		<supports>Language, Standard</supports>
+		<description><p>Standard language. Typical speakers: Orcs. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Orcs</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Abyssal" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_ABYSSAL">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Demons. Script: Infernal.</p></description>
+		<setters>
+			<set name="speakers">Demons</set>
+			<set name="script">Infernal</set>
+		</setters>
+	</element>
+
+	<element name="Celestial" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_CELESTIAL">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Celestials. Script: Celestial.</p></description>
+		<setters>
+			<set name="speakers">Celestials</set>
+			<set name="script">Celestial</set>
+		</setters>
+	</element>
+
+	<element name="Draconic" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_DRACONIC">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Dragons, dragonborn. Script: Draconic.</p></description>
+		<setters>
+			<set name="speakers">Dragons, dragonborn</set>
+			<set name="script">Draconic</set>
+		</setters>
+	</element>
+
+	<element name="Deep Speech" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_DEEP_SPEECH">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Aboleths, cloakers. Script: —.</p></description>
+		<setters>
+			<set name="speakers">Aboleths, cloakers</set>
+			<set name="script">—</set>
+		</setters>
+	</element>
+
+	<element name="Infernal" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_INFERNAL">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Devils. Script: Infernal.</p></description>
+		<setters>
+			<set name="speakers">Devils</set>
+			<set name="script">Infernal</set>
+		</setters>
+	</element>
+
+	<element name="Primordial" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_PRIMORDIAL">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Elementals. Script: Dwarvish.</p></description>
+		<setters>
+			<set name="speakers">Elementals</set>
+			<set name="script">Dwarvish</set>
+		</setters>
+	</element>
+
+	<element name="Sylvan" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_SYLVAN">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Fey creatures. Script: Elvish.</p></description>
+		<setters>
+			<set name="speakers">Fey creatures</set>
+			<set name="script">Elvish</set>
+		</setters>
+	</element>
+
+	<element name="Undercommon" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_UNDERCOMMON">
+		<supports>Language, Exotic</supports>
+		<description><p>Exotic language. Typical speakers: Underworld traders. Script: Elvish.</p></description>
+		<setters>
+			<set name="speakers">Underworld traders</set>
+			<set name="script">Elvish</set>
+		</setters>
+	</element>
+
+	<element name="Druidic" type="Language" source="System Reference Document 5.1" id="ID_LANGUAGE_DRUIDIC">
+		<supports>Secret</supports>
+		<description><p>The secret language of druids.</p></description>
+	</element>
+
+	<element name="Thieves’ Cant" type="Language" source="System Reference Document 5.1" id="ID_WOTC_PHB_LANGUAGE_THIEVES_CANT">
+		<supports>Secret</supports>
+		<description><p>A secret mix of dialect, jargon and code that lets rogues hide messages in seemingly normal conversation.</p></description>
+	</element>
+
+	<element name="Lawful Good" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_LAWFUL_GOOD">
+	</element>
+
+	<element name="Neutral Good" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_NEUTRAL_GOOD">
+	</element>
+
+	<element name="Chaotic Good" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_CHAOTIC_GOOD">
+	</element>
+
+	<element name="Lawful Neutral" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_LAWFUL_NEUTRAL">
+	</element>
+
+	<element name="Neutral" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_NEUTRAL">
+	</element>
+
+	<element name="Chaotic Neutral" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_CHAOTIC_NEUTRAL">
+	</element>
+
+	<element name="Lawful Evil" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_LAWFUL_EVIL">
+	</element>
+
+	<element name="Neutral Evil" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_NEUTRAL_EVIL">
+	</element>
+
+	<element name="Chaotic Evil" type="Alignment" source="System Reference Document 5.1" id="ID_ALIGNMENT_CHAOTIC_EVIL">
+	</element>
+
+	<element name="Darkvision" type="Vision" source="System Reference Document 5.1" id="ID_VISION_DARKVISION">
+		<description><p>You can see in dim light as if it were bright light, and in darkness as if it were dim light (shades of gray only).</p></description>
+		<sheet><description>Darkvision {{darkvision:range}} ft.</description></sheet>
+		<rules>
+			<stat name="darkvision:range" value="60" bonus="base" />
+		</rules>
+	</element>
+
+	<element name="Blindsight" type="Vision" source="System Reference Document 5.1" id="ID_VISION_BLINDSIGHT">
+		<description><p>You can perceive your surroundings without relying on sight, within a specific radius.</p></description>
+		<sheet><description>Blindsight {{blindsight:range}} ft.</description></sheet>
+	</element>
+
+	<element name="Truesight" type="Vision" source="System Reference Document 5.1" id="ID_VISION_TRUESIGHT">
+		<description><p>You can see in normal and magical darkness, see invisible creatures and objects, and see through illusions.</p></description>
+		<sheet><description>Truesight {{truesight:range}} ft.</description></sheet>
+	</element>
+
+	<element name="Tremorsense" type="Vision" source="System Reference Document 5.1" id="ID_VISION_TREMORSENSE">
+		<description><p>You can detect and pinpoint the origin of vibrations within a specific radius.</p></description>
+		<sheet><description>Tremorsense {{tremorsense:range}} ft.</description></sheet>
+	</element>
+</elements>

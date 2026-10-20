@@ -1,5 +1,5 @@
 import { ContentRegistry, downloadIndex, type RegistryWarning } from "@dndbuilder/engine";
-import { getPlatform, packs, type PackMeta, type StoredFile } from "../platform";
+import { getPlatform, packs, settings, type PackMeta, type StoredFile } from "../platform";
 
 // Content shipped with the app: system elements (and the SRD pack, when present).
 const bundledCore = import.meta.glob("../../../../content/core/**/*.xml", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
@@ -32,8 +32,9 @@ export async function loadAllContent(): Promise<LoadedContent> {
   for (const [path, xml] of Object.entries(bundledCore)) registry.addXml(xml, shortPath(path));
   sources.push({ id: "bundled:core", name: "Core rules (built in)", kind: "bundled", fileCount: Object.keys(bundledCore).length, enabled: true });
   if (Object.keys(bundledSrd).length) {
-    for (const [path, xml] of Object.entries(bundledSrd)) registry.addXml(xml, shortPath(path));
-    sources.push({ id: "bundled:srd", name: "System Reference Document 5.1 (built in)", kind: "bundled", fileCount: Object.keys(bundledSrd).length, enabled: true });
+    const enabled = settings.get("srdEnabled", true);
+    if (enabled) for (const [path, xml] of Object.entries(bundledSrd)) registry.addXml(xml, shortPath(path));
+    sources.push({ id: "bundled:srd", name: "System Reference Document 5.1 (built in, CC-BY-4.0)", kind: "bundled", fileCount: Object.keys(bundledSrd).length, enabled });
   }
 
   for (const meta of await packs.list()) {

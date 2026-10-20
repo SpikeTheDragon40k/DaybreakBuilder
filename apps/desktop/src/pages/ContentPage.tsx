@@ -1,6 +1,6 @@
 import { AURORA_LEGACY_INDEX } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
-import { getPlatform, isTauri, packs } from "../platform";
+import { getPlatform, isTauri, packs, settings } from "../platform";
 import { useApp } from "../state/app";
 import { importLocalFiles, installIndex } from "../state/content";
 
@@ -79,11 +79,13 @@ export function ContentPage() {
                   <input
                     type="checkbox"
                     checked={s.enabled}
-                    disabled={s.kind !== "pack" || !!busy}
+                    disabled={(s.kind !== "pack" && s.id !== "bundled:srd") || !!busy}
                     aria-label={`Enable ${s.name}`}
-                    onChange={(e) =>
-                      s.meta && run("Updating", async () => void (await packs.update({ ...s.meta!, enabled: e.target.checked })))
-                    }
+                    onChange={(e) => {
+                      const on = e.target.checked;
+                      if (s.id === "bundled:srd") void run("Updating", async () => settings.set("srdEnabled", on));
+                      else if (s.meta) void run("Updating", async () => void (await packs.update({ ...s.meta!, enabled: on })));
+                    }}
                   />
                 </td>
                 <td>

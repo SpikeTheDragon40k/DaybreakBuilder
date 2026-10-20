@@ -1,0 +1,1785 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Equipment</name>
+		<description>Armor, weapons, adventuring gear, packs and tools.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Padded" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_LIGHT_PADDED">
+		<supports>ID_INTERNAL_ARMOR_GROUP_LIGHT, Light Armor</supports>
+		<description><p>Light armor. AC 11 + Dex modifier. Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="8">8 lb.</set>
+			<set name="armor">Light</set>
+			<set name="armorClass">11 + Dex modifier</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_PADDED</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="11" />
+		</rules>
+	</element>
+
+	<element name="Leather" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_LIGHT_LEATHER">
+		<supports>ID_INTERNAL_ARMOR_GROUP_LIGHT, Light Armor</supports>
+		<description><p>Light armor. AC 11 + Dex modifier.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="10">10 lb.</set>
+			<set name="armor">Light</set>
+			<set name="armorClass">11 + Dex modifier</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_LEATHER</set>
+		</setters>
+		<rules>
+			<stat name="ac:armored:armor" value="11" />
+		</rules>
+	</element>
+
+	<element name="Studded Leather" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_LIGHT_STUDDED_LEATHER">
+		<supports>ID_INTERNAL_ARMOR_GROUP_LIGHT, Light Armor</supports>
+		<description><p>Light armor. AC 12 + Dex modifier.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">45</set>
+			<set name="weight" lb="13">13 lb.</set>
+			<set name="armor">Light</set>
+			<set name="armorClass">12 + Dex modifier</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_STUDDED_LEATHER</set>
+		</setters>
+		<rules>
+			<stat name="ac:armored:armor" value="12" />
+		</rules>
+	</element>
+
+	<element name="Hide" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_MEDIUM_HIDE_ARMOR">
+		<supports>ID_INTERNAL_ARMOR_GROUP_MEDIUM, Medium Armor</supports>
+		<description><p>Medium armor. AC 12 + Dex modifier (max 2).</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="12">12 lb.</set>
+			<set name="armor">Medium</set>
+			<set name="armorClass">12 + Dex modifier (max 2)</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_HIDE</set>
+		</setters>
+		<rules>
+			<stat name="ac:armored:armor" value="12" />
+		</rules>
+	</element>
+
+	<element name="Chain Shirt" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_MEDIUM_CHAIN_SHIRT">
+		<supports>ID_INTERNAL_ARMOR_GROUP_MEDIUM, Medium Armor</supports>
+		<description><p>Medium armor. AC 13 + Dex modifier (max 2).</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="20">20 lb.</set>
+			<set name="armor">Medium</set>
+			<set name="armorClass">13 + Dex modifier (max 2)</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_SHIRT</set>
+		</setters>
+		<rules>
+			<stat name="ac:armored:armor" value="13" />
+		</rules>
+	</element>
+
+	<element name="Scale Mail" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_MEDIUM_SCALE_MAIL">
+		<supports>ID_INTERNAL_ARMOR_GROUP_MEDIUM, Medium Armor</supports>
+		<description><p>Medium armor. AC 14 + Dex modifier (max 2). Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="45">45 lb.</set>
+			<set name="armor">Medium</set>
+			<set name="armorClass">14 + Dex modifier (max 2)</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_SCALE_MAIL</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="14" />
+		</rules>
+	</element>
+
+	<element name="Breastplate" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_MEDIUM_BREASTPLATE">
+		<supports>ID_INTERNAL_ARMOR_GROUP_MEDIUM, Medium Armor</supports>
+		<description><p>Medium armor. AC 14 + Dex modifier (max 2).</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">400</set>
+			<set name="weight" lb="20">20 lb.</set>
+			<set name="armor">Medium</set>
+			<set name="armorClass">14 + Dex modifier (max 2)</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_BREASTPLATE</set>
+		</setters>
+		<rules>
+			<stat name="ac:armored:armor" value="14" />
+		</rules>
+	</element>
+
+	<element name="Half Plate" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_MEDIUM_HALF_PLATE">
+		<supports>ID_INTERNAL_ARMOR_GROUP_MEDIUM, Medium Armor</supports>
+		<description><p>Medium armor. AC 15 + Dex modifier (max 2). Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">750</set>
+			<set name="weight" lb="40">40 lb.</set>
+			<set name="armor">Medium</set>
+			<set name="armorClass">15 + Dex modifier (max 2)</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_HALF_PLATE</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="15" />
+		</rules>
+	</element>
+
+	<element name="Ring Mail" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_HEAVY_RING_MAIL">
+		<supports>ID_INTERNAL_ARMOR_GROUP_HEAVY, Heavy Armor</supports>
+		<description><p>Heavy armor. AC 14. Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="40">40 lb.</set>
+			<set name="armor">Heavy</set>
+			<set name="armorClass">14</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_RING_MAIL</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="14" />
+		</rules>
+	</element>
+
+	<element name="Chain Mail" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_HEAVY_CHAIN_MAIL">
+		<supports>ID_INTERNAL_ARMOR_GROUP_HEAVY, Heavy Armor</supports>
+		<description><p>Heavy armor. AC 16. Requires Strength 13; otherwise your speed is reduced by 10 feet. Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">75</set>
+			<set name="weight" lb="55">55 lb.</set>
+			<set name="armor">Heavy</set>
+			<set name="armorClass">16</set>
+			<set name="strength">13</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_CHAIN_MAIL</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="16" />
+			<stat name="speed" value="-10" bonus="armor" requirements="!([str:13]||ID_INTERNAL_GRANT_ARMOR_IGNORE_STRENGTH_REQUIREMENT)" />
+		</rules>
+	</element>
+
+	<element name="Splint" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_HEAVY_SPLINT">
+		<supports>ID_INTERNAL_ARMOR_GROUP_HEAVY, Heavy Armor</supports>
+		<description><p>Heavy armor. AC 17. Requires Strength 15; otherwise your speed is reduced by 10 feet. Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">200</set>
+			<set name="weight" lb="60">60 lb.</set>
+			<set name="armor">Heavy</set>
+			<set name="armorClass">17</set>
+			<set name="strength">15</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_SPLINT</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="17" />
+			<stat name="speed" value="-10" bonus="armor" requirements="!([str:15]||ID_INTERNAL_GRANT_ARMOR_IGNORE_STRENGTH_REQUIREMENT)" />
+		</rules>
+	</element>
+
+	<element name="Plate" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_ARMOR_HEAVY_PLATE">
+		<supports>ID_INTERNAL_ARMOR_GROUP_HEAVY, Heavy Armor</supports>
+		<description><p>Heavy armor. AC 18. Requires Strength 15; otherwise your speed is reduced by 10 feet. Disadvantage on Dexterity (Stealth) checks.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">1500</set>
+			<set name="weight" lb="65">65 lb.</set>
+			<set name="armor">Heavy</set>
+			<set name="armorClass">18</set>
+			<set name="strength">15</set>
+			<set name="stealth">Disadvantage</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_PLATE</set>
+		</setters>
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_STEALTH_DISADVANTAGE" />
+			<stat name="ac:armored:armor" value="18" />
+			<stat name="speed" value="-10" bonus="armor" requirements="!([str:15]||ID_INTERNAL_GRANT_ARMOR_IGNORE_STRENGTH_REQUIREMENT)" />
+		</rules>
+	</element>
+
+	<element name="Shield" type="Armor" source="System Reference Document 5.1" id="ID_WOTC_GEAR_SHIELD">
+		<supports>ID_INTERNAL_ARMOR_GROUP_SHIELD, Shield</supports>
+		<description><p>A shield is carried in one hand. Wielding a shield increases your Armor Class by 2. You can benefit from only one shield at a time.</p></description>
+		<setters>
+			<set name="category">Armor</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="armor">Shield</set>
+			<set name="armorClass">+2</set>
+			<set name="proficiency">ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELD</set>
+		</setters>
+		<rules>
+			<stat name="ac:shield" value="2" bonus="shield" alt="Shield" />
+		</rules>
+	</element>
+
+	<element name="Club" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_CLUB">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_LIGHT</supports>
+		<description><p>Simple Melee weapon. Damage 1d4 bludgeoning. Properties: Light.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="sp">1</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="bludgeoning">1d4</set>
+			<set name="properties">Light</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_CLUB</set>
+		</setters>
+	</element>
+
+	<element name="Dagger" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_DAGGER">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE, ID_INTERNAL_WEAPON_PROPERTY_LIGHT, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Simple Melee weapon. Damage 1d4 piercing. Properties: Finesse, Light, Thrown (range 20/60).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="damage" type="piercing">1d4</set>
+			<set name="range">20/60</set>
+			<set name="properties">Finesse, Light, Thrown (range 20/60)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_DAGGER</set>
+		</setters>
+	</element>
+
+	<element name="Greatclub" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_GREATCLUB">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Simple Melee weapon. Damage 1d8 bludgeoning. Properties: Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="sp">2</set>
+			<set name="weight" lb="10">10 lb.</set>
+			<set name="damage" type="bludgeoning">1d8</set>
+			<set name="properties">Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATCLUB</set>
+		</setters>
+	</element>
+
+	<element name="Handaxe" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_HANDAXE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_LIGHT, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Simple Melee weapon. Damage 1d6 slashing. Properties: Light, Thrown (range 20/60).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="slashing">1d6</set>
+			<set name="range">20/60</set>
+			<set name="properties">Light, Thrown (range 20/60)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_HANDAXE</set>
+		</setters>
+	</element>
+
+	<element name="Javelin" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_JAVELIN">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Simple Melee weapon. Damage 1d6 piercing. Properties: Thrown (range 30/120).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="range">30/120</set>
+			<set name="properties">Thrown (range 30/120)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_JAVELIN</set>
+		</setters>
+	</element>
+
+	<element name="Light Hammer" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_LIGHTHAMMER">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_LIGHT, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Simple Melee weapon. Damage 1d4 bludgeoning. Properties: Light, Thrown (range 20/60).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="bludgeoning">1d4</set>
+			<set name="range">20/60</set>
+			<set name="properties">Light, Thrown (range 20/60)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_LIGHT_HAMMER</set>
+		</setters>
+	</element>
+
+	<element name="Mace" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_MACE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING</supports>
+		<description><p>Simple Melee weapon. Damage 1d6 bludgeoning.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="4">4 lb.</set>
+			<set name="damage" type="bludgeoning">1d6</set>
+			<set name="properties"></set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_MACE</set>
+		</setters>
+	</element>
+
+	<element name="Quarterstaff" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_QUARTERSTAFF">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Simple Melee weapon. Damage 1d6 bludgeoning. Properties: Versatile (1d8).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="sp">2</set>
+			<set name="weight" lb="4">4 lb.</set>
+			<set name="damage" type="bludgeoning">1d6</set>
+			<set name="versatile">1d8</set>
+			<set name="properties">Versatile (1d8)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_QUARTERSTAFF</set>
+		</setters>
+	</element>
+
+	<element name="Sickle" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SICKLE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_LIGHT</supports>
+		<description><p>Simple Melee weapon. Damage 1d4 slashing. Properties: Light.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="slashing">1d4</set>
+			<set name="properties">Light</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SICKLE</set>
+		</setters>
+	</element>
+
+	<element name="Spear" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SPEAR">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_MELEE, Simple Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_THROWN, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Simple Melee weapon. Damage 1d6 piercing. Properties: Thrown (range 20/60), Versatile (1d8).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="versatile">1d8</set>
+			<set name="range">20/60</set>
+			<set name="properties">Thrown (range 20/60), Versatile (1d8)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SPEAR</set>
+		</setters>
+	</element>
+
+	<element name="Light Crossbow" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_CROSSBOW_LIGHT">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_RANGED, Simple Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_LOADING, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Simple Ranged weapon. Damage 1d8 piercing. Properties: Ammunition (range 80/320), Loading, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="damage" type="piercing">1d8</set>
+			<set name="range">80/320</set>
+			<set name="properties">Ammunition (range 80/320), Loading, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_LIGHT</set>
+		</setters>
+	</element>
+
+	<element name="Dart" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_DART">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_RANGED, Simple Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Simple Ranged weapon. Damage 1d4 piercing. Properties: Finesse, Thrown (range 20/60).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="cp">5</set>
+			<set name="weight" lb="0.25">0.25 lb.</set>
+			<set name="damage" type="piercing">1d4</set>
+			<set name="range">20/60</set>
+			<set name="properties">Finesse, Thrown (range 20/60)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_DART</set>
+		</setters>
+	</element>
+
+	<element name="Shortbow" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SHORTBOW">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_RANGED, Simple Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Simple Ranged weapon. Damage 1d6 piercing. Properties: Ammunition (range 80/320), Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="range">80/320</set>
+			<set name="properties">Ammunition (range 80/320), Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTBOW</set>
+		</setters>
+	</element>
+
+	<element name="Sling" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SLING">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_SIMPLE_RANGED, Simple Ranged, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION</supports>
+		<description><p>Simple Ranged weapon. Damage 1d4 bludgeoning. Properties: Ammunition (range 30/120).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="sp">1</set>
+			<set name="weight" lb="0">—</set>
+			<set name="damage" type="bludgeoning">1d4</set>
+			<set name="range">30/120</set>
+			<set name="properties">Ammunition (range 30/120)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SLING</set>
+		</setters>
+	</element>
+
+	<element name="Battleaxe" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_BATTLEAXE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 slashing. Properties: Versatile (1d10).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="4">4 lb.</set>
+			<set name="damage" type="slashing">1d8</set>
+			<set name="versatile">1d10</set>
+			<set name="properties">Versatile (1d10)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_BATTLEAXE</set>
+		</setters>
+	</element>
+
+	<element name="Flail" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_FLAIL">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 bludgeoning.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="bludgeoning">1d8</set>
+			<set name="properties"></set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_FLAIL</set>
+		</setters>
+	</element>
+
+	<element name="Glaive" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_GLAIVE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_REACH, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 1d10 slashing. Properties: Heavy, Reach, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">20</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="damage" type="slashing">1d10</set>
+			<set name="properties">Heavy, Reach, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_GLAIVE</set>
+		</setters>
+	</element>
+
+	<element name="Greataxe" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_GREATAXE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 1d12 slashing. Properties: Heavy, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="7">7 lb.</set>
+			<set name="damage" type="slashing">1d12</set>
+			<set name="properties">Heavy, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATAXE</set>
+		</setters>
+	</element>
+
+	<element name="Greatsword" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_GREATSWORD">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 2d6 slashing. Properties: Heavy, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="damage" type="slashing">2d6</set>
+			<set name="properties">Heavy, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_GREATSWORD</set>
+		</setters>
+	</element>
+
+	<element name="Halberd" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_HALBERD">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_REACH, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 1d10 slashing. Properties: Heavy, Reach, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">20</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="damage" type="slashing">1d10</set>
+			<set name="properties">Heavy, Reach, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_HALBERD</set>
+		</setters>
+	</element>
+
+	<element name="Lance" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_LANCE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_REACH, ID_INTERNAL_WEAPON_PROPERTY_SPECIAL</supports>
+		<description><p>Martial Melee weapon. Damage 1d12 piercing. Properties: Reach, Special.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="damage" type="piercing">1d12</set>
+			<set name="properties">Reach, Special</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_LANCE</set>
+		</setters>
+	</element>
+
+	<element name="Longsword" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_LONGSWORD">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 slashing. Properties: Versatile (1d10).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage" type="slashing">1d8</set>
+			<set name="versatile">1d10</set>
+			<set name="properties">Versatile (1d10)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD</set>
+		</setters>
+	</element>
+
+	<element name="Maul" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_MAUL">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 2d6 bludgeoning. Properties: Heavy, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="10">10 lb.</set>
+			<set name="damage" type="bludgeoning">2d6</set>
+			<set name="properties">Heavy, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_MAUL</set>
+		</setters>
+	</element>
+
+	<element name="Morningstar" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_MORNINGSTAR">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 piercing.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="4">4 lb.</set>
+			<set name="damage" type="piercing">1d8</set>
+			<set name="properties"></set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_MORNINGSTAR</set>
+		</setters>
+	</element>
+
+	<element name="Pike" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_PIKE">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_REACH, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Melee weapon. Damage 1d10 piercing. Properties: Heavy, Reach, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="18">18 lb.</set>
+			<set name="damage" type="piercing">1d10</set>
+			<set name="properties">Heavy, Reach, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_PIKE</set>
+		</setters>
+	</element>
+
+	<element name="Rapier" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_RAPIER">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 piercing. Properties: Finesse.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d8</set>
+			<set name="properties">Finesse</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_RAPIER</set>
+		</setters>
+	</element>
+
+	<element name="Scimitar" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SCIMITAR">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE, ID_INTERNAL_WEAPON_PROPERTY_LIGHT</supports>
+		<description><p>Martial Melee weapon. Damage 1d6 slashing. Properties: Finesse, Light.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage" type="slashing">1d6</set>
+			<set name="properties">Finesse, Light</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SCIMITAR</set>
+		</setters>
+	</element>
+
+	<element name="Shortsword" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_SHORTSWORD">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE, ID_INTERNAL_WEAPON_PROPERTY_LIGHT</supports>
+		<description><p>Martial Melee weapon. Damage 1d6 piercing. Properties: Finesse, Light.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="properties">Finesse, Light</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD</set>
+		</setters>
+	</element>
+
+	<element name="Trident" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_TRIDENT">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_THROWN, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Martial Melee weapon. Damage 1d6 piercing. Properties: Thrown (range 20/60), Versatile (1d8).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="4">4 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="versatile">1d8</set>
+			<set name="range">20/60</set>
+			<set name="properties">Thrown (range 20/60), Versatile (1d8)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_TRIDENT</set>
+		</setters>
+	</element>
+
+	<element name="War Pick" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_WAR_PICK">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_PIERCING</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 piercing.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d8</set>
+			<set name="properties"></set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_WAR_PICK</set>
+		</setters>
+	</element>
+
+	<element name="Warhammer" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_WARHAMMER">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_BLUDGEONING, ID_INTERNAL_WEAPON_PROPERTY_VERSATILE</supports>
+		<description><p>Martial Melee weapon. Damage 1d8 bludgeoning. Properties: Versatile (1d10).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="bludgeoning">1d8</set>
+			<set name="versatile">1d10</set>
+			<set name="properties">Versatile (1d10)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_WARHAMMER</set>
+		</setters>
+	</element>
+
+	<element name="Whip" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_WHIP">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_MELEE, Martial Melee, ID_INTERNAL_DAMAGE_TYPE_SLASHING, ID_INTERNAL_WEAPON_PROPERTY_FINESSE, ID_INTERNAL_WEAPON_PROPERTY_REACH</supports>
+		<description><p>Martial Melee weapon. Damage 1d4 slashing. Properties: Finesse, Reach.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage" type="slashing">1d4</set>
+			<set name="properties">Finesse, Reach</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_WHIP</set>
+		</setters>
+	</element>
+
+	<element name="Blowgun" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_BLOWGUN">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_RANGED, Martial Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_LOADING</supports>
+		<description><p>Martial Ranged weapon. Damage 1 piercing. Properties: Ammunition (range 25/100), Loading.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="damage" type="piercing">1</set>
+			<set name="range">25/100</set>
+			<set name="properties">Ammunition (range 25/100), Loading</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_BLOWGUN</set>
+		</setters>
+	</element>
+
+	<element name="Hand Crossbow" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_CROSSBOW_HAND">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_RANGED, Martial Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_LIGHT, ID_INTERNAL_WEAPON_PROPERTY_LOADING</supports>
+		<description><p>Martial Ranged weapon. Damage 1d6 piercing. Properties: Ammunition (range 30/120), Light, Loading.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">75</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage" type="piercing">1d6</set>
+			<set name="range">30/120</set>
+			<set name="properties">Ammunition (range 30/120), Light, Loading</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HAND</set>
+		</setters>
+	</element>
+
+	<element name="Heavy Crossbow" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_CROSSBOW_HEAVY">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_RANGED, Martial Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_LOADING, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Ranged weapon. Damage 1d10 piercing. Properties: Ammunition (range 100/400), Heavy, Loading, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="18">18 lb.</set>
+			<set name="damage" type="piercing">1d10</set>
+			<set name="range">100/400</set>
+			<set name="properties">Ammunition (range 100/400), Heavy, Loading, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HEAVY</set>
+		</setters>
+	</element>
+
+	<element name="Longbow" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_LONGBOW">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_RANGED, Martial Ranged, ID_INTERNAL_DAMAGE_TYPE_PIERCING, ID_INTERNAL_WEAPON_PROPERTY_AMMUNITION, ID_INTERNAL_WEAPON_PROPERTY_HEAVY, ID_INTERNAL_WEAPON_PROPERTY_TWOHANDED</supports>
+		<description><p>Martial Ranged weapon. Damage 1d8 piercing. Properties: Ammunition (range 150/600), Heavy, Two-handed.</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="damage" type="piercing">1d8</set>
+			<set name="range">150/600</set>
+			<set name="properties">Ammunition (range 150/600), Heavy, Two-handed</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGBOW</set>
+		</setters>
+	</element>
+
+	<element name="Net" type="Weapon" source="System Reference Document 5.1" id="ID_WOTC_PHB_WEAPON_NET">
+		<supports>ID_INTERNAL_WEAPON_CATEGORY_MARTIAL_RANGED, Martial Ranged, ID_INTERNAL_WEAPON_PROPERTY_SPECIAL, ID_INTERNAL_WEAPON_PROPERTY_THROWN</supports>
+		<description><p>Martial Ranged weapon. Damage —. Properties: Special, Thrown (range 5/15).</p></description>
+		<setters>
+			<set name="category">Weapons</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="damage">—</set>
+			<set name="range">5/15</set>
+			<set name="properties">Special, Thrown (range 5/15)</set>
+			<set name="proficiency">ID_PROFICIENCY_WEAPON_PROFICIENCY_NET</set>
+		</setters>
+	</element>
+
+	<element name="Abacus" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ABACUS">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Acid (vial)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ACID_VIAL">
+		<supports>Adventuring Gear</supports>
+		<description><p>As an action, you can splash the contents onto a creature within 5 feet or throw it up to 20 feet. On a hit, the target takes 2d6 acid damage.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Alchemist’s Fire (flask)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ALCHEMISTS_FIRE_FLASK">
+		<supports>Adventuring Gear</supports>
+		<description><p>As an action, you can throw this flask up to 20 feet. On a hit, the target takes 1d4 fire damage at the start of each of its turns until it uses an action to put out the flames (DC 10 Dexterity check).</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Arrows (20)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARROWS_20">
+		<supports>Adventuring Gear</supports>
+		<description><p>Ammunition for bows.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Blowgun Needles (50)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BLOWGUN_NEEDLES_50">
+		<supports>Adventuring Gear</supports>
+		<description><p>Ammunition for blowguns.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Crossbow Bolts (20)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CROSSBOW_BOLTS_20">
+		<supports>Adventuring Gear</supports>
+		<description><p>Ammunition for crossbows.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="1.5">1.5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Sling Bullets (20)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SLING_BULLETS_20">
+		<supports>Adventuring Gear</supports>
+		<description><p>Ammunition for slings.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">4</set>
+			<set name="weight" lb="1.5">1.5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Antitoxin (vial)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ANTITOXIN_VIAL">
+		<supports>Adventuring Gear</supports>
+		<description><p>A creature that drinks this vial gains advantage on saving throws against poison for 1 hour.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Arcane Focus (Crystal)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARCANE_FOCUS_CRYSTAL">
+		<supports>Adventuring Gear</supports>
+		<description><p>An arcane focus can be used as a spellcasting focus by sorcerers, warlocks and wizards.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Arcane Focus (Orb)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARCANE_FOCUS_ORB">
+		<supports>Adventuring Gear</supports>
+		<description><p>An arcane focus can be used as a spellcasting focus by sorcerers, warlocks and wizards.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">20</set>
+			<set name="weight" lb="3">3 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Arcane Focus (Rod)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARCANE_FOCUS_ROD">
+		<supports>Adventuring Gear</supports>
+		<description><p>An arcane focus can be used as a spellcasting focus by sorcerers, warlocks and wizards.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Arcane Focus (Staff)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARCANE_FOCUS_STAFF">
+		<supports>Adventuring Gear</supports>
+		<description><p>An arcane focus can be used as a spellcasting focus by sorcerers, warlocks and wizards.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="4">4 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Arcane Focus (Wand)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ARCANE_FOCUS_WAND">
+		<supports>Adventuring Gear</supports>
+		<description><p>An arcane focus can be used as a spellcasting focus by sorcerers, warlocks and wizards.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Backpack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BACKPACK">
+		<supports>Adventuring Gear</supports>
+		<description><p>Holds 1 cubic foot or 30 pounds of gear.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Ball Bearings (bag of 1,000)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BALL_BEARINGS_BAG_OF_1_000">
+		<supports>Adventuring Gear</supports>
+		<description><p>As an action, you can cover a 10-foot square with these. A creature moving across it must succeed on a DC 10 Dexterity saving throw or fall prone.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Bedroll" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BEDROLL">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="7">7 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Bell" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BELL">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Blanket" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BLANKET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="3">3 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Book" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BOOK">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Caltrops (bag of 20)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CALTROPS_BAG_OF_20">
+		<supports>Adventuring Gear</supports>
+		<description><p>As an action, you can cover a 5-foot square. A creature entering it must succeed on a DC 15 Dexterity saving throw or take 1 piercing damage and have its speed reduced by 10 feet until it regains a hit point.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Candle" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CANDLE">
+		<supports>Adventuring Gear</supports>
+		<description><p>For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">1</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Chain (10 feet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CHAIN_10_FEET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="10">10 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Climber’s Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CLIMBERS_KIT">
+		<supports>Adventuring Gear</supports>
+		<description><p>Includes special pitons, boot tips, gloves and a harness. As an action, you can anchor yourself so you can’t fall more than 25 feet from that point.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="12">12 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Clothes, Common" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CLOTHES_COMMON">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="3">3 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Clothes, Costume" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CLOTHES_COSTUME">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="4">4 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Clothes, Fine" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CLOTHES_FINE">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="6">6 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Clothes, Traveler’s" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CLOTHES_TRAVELERS">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="4">4 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Component Pouch" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_COMPONENT_POUCH">
+		<supports>Adventuring Gear</supports>
+		<description><p>A small, watertight leather belt pouch with compartments holding the material components and other special items you need to cast your spells.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Crowbar" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CROWBAR">
+		<supports>Adventuring Gear</supports>
+		<description><p>Using a crowbar grants advantage to Strength checks where its leverage can be applied.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Druidic Focus (Sprig of Mistletoe)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DRUIDIC_FOCUS_SPRIG_OF_MISTLETOE">
+		<supports>Adventuring Gear</supports>
+		<description><p>A druid can use this as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Druidic Focus (Wooden Staff)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DRUIDIC_FOCUS_WOODEN_STAFF">
+		<supports>Adventuring Gear</supports>
+		<description><p>A druid can use this as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="4">4 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Druidic Focus (Yew Wand)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DRUIDIC_FOCUS_YEW_WAND">
+		<supports>Adventuring Gear</supports>
+		<description><p>A druid can use this as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Grappling Hook" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_GRAPPLING_HOOK">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="4">4 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Healer’s Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HEALERS_KIT">
+		<supports>Adventuring Gear</supports>
+		<description><p>This kit has ten uses. As an action, you can expend one use to stabilize a creature that has 0 hit points, without needing a Wisdom (Medicine) check.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="3">3 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Holy Symbol (Amulet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HOLY_SYMBOL_AMULET">
+		<supports>Adventuring Gear</supports>
+		<description><p>A cleric or paladin can use a holy symbol as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Holy Symbol (Emblem)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HOLY_SYMBOL_EMBLEM">
+		<supports>Adventuring Gear</supports>
+		<description><p>A cleric or paladin can use a holy symbol as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Holy Symbol (Reliquary)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HOLY_SYMBOL_RELIQUARY">
+		<supports>Adventuring Gear</supports>
+		<description><p>A cleric or paladin can use a holy symbol as a spellcasting focus.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Holy Water (flask)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HOLY_WATER_FLASK">
+		<supports>Adventuring Gear</supports>
+		<description><p>As an action, you can splash the contents onto a creature within 5 feet or throw it up to 20 feet. If the target is a fiend or undead, it takes 2d6 radiant damage.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Hunting Trap" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HUNTING_TRAP">
+		<supports>Adventuring Gear</supports>
+		<description><p>When you use your action to set it, this trap forms a saw-toothed steel ring. A creature stepping on it must succeed on a DC 13 Dexterity saving throw or take 1d4 piercing damage and stop moving.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="25">25 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Ink (1 ounce bottle)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_INK_1_OUNCE_BOTTLE">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Ink Pen" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_INK_PEN">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">2</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Lamp" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LAMP">
+		<supports>Adventuring Gear</supports>
+		<description><p>A lamp casts bright light in a 15-foot radius and dim light for an additional 30 feet. It burns for 6 hours on a flask of oil.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Lantern, Hooded" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LANTERN_HOODED">
+		<supports>Adventuring Gear</supports>
+		<description><p>Casts bright light in a 30-foot radius and dim light for an additional 30 feet. It burns for 6 hours on a flask of oil.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Lock" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LOCK">
+		<supports>Adventuring Gear</supports>
+		<description><p>A key is provided. Without the key, a creature proficient with thieves’ tools can pick this lock with a successful DC 15 Dexterity check.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Magnifying Glass" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_MAGNIFYING_GLASS">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">100</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Manacles" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_MANACLES">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="6">6 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Mirror, Steel" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_MIRROR_STEEL">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="0.5">0.5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Oil (flask)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_OIL_FLASK">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">1</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Paper (one sheet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PAPER_ONE_SHEET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">2</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Parchment (one sheet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PARCHMENT_ONE_SHEET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">1</set>
+			<set name="weight" lb="0">—</set>
+		</setters>
+	</element>
+
+	<element name="Potion of Healing" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_POTION_OF_HEALING">
+		<supports>Adventuring Gear</supports>
+		<description><p>A character who drinks the magical red fluid in this vial regains 2d4 + 2 hit points.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="0.5">0.5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Pouch" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_POUCH">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Rations (1 day)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_RATIONS_1_DAY">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="2">2 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Rope, Hempen (50 feet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ROPE_HEMPEN_50_FEET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="10">10 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Rope, Silk (50 feet)" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ROPE_SILK_50_FEET">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Sack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SACK">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">1</set>
+			<set name="weight" lb="0.5">0.5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Shovel" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SHOVEL">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Spellbook" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SPELLBOOK">
+		<supports>Adventuring Gear</supports>
+		<description><p>Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="3">3 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Tent, Two-Person" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_TENT_TWO_PERSON">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="20">20 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Tinderbox" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_TINDERBOX">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Torch" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_TORCH">
+		<supports>Adventuring Gear</supports>
+		<description><p>A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet.</p></description>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">1</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Waterskin" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_WATERSKIN">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="sp">2</set>
+			<set name="weight" lb="5">5 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Whetstone" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_WHETSTONE">
+		<supports>Adventuring Gear</supports>
+		<setters>
+			<set name="category">Adventuring Gear</set>
+			<set name="cost" currency="cp">1</set>
+			<set name="weight" lb="1">1 lb.</set>
+		</setters>
+	</element>
+
+	<element name="Burglar’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BURGLARS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a bag of 1,000 ball bearings, 10 feet of string, a bell, 5 candles, a crowbar, a hammer, 10 pitons, a hooded lantern, 2 flasks of oil, 5 days rations, a tinderbox and a waterskin, plus 50 feet of hempen rope.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">16</set>
+		</setters>
+	</element>
+
+	<element name="Diplomat’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DIPLOMATS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a chest, 2 cases for maps and scrolls, a set of fine clothes, a bottle of ink, an ink pen, a lamp, 2 flasks of oil, 5 sheets of paper, a vial of perfume, sealing wax and soap.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">39</set>
+		</setters>
+	</element>
+
+	<element name="Dungeoneer’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DUNGEONEERS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a crowbar, a hammer, 10 pitons, 10 torches, a tinderbox, 10 days of rations and a waterskin, plus 50 feet of hempen rope.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">12</set>
+		</setters>
+	</element>
+
+	<element name="Entertainer’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ENTERTAINERS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a bedroll, 2 costumes, 5 candles, 5 days of rations, a waterskin and a disguise kit.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">40</set>
+		</setters>
+	</element>
+
+	<element name="Explorer’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_EXPLORERS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a bedroll, a mess kit, a tinderbox, 10 torches, 10 days of rations and a waterskin, plus 50 feet of hempen rope.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">10</set>
+		</setters>
+	</element>
+
+	<element name="Priest’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PRIESTS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a blanket, 10 candles, a tinderbox, an alms box, 2 blocks of incense, a censer, vestments, 2 days of rations and a waterskin.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">19</set>
+		</setters>
+	</element>
+
+	<element name="Scholar’s Pack" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SCHOLARS_PACK">
+		<supports>Equipment Pack</supports>
+		<description><p>Includes a backpack, a book of lore, a bottle of ink, an ink pen, 10 sheets of parchment, a little bag of sand and a small knife.</p></description>
+		<setters>
+			<set name="category">Equipment Packs</set>
+			<set name="cost" currency="gp">40</set>
+		</setters>
+	</element>
+
+	<element name="Alchemist’s Supplies" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_ALCHEMISTS_SUPPLIES">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="8">8 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_ALCHEMISTS_SUPPLIES</set>
+		</setters>
+	</element>
+
+	<element name="Brewer’s Supplies" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BREWERS_SUPPLIES">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">20</set>
+			<set name="weight" lb="9">9 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_BREWERS_SUPPLIES</set>
+		</setters>
+	</element>
+
+	<element name="Calligrapher’s Supplies" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CALLIGRAPHERS_SUPPLIES">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_CALLIGRAPHERS_SUPPLIES</set>
+		</setters>
+	</element>
+
+	<element name="Carpenter’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CARPENTERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">8</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_CARPENTERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Cartographer’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_CARTOGRAPHERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_CARTOGRAPHERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Cobbler’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_COBBLERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_COBBLERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Cook’s Utensils" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_COOKS_UTENSILS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="8">8 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_COOKS_UTENSILS</set>
+		</setters>
+	</element>
+
+	<element name="Glassblower’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_GLASSBLOWERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_GLASSBLOWERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Jeweler’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_JEWELERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_JEWELERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Leatherworker’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LEATHERWORKERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_LEATHERWORKERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Mason’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_MASONS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="8">8 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_MASONS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Painter’s Supplies" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PAINTERS_SUPPLIES">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_PAINTERS_SUPPLIES</set>
+		</setters>
+	</element>
+
+	<element name="Potter’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_POTTERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">10</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_POTTERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Smith’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SMITHS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">20</set>
+			<set name="weight" lb="8">8 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_SMITHS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Tinker’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_TINKERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="10">10 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_TINKERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Weaver’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_WEAVERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_WEAVERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Woodcarver’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_WOODCARVERS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">1</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_WOODCARVERS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Disguise Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DISGUISE_KIT">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_DISGUISE_KIT</set>
+		</setters>
+	</element>
+
+	<element name="Forgery Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_FORGERY_KIT">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">15</set>
+			<set name="weight" lb="5">5 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_FORGERY_KIT</set>
+		</setters>
+	</element>
+
+	<element name="Herbalism Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HERBALISM_KIT">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">5</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_HERBALISM_KIT</set>
+		</setters>
+	</element>
+
+	<element name="Navigator’s Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_NAVIGATORS_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_NAVIGATORS_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Poisoner’s Kit" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_POISONERS_KIT">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">50</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_POISONERS_KIT</set>
+		</setters>
+	</element>
+
+	<element name="Thieves’ Tools" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_THIEVES_TOOLS">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_THIEVES_TOOLS</set>
+		</setters>
+	</element>
+
+	<element name="Bagpipes" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_BAGPIPES">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="6">6 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_BAGPIPES</set>
+		</setters>
+	</element>
+
+	<element name="Drum" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DRUM">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">6</set>
+			<set name="weight" lb="3">3 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_DRUM</set>
+		</setters>
+	</element>
+
+	<element name="Dulcimer" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DULCIMER">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">25</set>
+			<set name="weight" lb="10">10 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_DULCIMER</set>
+		</setters>
+	</element>
+
+	<element name="Flute" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_FLUTE">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_FLUTE</set>
+		</setters>
+	</element>
+
+	<element name="Lute" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LUTE">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">35</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_LUTE</set>
+		</setters>
+	</element>
+
+	<element name="Lyre" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_LYRE">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_LYRE</set>
+		</setters>
+	</element>
+
+	<element name="Horn" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_HORN">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">3</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_HORN</set>
+		</setters>
+	</element>
+
+	<element name="Pan Flute" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PAN_FLUTE">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">12</set>
+			<set name="weight" lb="2">2 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_PAN_FLUTE</set>
+		</setters>
+	</element>
+
+	<element name="Shawm" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_SHAWM">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">2</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_SHAWM</set>
+		</setters>
+	</element>
+
+	<element name="Viol" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_VIOL">
+		<supports>Tools</supports>
+		<description><p>Proficiency with these tools lets you add your proficiency bonus to ability checks you make using them.</p></description>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="gp">30</set>
+			<set name="weight" lb="1">1 lb.</set>
+			<set name="proficiency">ID_PROFICIENCY_TOOL_PROFICIENCY_VIOL</set>
+		</setters>
+	</element>
+
+	<element name="Dice Set" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_DICE_SET">
+		<supports>Tools, Gaming Set</supports>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="sp">1</set>
+			<set name="proficiency">ID_PROFICIENCY_GAMING_SET_PROFICIENCY_DICE_SET</set>
+		</setters>
+	</element>
+
+	<element name="Playing Card Set" type="Item" source="System Reference Document 5.1" id="ID_SRD_ITEM_PLAYING_CARD_SET">
+		<supports>Tools, Gaming Set</supports>
+		<setters>
+			<set name="category">Tools</set>
+			<set name="cost" currency="sp">5</set>
+			<set name="proficiency">ID_PROFICIENCY_GAMING_SET_PROFICIENCY_PLAYING_CARD_SET</set>
+		</setters>
+	</element>
+</elements>

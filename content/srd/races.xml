@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Races</name>
+		<description>Dwarf, Elf, Halfling, Human, Dragonborn, Gnome, Half-Elf, Half-Orc and Tiefling.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Dwarf" type="Race" source="System Reference Document 5.1" id="ID_SRD_RACE_DWARF">
+		<description><p>Bold and hardy, dwarves are known as skilled warriors, miners and workers of stone and metal. They stand well under five feet tall but are broad and compact, and can live for more than four centuries.</p><p>Ability Score Increase: Constitution +2. Speed 25 feet, not reduced by heavy armor. Darkvision, Dwarven Resilience, Dwarven Combat Training, Tool Proficiency and Stonecunning. You speak Common and Dwarvish.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="names-format">{{name}} {{clan}}</set>
+		</setters>
+		<rules>
+			<stat name="constitution" value="2" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="25" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_DWARVISH" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_ARMOR_IGNORE_STRENGTH_REQUIREMENT" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_DWARVEN_RESILIENCE" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_DWARVEN_COMBAT_TRAINING" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_DWARVEN_TOOL_PROFICIENCY" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_STONECUNNING" />
+			<select type="Sub Race" name="Dwarven Subrace" supports="Dwarf" />
+		</rules>
+	</element>
+
+	<element name="Ignore Heavy Armor Speed Penalty" type="Grants" source="System Reference Document 5.1" id="ID_INTERNAL_GRANT_ARMOR_IGNORE_STRENGTH_REQUIREMENT">
+	</element>
+
+	<element name="Dwarven Resilience" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DWARVEN_RESILIENCE">
+		<description><p>You have advantage on saving throws against poison, and resistance to poison damage.</p></description>
+		<sheet><description>You have advantage on saving throws against poison, and resistance to poison damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_POISON" />
+		</rules>
+	</element>
+
+	<element name="Dwarven Combat Training" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DWARVEN_COMBAT_TRAINING">
+		<description><p>You have proficiency with the battleaxe, handaxe, light hammer and warhammer.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_BATTLEAXE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_HANDAXE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LIGHT_HAMMER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_WARHAMMER" />
+		</rules>
+	</element>
+
+	<element name="Tool Proficiency" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DWARVEN_TOOL_PROFICIENCY">
+		<description><p>You gain proficiency with your choice of smith’s tools, brewer’s supplies or mason’s tools.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Dwarven Tool Proficiency" supports="ID_PROFICIENCY_TOOL_PROFICIENCY_SMITHS_TOOLS|ID_PROFICIENCY_TOOL_PROFICIENCY_BREWERS_SUPPLIES|ID_PROFICIENCY_TOOL_PROFICIENCY_MASONS_TOOLS" />
+		</rules>
+	</element>
+
+	<element name="Stonecunning" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_STONECUNNING">
+		<description><p>Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient and add double your proficiency bonus.</p></description>
+		<sheet><description>Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient and add double your proficiency bonus.</description></sheet>
+	</element>
+
+	<element name="Hill Dwarf" type="Sub Race" source="System Reference Document 5.1" id="ID_SUB_RACE_HILL_DWARF">
+		<supports>Dwarf</supports>
+		<description><p>As a hill dwarf you have keen senses, deep intuition and remarkable resilience. Wisdom +1. Dwarven Toughness: your hit point maximum increases by 1 per level.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_DWARVEN_TOUGHNESS" />
+		</rules>
+	</element>
+
+	<element name="Dwarven Toughness" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DWARVEN_TOUGHNESS">
+		<description><p>Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.</p></description>
+		<sheet><description>Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.</description></sheet>
+		<rules>
+			<stat name="hp" value="1" level="1" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="2" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="3" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="4" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="5" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="6" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="7" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="8" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="9" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="10" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="11" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="12" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="13" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="14" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="15" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="16" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="17" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="18" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="19" alt="Dwarven Toughness" />
+			<stat name="hp" value="1" level="20" alt="Dwarven Toughness" />
+		</rules>
+	</element>
+
+	<element name="Elf" type="Race" source="System Reference Document 5.1" id="ID_RACE_ELF">
+		<description><p>Elves are a magical people of otherworldly grace, living in the world but not entirely part of it. They can live well over seven hundred years.</p><p>Ability Score Increase: Dexterity +2. Speed 30 feet. Darkvision, Keen Senses, Fey Ancestry and Trance. You speak Common and Elvish.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_ELVISH" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_KEEN_SENSES" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_FEY_ANCESTRY" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_TRANCE" />
+			<select type="Sub Race" name="Elven Subrace" supports="Elf" />
+		</rules>
+	</element>
+
+	<element name="Keen Senses" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_KEEN_SENSES">
+		<description><p>You have proficiency in the Perception skill.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_PERCEPTION" />
+		</rules>
+	</element>
+
+	<element name="Fey Ancestry" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_FEY_ANCESTRY">
+		<description><p>You have advantage on saving throws against being charmed, and magic can’t put you to sleep.</p></description>
+		<sheet><description>You have advantage on saving throws against being charmed, and magic can’t put you to sleep.</description></sheet>
+	</element>
+
+	<element name="Trance" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_TRANCE">
+		<description><p>You don’t need to sleep. Instead you meditate deeply for 4 hours a day, gaining the same benefit a human does from 8 hours of sleep.</p></description>
+		<sheet><description>You don’t need to sleep. Instead you meditate deeply for 4 hours a day, gaining the same benefit a human does from 8 hours of sleep.</description></sheet>
+	</element>
+
+	<element name="High Elf" type="Sub Race" source="System Reference Document 5.1" id="ID_SUB_RACE_HIGH_ELF">
+		<supports>Elf</supports>
+		<description><p>High elves have a keen mind and a mastery of at least the basics of magic. Intelligence +1, Elf Weapon Training, one wizard cantrip and one extra language.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_ELF_WEAPON_TRAINING" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_HIGH_ELF_CANTRIP" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_EXTRA_LANGUAGE_HIGH_ELF" />
+		</rules>
+	</element>
+
+	<element name="Elf Weapon Training" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_ELF_WEAPON_TRAINING">
+		<description><p>You have proficiency with the longsword, shortsword, shortbow and longbow.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTBOW" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGBOW" />
+		</rules>
+	</element>
+
+	<element name="Cantrip" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_HIGH_ELF_CANTRIP">
+		<description><p>You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.</p></description>
+		<sheet><description>You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.</description></sheet>
+		<rules>
+			<select type="Spell" name="Wizard Cantrip (High Elf)" supports="Wizard,0" />
+		</rules>
+	</element>
+
+	<element name="Extra Language" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_EXTRA_LANGUAGE_HIGH_ELF">
+		<description><p>You can speak, read and write one extra language of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Language" name="Extra Language (High Elf)" supports="Standard||Exotic" />
+		</rules>
+	</element>
+
+	<element name="Halfling" type="Race" source="System Reference Document 5.1" id="ID_RACE_HALFLING">
+		<description><p>The diminutive halflings survive in a world full of larger creatures by avoiding notice or, barring that, avoiding offense. They stand about 3 feet tall.</p><p>Ability Score Increase: Dexterity +2. Size Small, speed 25 feet. Lucky, Brave and Halfling Nimbleness. You speak Common and Halfling.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="dexterity" value="2" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="25" bonus="base" />
+			<grant type="Size" id="ID_SIZE_SMALL" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_HALFLING" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_LUCKY" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_BRAVE" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_HALFLING_NIMBLENESS" />
+			<select type="Sub Race" name="Halfling Subrace" supports="Halfling" />
+		</rules>
+	</element>
+
+	<element name="Lucky" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_LUCKY">
+		<description><p>When you roll a 1 on the d20 for an attack roll, ability check or saving throw, you can reroll the die and must use the new roll.</p></description>
+		<sheet><description>When you roll a 1 on the d20 for an attack roll, ability check or saving throw, you can reroll the die and must use the new roll.</description></sheet>
+	</element>
+
+	<element name="Brave" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_BRAVE">
+		<description><p>You have advantage on saving throws against being frightened.</p></description>
+		<sheet><description>You have advantage on saving throws against being frightened.</description></sheet>
+	</element>
+
+	<element name="Halfling Nimbleness" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_HALFLING_NIMBLENESS">
+		<description><p>You can move through the space of any creature that is of a size larger than yours.</p></description>
+		<sheet><description>You can move through the space of any creature that is of a size larger than yours.</description></sheet>
+	</element>
+
+	<element name="Lightfoot Halfling" type="Sub Race" source="System Reference Document 5.1" id="ID_SUB_RACE_LIGHTFOOT_HALFLING">
+		<supports>Halfling</supports>
+		<description><p>Lightfoot halflings can easily hide from notice, even using other people as cover. Charisma +1 and Naturally Stealthy.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_NATURALLY_STEALTHY" />
+		</rules>
+	</element>
+
+	<element name="Naturally Stealthy" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_NATURALLY_STEALTHY">
+		<description><p>You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.</p></description>
+		<sheet><description>You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.</description></sheet>
+	</element>
+
+	<element name="Human" type="Race" source="System Reference Document 5.1" id="ID_RACE_HUMAN">
+		<description><p>Humans are the most adaptable and ambitious people among the common races, with widely varying tastes, morals and customs.</p><p>Ability Score Increase: every ability score +1. Speed 30 feet. You speak Common and one extra language of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="strength" value="1" alt="Racial Ability Score Increase" />
+			<stat name="dexterity" value="1" alt="Racial Ability Score Increase" />
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
+			<stat name="wisdom" value="1" alt="Racial Ability Score Increase" />
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<select type="Language" name="Extra Language (Human)" supports="Standard||Exotic" />
+		</rules>
+	</element>
+
+	<element name="Dragonborn" type="Race" source="System Reference Document 5.1" id="ID_RACE_DRAGONBORN">
+		<description><p>Born of dragons, dragonborn walk proudly through a world that greets them with fearful incomprehension. They are tall and strongly built, with draconic features.</p><p>Ability Score Increase: Strength +2, Charisma +1. Speed 30 feet. Draconic Ancestry, Breath Weapon and Damage Resistance. You speak Common and Draconic.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="strength" value="2" alt="Racial Ability Score Increase" />
+			<stat name="charisma" value="1" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_DRACONIC" />
+			<select type="Racial Trait" name="Draconic Ancestry" supports="Draconic Ancestry" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_BREATH_WEAPON" />
+			<stat name="breath weapon:dc" value="8" />
+			<stat name="breath weapon:dc" value="constitution:modifier" />
+			<stat name="breath weapon:dc" value="proficiency" />
+			<stat name="breath weapon:dice count" value="2" bonus="base" />
+			<stat name="breath weapon:dice count" value="3" bonus="base" level="6" />
+			<stat name="breath weapon:dice count" value="4" bonus="base" level="11" />
+			<stat name="breath weapon:dice count" value="5" bonus="base" level="16" />
+		</rules>
+	</element>
+
+	<element name="Breath Weapon" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_BREATH_WEAPON">
+		<description><p>You can use your action to exhale destructive energy determined by your draconic ancestry. Each creature in the area makes a saving throw (DC 8 + Constitution modifier + proficiency bonus), taking 2d6 damage on a failed save, or half as much on a success. The damage increases to 3d6 at 6th level, 4d6 at 11th and 5d6 at 16th. You can use it again after a short or long rest.</p></description>
+		<sheet><description>Exhale your ancestry’s energy: DC {{breath weapon:dc}}, {{breath weapon:dice count}}d6 damage (half on a success). Recharges on a short or long rest.</description></sheet>
+	</element>
+
+	<element name="Draconic Ancestry (Black)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_BLACK">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from black dragons. Breath weapon: acid damage, 5 by 30 ft. line (Dex. save). You have resistance to acid damage.</p></description>
+		<sheet><description>Black dragon: acid breath, 5 by 30 ft. line (Dex. save). Resistance to acid damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_ACID" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Blue)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_BLUE">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from blue dragons. Breath weapon: lightning damage, 5 by 30 ft. line (Dex. save). You have resistance to lightning damage.</p></description>
+		<sheet><description>Blue dragon: lightning breath, 5 by 30 ft. line (Dex. save). Resistance to lightning damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_LIGHTNING" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Brass)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_BRASS">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from brass dragons. Breath weapon: fire damage, 5 by 30 ft. line (Dex. save). You have resistance to fire damage.</p></description>
+		<sheet><description>Brass dragon: fire breath, 5 by 30 ft. line (Dex. save). Resistance to fire damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_FIRE" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Bronze)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_BRONZE">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from bronze dragons. Breath weapon: lightning damage, 5 by 30 ft. line (Dex. save). You have resistance to lightning damage.</p></description>
+		<sheet><description>Bronze dragon: lightning breath, 5 by 30 ft. line (Dex. save). Resistance to lightning damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_LIGHTNING" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Copper)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_COPPER">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from copper dragons. Breath weapon: acid damage, 5 by 30 ft. line (Dex. save). You have resistance to acid damage.</p></description>
+		<sheet><description>Copper dragon: acid breath, 5 by 30 ft. line (Dex. save). Resistance to acid damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_ACID" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Gold)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_GOLD">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from gold dragons. Breath weapon: fire damage, 15 ft. cone (Dex. save). You have resistance to fire damage.</p></description>
+		<sheet><description>Gold dragon: fire breath, 15 ft. cone (Dex. save). Resistance to fire damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_FIRE" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Green)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_GREEN">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from green dragons. Breath weapon: poison damage, 15 ft. cone (Con. save). You have resistance to poison damage.</p></description>
+		<sheet><description>Green dragon: poison breath, 15 ft. cone (Con. save). Resistance to poison damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_POISON" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Red)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_RED">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from red dragons. Breath weapon: fire damage, 15 ft. cone (Dex. save). You have resistance to fire damage.</p></description>
+		<sheet><description>Red dragon: fire breath, 15 ft. cone (Dex. save). Resistance to fire damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_FIRE" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (Silver)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_SILVER">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from silver dragons. Breath weapon: cold damage, 15 ft. cone (Con. save). You have resistance to cold damage.</p></description>
+		<sheet><description>Silver dragon: cold breath, 15 ft. cone (Con. save). Resistance to cold damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_COLD" />
+		</rules>
+	</element>
+
+	<element name="Draconic Ancestry (White)" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_DRACONIC_ANCESTRY_WHITE">
+		<supports>Draconic Ancestry</supports>
+		<description><p>You are descended from white dragons. Breath weapon: cold damage, 15 ft. cone (Con. save). You have resistance to cold damage.</p></description>
+		<sheet><description>White dragon: cold breath, 15 ft. cone (Con. save). Resistance to cold damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_COLD" />
+		</rules>
+	</element>
+
+	<element name="Gnome" type="Race" source="System Reference Document 5.1" id="ID_RACE_GNOME">
+		<description><p>A gnome’s energy and enthusiasm for living shines through every inch of their tiny body. They are slight, about 3 to 4 feet tall.</p><p>Ability Score Increase: Intelligence +2. Size Small, speed 25 feet. Darkvision and Gnome Cunning. You speak Common and Gnomish.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="intelligence" value="2" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="25" bonus="base" />
+			<grant type="Size" id="ID_SIZE_SMALL" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_GNOMISH" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_GNOME_CUNNING" />
+			<select type="Sub Race" name="Gnome Subrace" supports="Gnome" />
+		</rules>
+	</element>
+
+	<element name="Gnome Cunning" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_GNOME_CUNNING">
+		<description><p>You have advantage on all Intelligence, Wisdom and Charisma saving throws against magic.</p></description>
+		<sheet><description>You have advantage on all Intelligence, Wisdom and Charisma saving throws against magic.</description></sheet>
+	</element>
+
+	<element name="Rock Gnome" type="Sub Race" source="System Reference Document 5.1" id="ID_SUB_RACE_ROCK_GNOME">
+		<supports>Gnome</supports>
+		<description><p>Rock gnomes have a natural inventiveness and hardiness. Constitution +1, Artificer’s Lore and Tinker.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_ARTIFICERS_LORE" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_TINKER" />
+		</rules>
+	</element>
+
+	<element name="Artificer’s Lore" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_ARTIFICERS_LORE">
+		<description><p>Whenever you make an Intelligence (History) check related to magic items, alchemical objects or technological devices, you add twice your proficiency bonus instead of any proficiency bonus you normally apply.</p></description>
+		<sheet><description>Whenever you make an Intelligence (History) check related to magic items, alchemical objects or technological devices, you add twice your proficiency bonus instead of any proficiency bonus you normally apply.</description></sheet>
+	</element>
+
+	<element name="Tinker" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_TINKER">
+		<description><p>You have proficiency with tinker’s tools. Using them, you can spend 1 hour and 10 gp of materials to build a Tiny clockwork device (AC 5, 1 hp): a clockwork toy, a fire starter or a music box.</p></description>
+		<sheet><description>You have proficiency with tinker’s tools. Using them, you can spend 1 hour and 10 gp of materials to build a Tiny clockwork device (AC 5, 1 hp): a clockwork toy, a fire starter or a music box.</description></sheet>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_TOOL_PROFICIENCY_TINKERS_TOOLS" />
+		</rules>
+	</element>
+
+	<element name="Half-Elf" type="Race" source="System Reference Document 5.1" id="ID_RACE_HALFELF">
+		<description><p>Walking in two worlds but truly belonging to neither, half-elves combine what some say are the best qualities of their elf and human parents.</p><p>Ability Score Increase: Charisma +2 and two other ability scores of your choice +1. Speed 30 feet. Darkvision, Fey Ancestry and Skill Versatility. You speak Common, Elvish and one extra language.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="charisma" value="2" alt="Racial Ability Score Increase" />
+			<select type="Ability Score Improvement" name="Ability Score Increase (Half-Elf)" number="2" supports="Ability Score Improvement,Class,!Charisma" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_ELVISH" />
+			<select type="Language" name="Extra Language (Half-Elf)" supports="Standard||Exotic" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_FEY_ANCESTRY" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_SKILL_VERSATILITY" />
+		</rules>
+	</element>
+
+	<element name="Skill Versatility" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_SKILL_VERSATILITY">
+		<description><p>You gain proficiency in two skills of your choice.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Skill Versatility" supports="Skill" number="2" />
+		</rules>
+	</element>
+
+	<element name="Half-Orc" type="Race" source="System Reference Document 5.1" id="ID_RACE_HALFORC">
+		<description><p>Half-orcs’ grayish pigmentation, sloping foreheads, jutting jaws and prominent teeth make their orcish heritage plain for all to see. They are taller and bulkier than humans.</p><p>Ability Score Increase: Strength +2, Constitution +1. Speed 30 feet. Darkvision, Menacing, Relentless Endurance and Savage Attacks. You speak Common and Orc.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="strength" value="2" alt="Racial Ability Score Increase" />
+			<stat name="constitution" value="1" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_ORC" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_MENACING" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_RELENTLESS_ENDURANCE" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_SAVAGE_ATTACKS" />
+		</rules>
+	</element>
+
+	<element name="Menacing" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_MENACING">
+		<description><p>You gain proficiency in the Intimidation skill.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_INTIMIDATION" />
+		</rules>
+	</element>
+
+	<element name="Relentless Endurance" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_RELENTLESS_ENDURANCE">
+		<description><p>When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can’t do so again until you finish a long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">When reduced to 0 hit points but not killed, drop to 1 hit point instead.</description>
+		</sheet>
+	</element>
+
+	<element name="Savage Attacks" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_SAVAGE_ATTACKS">
+		<description><p>When you score a critical hit with a melee weapon attack, you can roll one of the weapon’s damage dice one additional time and add it to the extra damage of the critical hit.</p></description>
+		<sheet><description>When you score a critical hit with a melee weapon attack, you can roll one of the weapon’s damage dice one additional time and add it to the extra damage of the critical hit.</description></sheet>
+	</element>
+
+	<element name="Tiefling" type="Race" source="System Reference Document 5.1" id="ID_RACE_TIEFLING">
+		<description><p>To be greeted with stares and whispers, to suffer violence and insult on the street: this is the lot of the tiefling, whose infernal bloodline shows in their horns, tails and solid-colored eyes.</p><p>Ability Score Increase: Intelligence +1, Charisma +2. Speed 30 feet. Darkvision, Hellish Resistance and Infernal Legacy. You speak Common and Infernal.</p></description>
+		<sheet display="false" />
+		<rules>
+			<stat name="intelligence" value="1" alt="Racial Ability Score Increase" />
+			<stat name="charisma" value="2" alt="Racial Ability Score Increase" />
+			<stat name="innate speed" value="30" bonus="base" />
+			<grant type="Size" id="ID_SIZE_MEDIUM" />
+			<grant type="Vision" id="ID_VISION_DARKVISION" />
+			<grant type="Language" id="ID_LANGUAGE_COMMON" />
+			<grant type="Language" id="ID_LANGUAGE_INFERNAL" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_HELLISH_RESISTANCE" />
+			<grant type="Racial Trait" id="ID_SRD_RACIAL_TRAIT_INFERNAL_LEGACY" />
+		</rules>
+	</element>
+
+	<element name="Hellish Resistance" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_HELLISH_RESISTANCE">
+		<description><p>You have resistance to fire damage.</p></description>
+		<sheet><description>You have resistance to fire damage.</description></sheet>
+		<rules>
+			<grant type="Condition" id="ID_INTERNAL_CONDITION_DAMAGE_RESISTANCE_FIRE" />
+		</rules>
+	</element>
+
+	<element name="Infernal Legacy" type="Racial Trait" source="System Reference Document 5.1" id="ID_SRD_RACIAL_TRAIT_INFERNAL_LEGACY">
+		<description><p>You know the thaumaturgy cantrip. At 3rd level you can cast hellish rebuke as a 2nd-level spell once per long rest, and at 5th level darkness once per long rest. Charisma is your spellcasting ability for these spells.</p></description>
+		<sheet>
+			<description level="1">Thaumaturgy cantrip.</description>
+			<description level="3">Thaumaturgy cantrip; hellish rebuke (2nd level) once per long rest.</description>
+			<description level="5">Thaumaturgy cantrip; hellish rebuke (2nd level) and darkness once each per long rest.</description>
+		</sheet>
+		<rules>
+			<grant type="Spell" id="ID_PHB_SPELL_THAUMATURGY" />
+			<grant type="Spell" id="ID_PHB_SPELL_HELLISH_REBUKE" level="3" />
+			<grant type="Spell" id="ID_PHB_SPELL_DARKNESS" level="5" />
+		</rules>
+	</element>
+</elements>

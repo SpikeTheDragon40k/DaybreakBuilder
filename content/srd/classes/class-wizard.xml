@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Wizard</name>
+		<description>The wizard class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Wizard" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_WIZARD">
+		<description><p>Wizards are supreme magic-users, defined and united as a class by the spells they cast, drawn from a spellbook of arcane formulas.</p><p>Hit Dice: 1d6 per wizard level. Proficiencies: daggers, darts, slings, quarterstaffs, light crossbows. Saving throws: Intelligence, Wisdom. Skills: choose two from Arcana, History, Insight, Investigation, Medicine and Religion.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d6</set>
+			<set name="short">A scholarly magic-user capable of manipulating the structures of reality.</set>
+			<set name="primary">Intelligence</set>
+		</setters>
+		<spellcasting name="Wizard" ability="Intelligence" prepare="true">
+			<list>Wizard</list>
+		</spellcasting>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_WIZARD">
+			<prerequisite>Intelligence 13</prerequisite>
+			<requirements>[int:13]</requirements>
+			<setters><set name="multiclass proficiencies">—</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DAGGER" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_DART" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SLING" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_QUARTERSTAFF" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_LIGHT" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_INTELLIGENCE" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<select type="Proficiency" name="Skill Proficiency (Wizard)" supports="Skill,Wizard" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_WIZARD" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_SPELLCASTING" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ARCANE_RECOVERY" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_SPELL_MASTERY" level="18" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_SIGNATURE_SPELLS" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_WIZARD_ARCANE_TRADITION" level="2" />
+			<stat name="wizard:spellcasting:slots:1" value="2" level="1" />
+			<stat name="wizard:spellcasting:slots:1" value="1" level="2" />
+			<stat name="wizard:spellcasting:slots:1" value="1" level="3" />
+			<stat name="wizard:spellcasting:slots:2" value="2" level="3" />
+			<stat name="wizard:spellcasting:slots:2" value="1" level="4" />
+			<stat name="wizard:spellcasting:slots:3" value="2" level="5" />
+			<stat name="wizard:spellcasting:slots:3" value="1" level="6" />
+			<stat name="wizard:spellcasting:slots:4" value="1" level="7" />
+			<stat name="wizard:spellcasting:slots:4" value="1" level="8" />
+			<stat name="wizard:spellcasting:slots:4" value="1" level="9" />
+			<stat name="wizard:spellcasting:slots:5" value="1" level="9" />
+			<stat name="wizard:spellcasting:slots:5" value="1" level="10" />
+			<stat name="wizard:spellcasting:slots:5" value="1" level="18" />
+			<stat name="wizard:spellcasting:slots:6" value="1" level="11" />
+			<stat name="wizard:spellcasting:slots:6" value="1" level="19" />
+			<stat name="wizard:spellcasting:slots:7" value="1" level="13" />
+			<stat name="wizard:spellcasting:slots:7" value="1" level="20" />
+			<stat name="wizard:spellcasting:slots:8" value="1" level="15" />
+			<stat name="wizard:spellcasting:slots:9" value="1" level="17" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS_SPELLCASTING_SLOTS_FULL" requirements="ID_INTERNAL_GRANT_MULTICLASS" />
+			<stat name="wizard:spellcasting:cantrips known" value="3" level="1" />
+			<stat name="wizard:spellcasting:cantrips known" value="1" level="4" />
+			<stat name="wizard:spellcasting:cantrips known" value="1" level="10" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Wizard" name="Cantrip (Wizard)" level="1" number="3" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Wizard" name="Cantrip (Wizard)" level="4" number="1" />
+			<select type="Spell" supports="$(spellcasting:list),0" spellcasting="Wizard" name="Cantrip (Wizard)" level="10" number="1" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),1" number="6" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="2" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="3" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="4" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="5" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="6" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="7" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="8" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="9" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="10" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="11" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="12" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="13" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="14" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="15" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="16" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="17" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="18" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="19" spellcasting="Wizard" />
+			<select type="Spell" name="Spellbook (Wizard)" supports="$(spellcasting:list),$(spellcasting:slots)" number="2" level="20" spellcasting="Wizard" />
+			<stat name="wizard:spellcasting:prepare" value="intelligence:modifier" />
+			<stat name="wizard:spellcasting:prepare" value="level:wizard" />
+		</rules>
+	</element>
+
+	<element name="Spellcasting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_SPELLCASTING">
+		<description><p>As a student of arcane magic, you have a spellbook containing spells. You prepare a number of wizard spells from your spellbook equal to your Intelligence modifier + your wizard level (minimum one). You can cast wizard spells as rituals if they are in your spellbook, and use an arcane focus.</p></description>
+		<sheet><description>Prepare {{wizard:spellcasting:prepare}} spells from your spellbook.</description></sheet>
+	</element>
+
+	<element name="Arcane Recovery" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ARCANE_RECOVERY">
+		<description><p>Once per day when you finish a short rest, you can recover expended spell slots with a combined level equal to or less than half your wizard level (rounded up), none of 6th level or higher.</p></description>
+		<sheet>
+			<description usage="1/Long Rest">Recover spell slots totaling up to {{level:wizard:half:up}} levels during a short rest.</description>
+		</sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Wizard 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Wizard 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Wizard 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Wizard 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Spell Mastery" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_SPELL_MASTERY">
+		<description><p>Choose a 1st-level and a 2nd-level wizard spell in your spellbook. You can cast them at their lowest level without expending a spell slot when you have them prepared.</p></description>
+		<rules>
+			<select type="Spell" name="Spell Mastery (1st level)" supports="Wizard,1" spellcasting="Wizard" prepared="true" />
+			<select type="Spell" name="Spell Mastery (2nd level)" supports="Wizard,2" spellcasting="Wizard" prepared="true" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Wizard 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Signature Spells" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_SIGNATURE_SPELLS">
+		<description><p>Choose two 3rd-level wizard spells in your spellbook as your signature spells. You always have them prepared, they don’t count against your prepared spells, and you can cast each once at 3rd level without a spell slot per short or long rest.</p></description>
+		<rules>
+			<select type="Spell" name="Signature Spells" supports="Wizard,3" number="2" spellcasting="Wizard" prepared="true" />
+		</rules>
+	</element>
+
+	<element name="Arcane Tradition" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_WIZARD_ARCANE_TRADITION">
+		<description><p>At 2nd level you choose an arcane tradition, shaping your practice of magic.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Arcane Tradition" supports="Arcane Tradition" />
+		</rules>
+	</element>
+
+	<element name="Evocation Savant" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_EVOCATION_SAVANT">
+		<description><p>The gold and time you must spend to copy an evocation spell into your spellbook is halved.</p></description>
+	</element>
+
+	<element name="Sculpt Spells" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_SCULPT_SPELLS">
+		<description><p>When you cast an evocation spell that affects other creatures you can see, you can choose a number of them equal to 1 + the spell’s level. They automatically succeed on their saving throws and take no damage if they would normally take half damage on a success.</p></description>
+	</element>
+
+	<element name="Potent Cantrip" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_POTENT_CANTRIP">
+		<description><p>Your damaging cantrips affect even creatures that avoid the brunt of the effect: when a creature succeeds on a saving throw against your cantrip, it takes half the cantrip’s damage (if any) but suffers no additional effect.</p></description>
+	</element>
+
+	<element name="Empowered Evocation" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_EMPOWERED_EVOCATION">
+		<description><p>You can add your Intelligence modifier to one damage roll of any wizard evocation spell you cast.</p></description>
+	</element>
+
+	<element name="Overchannel" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_OVERCHANNEL">
+		<description><p>When you cast a wizard spell of 1st through 5th level that deals damage, you can deal maximum damage with that spell. The first time you do so you suffer no adverse effect; each further use before a long rest deals you 2d12 necrotic damage per spell level (increasing by 1d12 per use) that ignores resistance and immunity.</p></description>
+	</element>
+
+	<element name="School of Evocation" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_WIZARD_SCHOOL_OF_EVOCATION">
+		<supports>Arcane Tradition, Wizard</supports>
+		<description><p>You focus your study on magic that creates powerful elemental effects such as bitter cold, searing flame, rolling thunder, crackling lightning and burning acid.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_EVOCATION_SAVANT" level="2" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_SCULPT_SPELLS" level="2" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_POTENT_CANTRIP" level="6" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_EMPOWERED_EVOCATION" level="10" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_SCHOOL_OF_EVOCATION_OVERCHANNEL" level="14" />
+		</rules>
+	</element>
+</elements>

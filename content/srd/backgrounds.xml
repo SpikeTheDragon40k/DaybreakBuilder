@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Backgrounds</name>
+		<description>The Acolyte background.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Acolyte" type="Background" source="System Reference Document 5.1" id="ID_BACKGROUND_ACOLYTE">
+		<description><p>You have spent your life in the service of a temple to a specific god or pantheon of gods, acting as an intermediary between the realm of the holy and the mortal world.</p><p>Skill Proficiencies: Insight, Religion. Languages: two of your choice. Equipment: a holy symbol, a prayer book or prayer wheel, 5 sticks of incense, vestments, a set of common clothes and a pouch containing 15 gp.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="short">You have spent your life in the service of a temple.</set>
+		</setters>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_INSIGHT" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SKILL_RELIGION" />
+			<select type="Language" name="Languages (Acolyte)" supports="Standard||Exotic" number="2" />
+			<grant type="Background Feature" id="ID_SRD_BACKGROUND_FEATURE_SHELTER_OF_THE_FAITHFUL" />
+		</rules>
+	</element>
+
+	<element name="Shelter of the Faithful" type="Background Feature" source="System Reference Document 5.1" id="ID_SRD_BACKGROUND_FEATURE_SHELTER_OF_THE_FAITHFUL">
+		<description><p>You command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your companions can expect free healing and care at a temple, shrine or other established presence of your faith. You might also have ties to a specific temple where you have a residence.</p></description>
+		<sheet><description>You and your companions can receive free healing and care at temples of your faith, and those who share your faith will support you at a modest lifestyle.</description></sheet>
+	</element>
+</elements>

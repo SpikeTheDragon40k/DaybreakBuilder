@@ -125,6 +125,10 @@ export function substitute(rc: ResolvedCharacter, text: string): string {
   return text.replace(/\{\{([^}]+)\}\}/g, (_, n: string) => repl(n)).replace(/\$\(([^)]+)\)/g, (_, n: string) => repl(n));
 }
 
+function optionalSubstitute(rc: ResolvedCharacter, text: string | undefined): string | undefined {
+  return text === undefined ? undefined : substitute(rc, text);
+}
+
 function originOf(node: ResolvedNode): string {
   for (let n = node.parent; n; n = n.parent) {
     const t = n.element.type;
@@ -234,8 +238,8 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
         type: el.type,
         source: el.source,
         text: substitute(rc, best?.text ?? firstParagraph(el.description)),
-        usage: best?.usage ?? el.sheet?.usage,
-        action: best?.action ?? el.sheet?.action,
+        usage: optionalSubstitute(rc, best?.usage ?? el.sheet?.usage),
+        action: optionalSubstitute(rc, best?.action ?? el.sheet?.action),
         origin: originOf(node),
       });
     }

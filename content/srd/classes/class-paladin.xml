@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Paladin</name>
+		<description>The paladin class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Paladin" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_PALADIN">
+		<description><p>Whether sworn before a god’s altar or in a glade before nature spirits, a paladin’s oath is a powerful bond, and a source of power that turns a devout warrior into a blessed champion.</p><p>Hit Dice: 1d10 per paladin level. Proficiencies: all armor, shields, simple and martial weapons. Saving throws: Wisdom, Charisma. Skills: choose two from Athletics, Insight, Intimidation, Medicine, Persuasion and Religion.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d10</set>
+			<set name="short">A holy warrior bound to a sacred oath.</set>
+			<set name="primary">Strength and Charisma</set>
+		</setters>
+		<spellcasting name="Paladin" ability="Charisma" prepare="true">
+			<list known="true">Paladin</list>
+		</spellcasting>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_PALADIN">
+			<prerequisite>Strength 13 and Charisma 13</prerequisite>
+			<requirements>[str:13],[cha:13]</requirements>
+			<setters><set name="multiclass proficiencies">Light armor, medium armor, shields, simple weapons, martial weapons</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HEAVY_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CHARISMA" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<select type="Proficiency" name="Skill Proficiency (Paladin)" supports="Skill,Paladin" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_PALADIN" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_SENSE" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_LAY_ON_HANDS" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_FIGHTING_STYLE" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_SPELLCASTING" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_SMITE" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_HEALTH" level="3" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_EXTRA_ATTACK" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_AURA_OF_PROTECTION" level="6" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_AURA_OF_COURAGE" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_IMPROVED_DIVINE_SMITE" level="11" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_CLEANSING_TOUCH" level="14" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_PALADIN_SACRED_OATH" level="3" />
+			<stat name="paladin:spellcasting:slots:1" value="2" level="2" />
+			<stat name="paladin:spellcasting:slots:1" value="1" level="3" />
+			<stat name="paladin:spellcasting:slots:1" value="1" level="5" />
+			<stat name="paladin:spellcasting:slots:2" value="2" level="5" />
+			<stat name="paladin:spellcasting:slots:2" value="1" level="7" />
+			<stat name="paladin:spellcasting:slots:3" value="2" level="9" />
+			<stat name="paladin:spellcasting:slots:3" value="1" level="11" />
+			<stat name="paladin:spellcasting:slots:4" value="1" level="13" />
+			<stat name="paladin:spellcasting:slots:4" value="1" level="15" />
+			<stat name="paladin:spellcasting:slots:4" value="1" level="17" />
+			<stat name="paladin:spellcasting:slots:5" value="1" level="17" />
+			<stat name="paladin:spellcasting:slots:5" value="1" level="19" />
+			<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS_SPELLCASTING_SLOTS_HALF" requirements="ID_INTERNAL_GRANT_MULTICLASS" />
+			<stat name="paladin:spellcasting:prepare" value="charisma:modifier" />
+			<stat name="paladin:spellcasting:prepare" value="level:paladin:half" />
+		</rules>
+	</element>
+
+	<element name="Divine Sense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_SENSE">
+		<description><p>As an action, you can detect the presence of strong evil or good: until the end of your next turn you know the location of any celestial, fiend or undead within 60 feet that is not behind total cover. You can use this a number of times equal to 1 + your Charisma modifier per long rest.</p></description>
+		<sheet>
+			<description usage="{{divine sense:count}}/Long Rest" action="Action">Sense celestials, fiends and undead within 60 feet.</description>
+		</sheet>
+		<rules>
+			<stat name="divine sense:count" value="1" />
+			<stat name="divine sense:count" value="charisma:modifier" />
+		</rules>
+	</element>
+
+	<element name="Lay on Hands" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_LAY_ON_HANDS">
+		<description><p>You have a pool of healing power that replenishes when you take a long rest, equal to your paladin level × 5. As an action, you can touch a creature and restore hit points from the pool, or spend 5 points to cure one disease or neutralize one poison.</p></description>
+		<sheet>
+			<description usage="Long Rest" action="Action">Healing pool of {{lay on hands:pool}} hit points.</description>
+		</sheet>
+		<rules>
+			<stat name="lay on hands:pool" value="level:paladin" />
+			<stat name="lay on hands:pool" value="level:paladin" />
+			<stat name="lay on hands:pool" value="level:paladin" />
+			<stat name="lay on hands:pool" value="level:paladin" />
+			<stat name="lay on hands:pool" value="level:paladin" />
+		</rules>
+	</element>
+
+	<element name="Fighting Style" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_FIGHTING_STYLE">
+		<description><p>You adopt a particular style of fighting as your specialty.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Fighting Style (Paladin)" supports="Fighting Style,Paladin" />
+		</rules>
+	</element>
+
+	<element name="Spellcasting" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_SPELLCASTING">
+		<description><p>You prepare paladin spells from the paladin list, choosing a number equal to your Charisma modifier + half your paladin level (minimum one). Charisma is your spellcasting ability.</p></description>
+		<sheet><description>Prepare {{paladin:spellcasting:prepare}} paladin spells.</description></sheet>
+	</element>
+
+	<element name="Divine Smite" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_SMITE">
+		<description><p>When you hit a creature with a melee weapon attack, you can expend one spell slot to deal radiant damage in addition to the weapon’s damage: 2d8 for a 1st-level slot, plus 1d8 for each slot level above 1st (maximum 5d8), plus 1d8 against undead or fiends.</p></description>
+	</element>
+
+	<element name="Divine Health" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_DIVINE_HEALTH">
+		<description><p>The divine magic flowing through you makes you immune to disease.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Paladin 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Extra Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_EXTRA_ATTACK">
+		<description><p>You can attack twice, instead of once, whenever you take the Attack action on your turn.</p></description>
+	</element>
+
+	<element name="Aura of Protection" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_AURA_OF_PROTECTION">
+		<description><p>Whenever you or a friendly creature within 10 feet of you must make a saving throw, the creature gains a bonus equal to your Charisma modifier (minimum +1). You must be conscious. At 18th level the range becomes 30 feet.</p></description>
+		<rules>
+			<stat name="strength:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+			<stat name="dexterity:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+			<stat name="constitution:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+			<stat name="intelligence:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+			<stat name="wisdom:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+			<stat name="charisma:save:misc" value="charisma:modifier" minimum="1" bonus="aura of protection" alt="Aura of Protection" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Paladin 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Aura of Courage" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_AURA_OF_COURAGE">
+		<description><p>You and friendly creatures within 10 feet of you can’t be frightened while you are conscious. At 18th level the range becomes 30 feet.</p></description>
+	</element>
+
+	<element name="Improved Divine Smite" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_IMPROVED_DIVINE_SMITE">
+		<description><p>Whenever you hit a creature with a melee weapon, the creature takes an extra 1d8 radiant damage.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Paladin 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Cleansing Touch" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_CLEANSING_TOUCH">
+		<description><p>You can use your action to end one spell on yourself or on one willing creature that you touch. You can use this a number of times equal to your Charisma modifier (minimum once) per long rest.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Paladin 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Paladin 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Sacred Oath" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_PALADIN_SACRED_OATH">
+		<description><p>At 3rd level you swear the oath that binds you as a paladin forever.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Sacred Oath" supports="Sacred Oath" />
+		</rules>
+	</element>
+
+	<element name="Channel Divinity" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_CHANNEL_DIVINITY">
+		<description><p>Once per short or long rest you can channel divine energy. Sacred Weapon: as an action, for 1 minute add your Charisma modifier to attack rolls with one weapon, which also sheds bright light. Turn the Unholy: as an action, each fiend or undead within 30 feet that can see or hear you must make a Wisdom save or be turned for 1 minute.</p></description>
+		<sheet>
+			<description usage="1/Short Rest">Sacred Weapon or Turn the Unholy.</description>
+		</sheet>
+	</element>
+
+	<element name="Aura of Devotion" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_AURA_OF_DEVOTION">
+		<description><p>You and friendly creatures within 10 feet of you can’t be charmed while you are conscious. At 18th level the range becomes 30 feet.</p></description>
+	</element>
+
+	<element name="Purity of Spirit" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_PURITY_OF_SPIRIT">
+		<description><p>You are always under the effects of a protection from evil and good spell.</p></description>
+	</element>
+
+	<element name="Holy Nimbus" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_HOLY_NIMBUS">
+		<description><p>As an action, you emanate an aura of sunlight for 1 minute. Bright light shines in a 30-foot radius; enemies starting their turn in it take 10 radiant damage, and you have advantage on saves against spells cast by fiends or undead. Once per long rest.</p></description>
+		<sheet>
+			<description usage="1/Long Rest" action="Action">Aura of sunlight for 1 minute: 10 radiant damage to enemies starting their turn within 30 feet.</description>
+		</sheet>
+	</element>
+
+	<element name="Oath of Devotion" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_PALADIN_OATH_OF_DEVOTION">
+		<supports>Sacred Oath, Paladin</supports>
+		<description><p>The Oath of Devotion binds a paladin to the loftiest ideals of justice, virtue and order: honesty, courage, compassion, honor and duty.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Spell" id="ID_PHB_SPELL_PROTECTION_FROM_EVIL_AND_GOOD" level="3" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_SANCTUARY" level="3" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_LESSER_RESTORATION" level="5" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_ZONE_OF_TRUTH" level="5" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_BEACON_OF_HOPE" level="9" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_DISPEL_MAGIC" level="9" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_FREEDOM_OF_MOVEMENT" level="13" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_GUARDIAN_OF_FAITH" level="13" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_COMMUNE" level="17" spellcasting="Paladin" prepared="true" />
+			<grant type="Spell" id="ID_PHB_SPELL_FLAME_STRIKE" level="17" spellcasting="Paladin" prepared="true" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_CHANNEL_DIVINITY" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_AURA_OF_DEVOTION" level="7" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_PURITY_OF_SPIRIT" level="15" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_OATH_OF_DEVOTION_HOLY_NIMBUS" level="20" />
+		</rules>
+	</element>
+</elements>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Fighter</name>
+		<description>The fighter class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Fighter" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_FIGHTER">
+		<description><p>Fighters share an unparalleled mastery with weapons and armor, and a thorough knowledge of the skills of combat.</p><p>Hit Dice: 1d10 per fighter level. Proficiencies: all armor, shields, simple and martial weapons. Saving throws: Strength, Constitution. Skills: choose two from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception and Survival.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d10</set>
+			<set name="short">A master of martial combat, skilled with a variety of weapons and armor.</set>
+			<set name="primary">Strength or Dexterity</set>
+		</setters>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_FIGHTER">
+			<prerequisite>Strength 13 or Dexterity 13</prerequisite>
+			<requirements>[str:13]||[dex:13]</requirements>
+			<setters><set name="multiclass proficiencies">Light armor, medium armor, shields, simple weapons, martial weapons</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_MEDIUM_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_HEAVY_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_SHIELDS" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_MARTIAL_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_STRENGTH" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_CONSTITUTION" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<select type="Proficiency" name="Skill Proficiency (Fighter)" supports="Skill,Fighter" number="2" requirements="!ID_WOTC_PHB_MULTICLASS_FIGHTER" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_FIGHTING_STYLE" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_SECOND_WIND" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ACTION_SURGE" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_EXTRA_ATTACK" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_6" level="6" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_INDOMITABLE" level="9" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_14" level="14" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_FIGHTER_MARTIAL_ARCHETYPE" level="3" />
+		</rules>
+	</element>
+
+	<element name="Fighting Style" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_FIGHTING_STYLE">
+		<description><p>You adopt a particular style of fighting as your specialty. You can’t take a Fighting Style option more than once.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Fighting Style (Fighter)" supports="Fighting Style,Fighter" />
+		</rules>
+	</element>
+
+	<element name="Second Wind" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_SECOND_WIND">
+		<description><p>On your turn you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again.</p></description>
+		<sheet>
+			<description usage="1/Short Rest" action="Bonus Action">Regain 1d10 + {{level:fighter}} hit points.</description>
+		</sheet>
+	</element>
+
+	<element name="Action Surge" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ACTION_SURGE">
+		<description><p>On your turn you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again. Starting at 17th level you can use it twice before a rest, but only once on the same turn.</p></description>
+		<sheet>
+			<description level="2" usage="1/Short Rest">Take one additional action on your turn.</description>
+			<description level="17" usage="2/Short Rest">Take one additional action on your turn.</description>
+		</sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Extra Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_EXTRA_ATTACK">
+		<description><p>You can attack twice whenever you take the Attack action on your turn. The number of attacks increases to three at 11th level and four at 20th level.</p></description>
+		<sheet>
+			<description level="5">You can attack twice when you take the Attack action.</description>
+			<description level="11">You can attack three times when you take the Attack action.</description>
+			<description level="20">You can attack four times when you take the Attack action.</description>
+		</sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_6">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 6)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Indomitable" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_INDOMITABLE">
+		<description><p>You can reroll a saving throw that you fail, and must use the new roll. You can use this once between long rests, twice from 13th level and three times from 17th level.</p></description>
+		<sheet>
+			<description level="9" usage="1/Long Rest">Reroll a failed saving throw.</description>
+			<description level="13" usage="2/Long Rest">Reroll a failed saving throw.</description>
+			<description level="17" usage="3/Long Rest">Reroll a failed saving throw.</description>
+		</sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_14">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 14)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Fighter 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Martial Archetype" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_FIGHTER_MARTIAL_ARCHETYPE">
+		<description><p>At 3rd level you choose an archetype that you strive to emulate in your combat styles and techniques.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Martial Archetype" supports="Martial Archetype" />
+		</rules>
+	</element>
+
+	<element name="Improved Critical" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_IMPROVED_CRITICAL">
+		<description><p>Your weapon attacks score a critical hit on a roll of 19 or 20.</p></description>
+	</element>
+
+	<element name="Remarkable Athlete" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_REMARKABLE_ATHLETE">
+		<description><p>You can add half your proficiency bonus (rounded up) to any Strength, Dexterity or Constitution check you make that doesn’t already use your proficiency bonus. Your running long jump distance increases by a number of feet equal to your Strength modifier.</p></description>
+	</element>
+
+	<element name="Additional Fighting Style" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_ADDITIONAL_FIGHTING_STYLE">
+		<description><p>You can choose a second option from the Fighting Style class feature.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Additional Fighting Style (Champion)" supports="Fighting Style,Fighter" />
+		</rules>
+	</element>
+
+	<element name="Superior Critical" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_SUPERIOR_CRITICAL">
+		<description><p>Your weapon attacks score a critical hit on a roll of 18–20.</p></description>
+	</element>
+
+	<element name="Survivor" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_SURVIVOR">
+		<description><p>At the start of each of your turns, you regain hit points equal to 5 + your Constitution modifier if you have no more than half your hit points left. You don’t gain this benefit if you have 0 hit points.</p></description>
+	</element>
+
+	<element name="Champion" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_CHAMPION">
+		<supports>Martial Archetype, Fighter</supports>
+		<description><p>The archetypal Champion focuses on the development of raw physical power honed to deadly perfection.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_IMPROVED_CRITICAL" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_REMARKABLE_ATHLETE" level="7" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_ADDITIONAL_FIGHTING_STYLE" level="10" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_SUPERIOR_CRITICAL" level="15" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_CHAMPION_SURVIVOR" level="18" />
+		</rules>
+	</element>
+</elements>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated file; edit the generator in scripts/, not this file. -->
+<!-- This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC, available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode). Text has been condensed and adapted for this application. -->
+<elements>
+	<info>
+		<name>SRD 5.1: Rogue</name>
+		<description>The rogue class with its SRD subclass.</description>
+		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+	</info>
+
+	<element name="Rogue" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_ROGUE">
+		<description><p>Rogues rely on skill, stealth and their foes’ vulnerabilities to get the upper hand in any situation.</p><p>Hit Dice: 1d8 per rogue level. Proficiencies: light armor; simple weapons, hand crossbows, longswords, rapiers, shortswords; thieves’ tools. Saving throws: Dexterity, Intelligence. Skills: choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand and Stealth.</p></description>
+		<sheet display="false" />
+		<setters>
+			<set name="hd">d8</set>
+			<set name="short">A scoundrel who uses stealth and trickery to overcome obstacles and enemies.</set>
+			<set name="primary">Dexterity</set>
+		</setters>
+		<multiclass id="ID_WOTC_PHB_MULTICLASS_ROGUE">
+			<prerequisite>Dexterity 13</prerequisite>
+			<requirements>[dex:13]</requirements>
+			<setters><set name="multiclass proficiencies">Light armor, one skill from the class’s skill list, thieves’ tools</set></setters>
+			<rules>
+				<grant type="Grants" id="ID_INTERNAL_GRANT_MULTICLASS" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" />
+				<grant type="Proficiency" id="ID_PROFICIENCY_TOOL_PROFICIENCY_THIEVES_TOOLS" />
+				<select type="Proficiency" name="Skill Proficiency (Rogue Multiclass)" supports="Skill,Rogue" number="1" />
+			</rules>
+		</multiclass>
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_ARMOR_PROFICIENCY_LIGHT_ARMOR" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SIMPLE_WEAPONS" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_CROSSBOW_HAND" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_LONGSWORD" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_RAPIER" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_WEAPON_PROFICIENCY_SHORTSWORD" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_TOOL_PROFICIENCY_THIEVES_TOOLS" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_DEXTERITY" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_INTELLIGENCE" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<select type="Proficiency" name="Skill Proficiency (Rogue)" supports="Skill,Rogue" number="4" requirements="!ID_WOTC_PHB_MULTICLASS_ROGUE" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_EXPERTISE_1" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_SNEAK_ATTACK" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_THIEVES_CANT" level="1" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_CUNNING_ACTION" level="2" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_4" level="4" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_UNCANNY_DODGE" level="5" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_EXPERTISE_6" level="6" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_EVASION" level="7" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_8" level="8" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_10" level="10" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_RELIABLE_TALENT" level="11" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_12" level="12" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_BLINDSENSE" level="14" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_SLIPPERY_MIND" level="15" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_16" level="16" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ELUSIVE" level="18" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_19" level="19" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_STROKE_OF_LUCK" level="20" />
+			<grant type="Class Feature" id="ID_SRD_CLASS_FEATURE_ROGUE_ROGUISH_ARCHETYPE" level="3" />
+		</rules>
+	</element>
+
+	<element name="Expertise" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_EXPERTISE_1">
+		<description><p>Choose two of your skill proficiencies, or one skill proficiency and your proficiency with thieves’ tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies. At 6th level you choose two more.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Expertise (Rogue)" supports="Expertise" number="2" />
+		</rules>
+	</element>
+
+	<element name="Sneak Attack" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_SNEAK_ATTACK">
+		<description><p>Once per turn, you can deal extra damage to one creature you hit with an attack if you have advantage on the attack roll, or if another enemy of the target is within 5 feet of it. The attack must use a finesse or ranged weapon.</p></description>
+		<sheet><description>Once per turn, deal an extra {{sneak attack:dice}}d6 damage with a finesse or ranged weapon attack.</description></sheet>
+		<rules>
+			<stat name="sneak attack:dice" value="1" level="1" />
+			<stat name="sneak attack:dice" value="1" level="3" />
+			<stat name="sneak attack:dice" value="1" level="5" />
+			<stat name="sneak attack:dice" value="1" level="7" />
+			<stat name="sneak attack:dice" value="1" level="9" />
+			<stat name="sneak attack:dice" value="1" level="11" />
+			<stat name="sneak attack:dice" value="1" level="13" />
+			<stat name="sneak attack:dice" value="1" level="15" />
+			<stat name="sneak attack:dice" value="1" level="17" />
+			<stat name="sneak attack:dice" value="1" level="19" />
+		</rules>
+	</element>
+
+	<element name="Thieves’ Cant" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_THIEVES_CANT">
+		<description><p>You know thieves’ cant, a secret mix of dialect, jargon and code that allows you to hide messages in seemingly normal conversation.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Language" id="ID_WOTC_PHB_LANGUAGE_THIEVES_CANT" />
+		</rules>
+	</element>
+
+	<element name="Cunning Action" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_CUNNING_ACTION">
+		<description><p>You can take a bonus action on each of your turns in combat to Dash, Disengage or Hide.</p></description>
+		<sheet>
+			<description action="Bonus Action">Dash, Disengage or Hide as a bonus action.</description>
+		</sheet>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_4">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 4)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Uncanny Dodge" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_UNCANNY_DODGE">
+		<description><p>When an attacker that you can see hits you with an attack, you can use your reaction to halve the attack’s damage against you.</p></description>
+		<sheet>
+			<description action="Reaction">Halve the damage of an attack that hits you.</description>
+		</sheet>
+	</element>
+
+	<element name="Expertise" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_EXPERTISE_6">
+		<description><p>Choose two more of your proficiencies to gain the benefits of Expertise.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Proficiency" name="Expertise (Rogue 6)" supports="Expertise" number="2" />
+		</rules>
+	</element>
+
+	<element name="Evasion" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_EVASION">
+		<description><p>When you are subjected to an effect that allows a Dexterity saving throw for half damage, you take no damage on a success and only half damage on a failure.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_8">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 8)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_10">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 10)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Reliable Talent" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_RELIABLE_TALENT">
+		<description><p>Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_12">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 12)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Blindsense" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_BLINDSENSE">
+		<description><p>If you are able to hear, you are aware of the location of any hidden or invisible creature within 10 feet of you.</p></description>
+	</element>
+
+	<element name="Slippery Mind" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_SLIPPERY_MIND">
+		<description><p>You have acquired greater mental strength. You gain proficiency in Wisdom saving throws.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Proficiency" id="ID_PROFICIENCY_SAVINGTHROW_WISDOM" />
+		</rules>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_16">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 16)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Elusive" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ELUSIVE">
+		<description><p>No attack roll has advantage against you while you aren’t incapacitated.</p></description>
+	</element>
+
+	<element name="Ability Score Improvement" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ASI_19">
+		<description><p>Increase one ability score by 2 or two ability scores by 1 (maximum 20), or take a feat if your game uses feats.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Class Feature" name="Improvement Option (Rogue 19)" supports="Improvement Option" />
+		</rules>
+	</element>
+
+	<element name="Stroke of Luck" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_STROKE_OF_LUCK">
+		<description><p>If your attack misses a target within range, you can turn the miss into a hit. Alternatively, if you fail an ability check, you can treat the d20 roll as a 20. Once used, you must finish a short or long rest to use it again.</p></description>
+		<sheet>
+			<description usage="1/Short Rest">Turn a miss into a hit, or treat a failed ability check’s d20 as a 20.</description>
+		</sheet>
+	</element>
+
+	<element name="Roguish Archetype" type="Class Feature" source="System Reference Document 5.1" id="ID_SRD_CLASS_FEATURE_ROGUE_ROGUISH_ARCHETYPE">
+		<description><p>At 3rd level you choose an archetype that you emulate in the exercise of your rogue abilities.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Archetype" name="Roguish Archetype" supports="Roguish Archetype" />
+		</rules>
+	</element>
+
+	<element name="Fast Hands" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_FAST_HANDS">
+		<description><p>You can use the bonus action granted by your Cunning Action to make a Dexterity (Sleight of Hand) check, use your thieves’ tools to disarm a trap or open a lock, or take the Use an Object action.</p></description>
+	</element>
+
+	<element name="Second-Story Work" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_SECOND_STORY_WORK">
+		<description><p>Climbing no longer costs you extra movement. When you make a running jump, the distance you cover increases by a number of feet equal to your Dexterity modifier.</p></description>
+	</element>
+
+	<element name="Supreme Sneak" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_SUPREME_SNEAK">
+		<description><p>You have advantage on a Dexterity (Stealth) check if you move no more than half your speed on the same turn.</p></description>
+	</element>
+
+	<element name="Use Magic Device" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_USE_MAGIC_DEVICE">
+		<description><p>You ignore all class, race and level requirements on the use of magic items.</p></description>
+	</element>
+
+	<element name="Thief’s Reflexes" type="Archetype Feature" source="System Reference Document 5.1" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_THIEFS_REFLEXES">
+		<description><p>You can take two turns during the first round of any combat: your first turn at your normal initiative and your second at your initiative minus 10.</p></description>
+	</element>
+
+	<element name="Thief" type="Archetype" source="System Reference Document 5.1" id="ID_WOTC_PHB_ARCHETYPE_THIEF">
+		<supports>Roguish Archetype, Rogue</supports>
+		<description><p>You hone your skills in the larcenous arts. Burglars, bandits, cutpurses and other criminals typically follow this archetype.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_FAST_HANDS" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_SECOND_STORY_WORK" level="3" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_SUPREME_SNEAK" level="9" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_USE_MAGIC_DEVICE" level="13" />
+			<grant type="Archetype Feature" id="ID_SRD_ARCHETYPE_FEATURE_THIEF_THIEFS_REFLEXES" level="17" />
+		</rules>
+	</element>
+</elements>
