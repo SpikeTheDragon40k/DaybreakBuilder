@@ -1,0 +1,348 @@
+import { ABILITIES, ABILITY_ABBR, SKILLS, getSetter, type Ability, type ElementDef } from "./model.js";
+import { meetsRequirements, type ResolvedCharacter, type ResolvedNode } from "./resolver.js";
+import type { StatPart } from "./stats.js";
+
+export interface AbilityRow {
+  ability: Ability;
+  abbr: string;
+  base: number;
+  score: number;
+  modifier: number;
+  breakdown: StatPart[];
+}
+
+export interface CheckRow {
+  name: string;
+  ability: Ability;
+  total: number;
+  proficient: boolean;
+  expertise: boolean;
+  breakdown: StatPart[];
+}
+
+export interface FeatureRow {
+  id: string;
+  name: string;
+  type: string;
+  source: string;
+  /** Sheet text with {{stat}} placeholders substituted. */
+  text: string;
+  usage?: string;
+  action?: string;
+  origin: string;
+}
+
+export interface SpellcastingRow {
+  name: string;
+  ability: string;
+  attack: number;
+  dc: number;
+  prepare: boolean;
+  slots: number[];
+  cantripsKnown?: number;
+  spellsKnown?: number;
+  prepareCount?: number;
+  spells: { id: string; name: string; level: number; alwaysPrepared: boolean }[];
+}
+
+export interface CharacterSheet {
+  name: string;
+  level: number;
+  classSummary: string;
+  race?: string;
+  subrace?: string;
+  background?: string;
+  alignment?: string;
+  deity?: string;
+  size?: string;
+  proficiencyBonus: number;
+  abilities: AbilityRow[];
+  savingThrows: CheckRow[];
+  skills: CheckRow[];
+  passivePerception: number;
+  passiveInsight: number;
+  passiveInvestigation: number;
+  armorClass: number;
+  armorClassBreakdown: StatPart[];
+  initiative: number;
+  speed: { walk: number; climb: number; swim: number; fly: number; burrow: number };
+  maxHp: number;
+  hpBreakdown: StatPart[];
+  hitDice: string;
+  vision: { name: string; range: number }[];
+  proficiencies: { armor: string[]; weapons: string[]; tools: string[]; skills: string[]; savingThrows: string[]; other: string[] };
+  languages: string[];
+  features: FeatureRow[];
+  spellcasting: SpellcastingRow[];
+  conditions: string[];
+  warnings: string[];
+}
+
+const FEATURE_TYPES = new Set([
+  "Racial Trait",
+  "Class Feature",
+  "Archetype Feature",
+  "Feat",
+  "Feat Feature",
+  "Background Feature",
+  "Archetype",
+  "Dragonmark",
+]);
+
+function first(rc: ResolvedCharacter, type: string): ElementDef | undefined {
+  return rc.nodes.find((n) => n.element.type === type)?.element;
+}
+
+function unique(list: string[]): string[] {
+  return [...new Set(list)];
+}
+
+/** Replace {{stat}} and $(stat) placeholders with values. */
+export function substitute(rc: ResolvedCharacter, text: string): string {
+  const repl = (name: string): string => {
+    const key = name.trim().toLowerCase();
+    if (rc.stats.has(key)) return String(rc.stats.get(key));
+    const inline = rc.inline.get(key);
+    if (inline !== undefined) return inline;
+    return `{{${name}}}`;
+  };
+  return text.replace(/\{\{([^}]+)\}\}/g, (_, n: string) => repl(n)).replace(/\$\(([^)]+)\)/g, (_, n: string) => repl(n));
+}
+
+function originOf(node: ResolvedNode): string {
+  for (let n = node.parent; n; n = n.parent) {
+    const t = n.element.type;
+    if (t === "Race" || t === "Sub Race" || t === "Class" || t === "Multiclass" || t === "Background" || t === "Feat" || t === "Archetype") {
+      return n.element.name;
+    }
+  }
+  return "";
+}
+
+export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
+  const s = rc.stats;
+  const abilities: AbilityRow[] = ABILITIES.map((a) => ({
+    ability: a,
+    abbr: ABILITY_ABBR[a].toUpperCase(),
+    base: rc.state.abilities[a],
+    score: s.abilityScore(a),
+    modifier: s.abilityModifier(a),
+    breakdown: s.breakdown(`${a}:score`),
+  }));
+  const prof = s.get("proficiency");
+
+  const savingThrows: CheckRow[] = ABILITIES.map((a) => {
+    const p = s.get(`${a}:save:proficiency`);
+    const misc = s.get(`${a}:save:misc`);
+    return {
+      name: a.charAt(0).toUpperCase() + a.slice(1),
+      ability: a,
+      total: s.abilityModifier(a) + p + misc,
+      proficient: p > 0,
+      expertise: prof > 0 && p >= prof * 2,
+      breakdown: [{ source: "Ability", value: s.abilityModifier(a) }, ...s.breakdown(`${a}:save:proficiency`), ...s.breakdown(`${a}:save:misc`)],
+    };
+  });
+
+  const skills: CheckRow[] = SKILLS.map(({ name, ability }) => {
+    const key = name.toLowerCase();
+    const p = s.get(`${key}:proficiency`);
+    const misc = s.get(`${key}:misc`);
+    return {
+      name,
+      ability,
+      total: s.abilityModifier(ability) + p + misc,
+      proficient: p > 0,
+      expertise: prof > 0 && p >= prof * 2,
+      breakdown: [{ source: "Ability", value: s.abilityModifier(ability) }, ...s.breakdown(`${key}:proficiency`), ...s.breakdown(`${key}:misc`)],
+    };
+  });
+  const passive = (skill: string) => 10 + (skills.find((k) => k.name === skill)?.total ?? 0) + s.get(`${skill.toLowerCase()}:passive`);
+
+  const classParts: string[] = [];
+  for (const [id, lv] of rc.classLevels) {
+    const cls = rc.registry.get(id);
+    if (!cls) continue;
+    const arch = rc.nodes.find(
+      (n) => n.element.type === "Archetype" && n.scope.kind === "class" && n.scope.classId === id,
+    );
+    classParts.push(`${cls.name}${arch ? ` (${arch.element.name})` : ""} ${lv}`);
+  }
+  const hitDice: string[] = [];
+  for (const [id, lv] of rc.classLevels) {
+    const hd = rc.registry.get(id) ? getSetter(rc.registry.get(id)!, "hd") : undefined;
+    if (hd) hitDice.push(`${lv}${hd}`);
+  }
+
+  const profs = { armor: [] as string[], weapons: [] as string[], tools: [] as string[], skills: [] as string[], savingThrows: [] as string[], other: [] as string[] };
+  const languages: string[] = [];
+  const vision: { name: string; range: number }[] = [];
+  const conditions: string[] = [];
+  const features: FeatureRow[] = [];
+  const seenFeatures = new Set<string>();
+
+  for (const node of rc.nodes) {
+    const el = node.element;
+    switch (el.type) {
+      case "Proficiency": {
+        // Group proficiencies ("Martial Weapons") grant each member; list only the group.
+        if (node.parent?.element.type === "Proficiency") break;
+        const id = el.id;
+        if (id.includes("_ARMOR_")) profs.armor.push(el.name);
+        else if (id.includes("_WEAPON_")) profs.weapons.push(el.name);
+        else if (id.includes("_TOOL_")) profs.tools.push(el.name);
+        else if (id.includes("_SKILL_")) profs.skills.push(el.name);
+        else if (id.includes("_SAVINGTHROW_")) profs.savingThrows.push(el.name);
+        else profs.other.push(el.name);
+        break;
+      }
+      case "Language":
+        languages.push(el.name);
+        break;
+      case "Vision": {
+        const range = s.get(`${el.name.toLowerCase()}:range`);
+        vision.push({ name: el.name, range });
+        break;
+      }
+      case "Condition":
+        conditions.push(el.name);
+        break;
+    }
+    if (FEATURE_TYPES.has(el.type) && el.sheet?.display !== false && !seenFeatures.has(el.id)) {
+      seenFeatures.add(el.id);
+      const descs = el.sheet?.descriptions.filter((d) => d.level <= node.level) ?? [];
+      const best = descs.length ? descs[descs.length - 1] : undefined;
+      features.push({
+        id: el.id,
+        name: el.sheet?.alt ?? el.name,
+        type: el.type,
+        source: el.source,
+        text: substitute(rc, best?.text ?? firstParagraph(el.description)),
+        usage: best?.usage ?? el.sheet?.usage,
+        action: best?.action ?? el.sheet?.action,
+        origin: originOf(node),
+      });
+    }
+  }
+
+  const spellcasting = buildSpellcasting(rc);
+
+  const warnings: string[] = rc.issues.filter((i) => i.severity !== "info").map((i) => i.message);
+  for (const p of rc.selections) {
+    if (p.rule.optional || p.rule.type === "Class") continue;
+    const missing = p.chosen.filter((c) => c === null).length;
+    if (missing > 0) warnings.push(`${p.rule.name}: ${missing} choice${missing > 1 ? "s" : ""} remaining`);
+  }
+  if (!rc.mainClass) warnings.push("No class chosen");
+  for (const n of rc.nodes) {
+    if (n.element.type === "Multiclass" && !meetsRequirements(rc, n.element.requirements)) {
+      warnings.push(`Multiclass prerequisites not met for ${n.element.name}${n.element.prerequisite ? ` (${n.element.prerequisite})` : ""}`);
+    }
+  }
+
+  return {
+    name: rc.state.name,
+    level: rc.level,
+    classSummary: classParts.join(" / "),
+    race: first(rc, "Race")?.name,
+    subrace: first(rc, "Sub Race")?.name,
+    background: first(rc, "Background")?.name,
+    alignment: first(rc, "Alignment")?.name,
+    deity: first(rc, "Deity")?.name,
+    size: first(rc, "Size")?.name,
+    proficiencyBonus: prof,
+    abilities,
+    savingThrows,
+    skills,
+    passivePerception: passive("Perception"),
+    passiveInsight: passive("Insight"),
+    passiveInvestigation: passive("Investigation"),
+    armorClass: s.get("ac"),
+    armorClassBreakdown: s.breakdown("ac"),
+    initiative: s.get("initiative"),
+    speed: {
+      walk: s.get("speed"),
+      climb: s.get("speed:climb"),
+      swim: s.get("speed:swim"),
+      fly: s.get("speed:fly"),
+      burrow: s.get("speed:burrow"),
+    },
+    maxHp: s.get("hp") + s.get("hp:starting"),
+    hpBreakdown: s.breakdown("hp"),
+    hitDice: hitDice.join(" + "),
+    vision,
+    proficiencies: {
+      armor: unique(profs.armor),
+      weapons: unique(profs.weapons),
+      tools: unique(profs.tools),
+      skills: unique(profs.skills),
+      savingThrows: unique(profs.savingThrows),
+      other: unique(profs.other),
+    },
+    languages: unique(languages),
+    features,
+    spellcasting,
+    conditions: unique(conditions),
+    warnings: unique(warnings),
+  };
+}
+
+function buildSpellcasting(rc: ResolvedCharacter): SpellcastingRow[] {
+  const s = rc.stats;
+  const rows: SpellcastingRow[] = [];
+  for (const node of rc.nodes) {
+    const sc = node.element.spellcasting;
+    if (!sc || sc.extend || !sc.name || rows.some((r) => r.name === sc.name)) continue;
+    const abbr = sc.ability.slice(0, 3).toLowerCase();
+    const name = sc.name.toLowerCase();
+    const slots: number[] = [];
+    for (let i = 1; i <= 9; i++) slots.push(s.get(`${name}:spellcasting:slots:${i}`));
+    const opt = (stat: string) => (s.has(stat) ? s.get(stat) : undefined);
+    rows.push({
+      name: sc.name,
+      ability: sc.ability,
+      attack: s.get(`spellcasting:attack:${abbr}`) + s.get(`${name}:spellcasting:attack`),
+      dc: s.get(`spellcasting:dc:${abbr}`) + s.get(`${name}:spellcasting:dc`),
+      prepare: sc.prepare,
+      slots,
+      cantripsKnown: opt(`${name}:spellcasting:cantrips known`),
+      spellsKnown: opt(`${name}:spellcasting:spells known`),
+      prepareCount: opt(`${name}:spellcasting:prepare`),
+      spells: [],
+    });
+  }
+  // Spells chosen or granted, attributed to a caster by their select/grant "spellcasting" attribute.
+  for (const node of rc.nodes) {
+    if (node.element.type !== "Spell") continue;
+    let caster: string | undefined;
+    let always = false;
+    if (node.via.kind === "select") caster = node.via.point.rule.spellcasting;
+    if (node.via.kind === "grant") {
+      caster = node.via.rule.setters.spellcasting;
+      always = (node.via.rule.setters.prepared ?? "").toLowerCase() === "true";
+    }
+    const row = rows.find((r) => r.name.toLowerCase() === (caster ?? "").toLowerCase()) ?? rows[0];
+    if (!row) continue;
+    const level = parseInt(getSetter(node.element, "level") ?? "0", 10) || 0;
+    if (!row.spells.some((sp) => sp.id === node.element.id)) {
+      row.spells.push({ id: node.element.id, name: node.element.name, level, alwaysPrepared: always });
+    }
+  }
+  for (const r of rows) r.spells.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+  return rows;
+}
+
+/** Short sheet text for elements without a <sheet> description: the first paragraph. */
+export function firstParagraph(html: string): string {
+  const m = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(html);
+  return stripHtml(m ? m[1] : html).split("\n")[0] ?? "";
+}
+
+export function stripHtml(html: string): string {
+  return html
+    .replace(/<\s*br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h\d)>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
