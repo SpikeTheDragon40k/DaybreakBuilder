@@ -1,6 +1,6 @@
 import { getSetter, needsAttunement, type ElementDef, type EquipSlot } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
-import { ElementDetail } from "../components/ElementDetail";
+import { ItemDetail } from "../components/ItemDetail";
 import { newId, useCharacter } from "../state/app";
 
 const ITEM_TYPES = ["Item", "Weapon", "Armor", "Magic Item"];
@@ -44,10 +44,11 @@ export function EquipmentPage() {
     });
 
   const inv = character.state.inventory;
+  const owned = focused ? inv.filter((i) => i.id === focused.id).reduce((n, i) => n + i.quantity, 0) : 0;
 
   return (
-    <div className="two-pane">
-      <section className="panel">
+    <div className="equipment-page">
+      <section className="panel eq-inventory">
         <header className="panel-header">
           <h2>Inventory</h2>
           <span className="muted small">AC {sheet.armorClass}</span>
@@ -59,7 +60,7 @@ export function EquipmentPage() {
               const el = registry.get(item.id);
               const slots = defaultSlots(el);
               return (
-                <tr key={item.uid}>
+                <tr key={item.uid} className={el && el === focused ? "selected" : undefined} onMouseEnter={() => el && setFocused(el)}>
                   <td>
                     <input
                       type="number"
@@ -151,7 +152,7 @@ export function EquipmentPage() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="panel eq-search">
         <header className="panel-header">
           <h2>Add items</h2>
         </header>
@@ -168,7 +169,7 @@ export function EquipmentPage() {
         </div>
         <ul className="result-list">
           {results.map((el) => (
-            <li key={el.id} onMouseEnter={() => setFocused(el)}>
+            <li key={el.id} className={el === focused ? "selected" : undefined} onMouseEnter={() => setFocused(el)} onClick={() => setFocused(el)}>
               <span className="grow">{el.name}</span>
               <span className="muted small">{el.type}</span>
               <button className="small" onClick={() => add(el)}>
@@ -176,9 +177,29 @@ export function EquipmentPage() {
               </button>
             </li>
           ))}
-          {results.length === 0 && <li className="muted">Type at least two letters to search.</li>}
+          {results.length === 0 && (
+            <li className="muted">{query.trim().length < 2 && !type ? "Type at least two letters to search." : "No matching items."}</li>
+          )}
         </ul>
-        {focused && <ElementDetail element={focused} registry={registry} />}
+      </section>
+
+      <section className="panel sticky eq-preview" aria-live="polite">
+        {focused ? (
+          <ItemDetail
+            element={focused}
+            registry={registry}
+            actions={
+              <>
+                <button className="small" onClick={() => add(focused)}>
+                  Add to inventory
+                </button>
+                {owned > 0 && <span className="muted small">{owned} in inventory</span>}
+              </>
+            }
+          />
+        ) : (
+          <p className="muted">Hover an item to preview it.</p>
+        )}
       </section>
     </div>
   );
