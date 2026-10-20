@@ -21,6 +21,7 @@ import {
 } from "./model.js";
 import type { ContentRegistry } from "./registry.js";
 import { spellcastingVariables, spellLevel } from "./spellcasting.js";
+import { companionBaseAbilities, companionProficiency } from "./companion.js";
 import { StatValues, type StatContribution, type StatSeed } from "./stats.js";
 
 export type Scope =
@@ -391,10 +392,14 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
     }
   }
 
+  const companion = nodes.find((n) => n.element.type === "Companion")?.element;
+  const seeds = seedStats(registry, state, perClass, level);
+  if (companion) seeds.push({ stat: "companion:proficiency", value: companionProficiency(companion), source: companion.name });
   const stats = new StatValues({
     contributions,
-    seeds: seedStats(registry, state, perClass, level),
+    seeds,
     baseAbilities: state.abilities,
+    companionAbilities: companion ? companionBaseAbilities(companion) : undefined,
     useAbilityMaximum: useMax,
   });
 

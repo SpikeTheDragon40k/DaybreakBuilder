@@ -1,5 +1,6 @@
 import { formatModifier, type StatPart } from "@dndbuilder/engine";
 import type { ReactNode } from "react";
+import { CompanionBlock } from "../components/CompanionBlock";
 import { useCharacter } from "../state/app";
 
 const tip = (parts: StatPart[]) => parts.map((p) => `${p.source}: ${formatModifier(p.value)}`).join("\n");
@@ -161,6 +162,7 @@ export function SheetPage() {
                 </div>
               ))}
             </Box>
+            {s.companion && <CompanionBlock c={s.companion} />}
             {(character.state.details.traits || character.state.details.backstory) && (
               <Box title="Personality & Background">
                 {(["traits", "ideals", "bonds", "flaws", "backstory"] as const).map((k) =>

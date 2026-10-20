@@ -1,6 +1,7 @@
 import { ABILITIES, ABILITY_ABBR, SKILLS, getSetter, type Ability, type ElementDef } from "./model.js";
 import { meetsRequirements, type ResolvedCharacter, type ResolvedNode } from "./resolver.js";
 import type { StatPart } from "./stats.js";
+import { buildCompanionSheet, type CompanionSheet } from "./companion.js";
 import {
   casterSpells,
   findCasters,
@@ -86,6 +87,7 @@ export interface CharacterSheet {
   languages: string[];
   features: FeatureRow[];
   spellcasting: SpellcastingRow[];
+  companion: CompanionSheet | null;
   /** Shared slots when several classes contribute to the multiclass caster level. */
   multiclassSpellcasting: { casterLevel: number; slots: number[] } | null;
   conditions: string[];
@@ -240,6 +242,7 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
   }
 
   const { rows: spellcasting, multiclass: multiclassSpellcasting } = buildSpellcasting(rc);
+  const companionNode = rc.nodes.find((n) => n.element.type === "Companion");
 
   const warnings: string[] = rc.issues.filter((i) => i.severity !== "info").map((i) => i.message);
   for (const p of rc.selections) {
@@ -297,6 +300,7 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
     features,
     spellcasting,
     multiclassSpellcasting,
+    companion: companionNode ? buildCompanionSheet(companionNode.element, s, rc.registry) : null,
     conditions: unique(conditions),
     warnings: unique(warnings),
   };

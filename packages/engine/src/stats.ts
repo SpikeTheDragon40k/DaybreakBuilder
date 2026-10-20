@@ -22,6 +22,8 @@ export interface StatInput {
   contributions: StatContribution[];
   seeds: StatSeed[];
   baseAbilities: Record<Ability, number>;
+  /** Base ability scores of the character's companion, if any. */
+  companionAbilities?: Record<Ability, number>;
   /** Cap ability scores at "<ability>:max" (20 by default). */
   useAbilityMaximum: boolean;
 }
@@ -115,21 +117,24 @@ export class StatValues {
   }
 
   private builtin(name: string): ((parts: StatPart[]) => number) | undefined {
-    const m = /^(strength|dexterity|constitution|intelligence|wisdom|charisma):(score|modifier)$/.exec(name);
+    const m = /^(companion:)?(strength|dexterity|constitution|intelligence|wisdom|charisma):(score|modifier)$/.exec(name);
     if (m) {
-      const a = m[1] as Ability;
-      if (m[2] === "score") {
+      const prefix = m[1] ?? "";
+      const a = m[2] as Ability;
+      const bases = prefix ? this.input.companionAbilities : this.input.baseAbilities;
+      if (prefix && !bases) return undefined;
+      if (m[3] === "score") {
         return (parts) => {
-          const base = this.input.baseAbilities[a] ?? 10;
-          const additional = this.get(a);
+          const base = bases?.[a] ?? 10;
+          const additional = this.get(prefix + a);
           parts.push({ source: "Base", value: base });
-          for (const p of this.breakdown(a)) parts.push(p);
+          for (const p of this.breakdown(prefix + a)) parts.push(p);
           let score = base + additional;
-          const override = this.get(`${a}:score:set`);
+          const override = this.get(`${prefix}${a}:score:set`);
           if (override > score) {
             parts.push({ source: "Set", value: override - score });
             score = override;
-          } else if (this.input.useAbilityMaximum && this.has(`${a}:max`)) {
+          } else if (!prefix && this.input.useAbilityMaximum && this.has(`${a}:max`)) {
             const max = this.get(`${a}:max`);
             if (score > max) {
               parts.push({ source: "Maximum", value: max - score });
@@ -140,7 +145,7 @@ export class StatValues {
         };
       }
       return (parts) => {
-        const mod = Math.floor((this.get(`${a}:score`) - 10) / 2);
+        const mod = Math.floor((this.get(`${prefix}${a}:score`) - 10) / 2);
         parts.push({ source: `${cap(a)} Score`, value: mod });
         return mod;
       };

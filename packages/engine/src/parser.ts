@@ -312,6 +312,13 @@ export function parseElementNode(node: XmlElement, file: string | undefined, war
     if (p) def.prerequisite = p.value;
   }
   if (def.type === "Spell") addSpellSupports(def);
+  if (def.type === "Companion") {
+    // Companions can be filtered by creature type, size and challenge rating.
+    for (const key of ["type", "size", "challenge"]) {
+      const v = def.setters.find((s) => s.name === key)?.value?.trim();
+      if (v && !def.supports.includes(v)) def.supports.push(v);
+    }
+  }
   return def;
 }
 
