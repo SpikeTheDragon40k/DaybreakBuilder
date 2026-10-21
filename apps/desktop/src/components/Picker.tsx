@@ -1,4 +1,4 @@
-import { featCategory, FEAT_CATEGORIES, type ContentRegistry, type ElementDef, type SelectionOption } from "@dndbuilder/engine";
+import { featCategory, FEAT_CATEGORIES, type ContentRegistry, type ElementDef, type SelectionOption } from "@daybreakbuilder/engine";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ElementDetail } from "./ElementDetail";
 

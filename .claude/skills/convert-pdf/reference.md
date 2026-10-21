@@ -12,7 +12,7 @@ semantics see `docs/aurora-format.md`.
 	<info>
 		<name>Player’s Handbook: Spells</name>
 		<description>Spells from the Player’s Handbook (personal conversion).</description>
-		<author>converted with dndbuilder</author>
+		<author>converted with DaybreakBuilder</author>
 	</info>
 
 	<element …>…</element>

@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Levels</name>
 		<description>Character levels, proficiency bonus and base statistics.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="1" type="Level" source="Internal" id="ID_LEVEL_1">

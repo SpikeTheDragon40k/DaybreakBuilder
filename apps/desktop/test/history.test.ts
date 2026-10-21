@@ -1,4 +1,4 @@
-import { newCharacter, type CharacterState } from "@dndbuilder/engine";
+import { newCharacter, type CharacterState } from "@daybreakbuilder/engine";
 import { describe, expect, it } from "vitest";
 import {
   describeChange,

@@ -1,4 +1,4 @@
-import { featCategory, type ElementDef } from "@dndbuilder/engine";
+import { featCategory, type ElementDef } from "@daybreakbuilder/engine";
 import { useMemo, useState } from "react";
 import { ElementDetail } from "../components/ElementDetail";
 import { useApp } from "../state/app";

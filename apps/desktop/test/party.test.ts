@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey } from "@dndbuilder/engine";
+import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey } from "@daybreakbuilder/engine";
 import { describe, expect, it } from "vitest";
 import { currencyInGp, encounterBudget, formatGp, memberFromSheet, summarizeParty } from "../src/state/party";
 

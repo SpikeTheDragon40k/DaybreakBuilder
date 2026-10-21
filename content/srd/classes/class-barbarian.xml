@@ -5,7 +5,7 @@
 	<info>
 		<name>SRD 5.1: Barbarian</name>
 		<description>The barbarian class with its SRD subclass.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
 	</info>
 
 	<element name="Barbarian" type="Class" source="System Reference Document 5.1" id="ID_WOTC_PHB_CLASS_BARBARIAN">

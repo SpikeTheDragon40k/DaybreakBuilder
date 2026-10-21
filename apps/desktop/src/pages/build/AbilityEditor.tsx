@@ -7,7 +7,7 @@ import {
   STANDARD_ARRAY,
   type Ability,
   type AbilityMethod,
-} from "@dndbuilder/engine";
+} from "@daybreakbuilder/engine";
 import { useCharacter } from "../../state/app";
 
 const LABEL: Record<AbilityMethod, string> = {

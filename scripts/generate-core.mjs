@@ -53,7 +53,7 @@ function file(name, title, description, elements) {
 \t<info>
 \t\t<name>${esc(title)}</name>
 \t\t<description>${esc(description)}</description>
-\t\t<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+\t\t<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 \t</info>
 
 ${elements.join("\n\n")}

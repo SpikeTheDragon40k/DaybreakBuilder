@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey, selectionOptions } from "@dndbuilder/engine";
+import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey, selectionOptions } from "@daybreakbuilder/engine";
 import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
 import { describe, expect, it } from "vitest";
 import { characterSheetPdf, htmlToRuns } from "../src/pdf/characterSheetPdf";

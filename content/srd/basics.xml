@@ -5,7 +5,7 @@
 	<info>
 		<name>SRD 5.1: Basics</name>
 		<description>Skills, saving throws, proficiencies, languages, alignments and senses.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
 	</info>
 
 	<element name="System Reference Document 5.1" type="Source" source="System Reference Document 5.1" id="ID_SOURCE_SRD_5_1">

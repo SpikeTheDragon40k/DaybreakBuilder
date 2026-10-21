@@ -1,4 +1,4 @@
-import type { CharacterState } from "@dndbuilder/engine";
+import type { CharacterState } from "@daybreakbuilder/engine";
 import type { Party } from "../state/party";
 import { idbAll, idbDelete, idbGet, idbPut } from "./idb";
 
@@ -106,6 +106,7 @@ export const parties = {
   },
 };
 
+// The "dndbuilder:" key prefix predates the rename to DaybreakBuilder; changing it would lose saved settings.
 export const settings = {
   get<T>(key: string, fallback: T): T {
     try {

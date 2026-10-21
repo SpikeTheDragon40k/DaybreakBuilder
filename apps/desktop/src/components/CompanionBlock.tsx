@@ -1,4 +1,4 @@
-import { formatModifier, type CompanionSheet } from "@dndbuilder/engine";
+import { formatModifier, type CompanionSheet } from "@daybreakbuilder/engine";
 import { useUnits } from "../units";
 
 /** Monster-manual style stat block for the character's companion. */

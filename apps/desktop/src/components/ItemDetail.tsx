@@ -1,5 +1,5 @@
-import type { ContentRegistry, ElementDef } from "@dndbuilder/engine";
-import { getSetter, getSetters, needsAttunement } from "@dndbuilder/engine";
+import type { ContentRegistry, ElementDef } from "@daybreakbuilder/engine";
+import { getSetter, getSetters, needsAttunement } from "@daybreakbuilder/engine";
 import type { ReactNode } from "react";
 import { Html } from "./Html";
 import { useUnits } from "../units";

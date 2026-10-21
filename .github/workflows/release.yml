@@ -90,7 +90,7 @@ jobs:
           if ! git diff --quiet; then
             git commit -am "Release $TAG"
           fi
-          git tag -a "$TAG" -m "dndbuilder $TAG"
+          git tag -a "$TAG" -m "DaybreakBuilder $TAG"
           git push origin "HEAD:$GITHUB_REF_NAME" "$TAG"
 
       - name: Check that every version file matches the tag
@@ -108,7 +108,7 @@ jobs:
           case "$TAG" in *-*) prerelease=true ;; esac
           id=$(gh api "repos/$GITHUB_REPOSITORY/releases" \
             -f tag_name="$TAG" \
-            -f name="dndbuilder $TAG" \
+            -f name="DaybreakBuilder $TAG" \
             -F draft=true \
             -F prerelease="$prerelease" \
             -F generate_release_notes=true \
@@ -160,8 +160,8 @@ jobs:
           RELEASE_ID: ${{ needs.prepare.outputs.release_id }}
           TAG: ${{ needs.prepare.outputs.tag }}
         run: |
-          name="dndbuilder_${TAG#v}_x64_portable.exe"
-          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "$name"
+          name="DaybreakBuilder_${TAG#v}_x64_portable.exe"
+          cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "$name"
           gh api -X POST -H "Content-Type: application/octet-stream" \
             "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=$name" \
             --input "$name" --jq .browser_download_url

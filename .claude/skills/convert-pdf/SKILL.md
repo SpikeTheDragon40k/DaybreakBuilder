@@ -1,12 +1,12 @@
 ---
 name: convert-pdf
-description: Convert pages of a D&D 5e rulebook PDF (spells, feats, backgrounds, races, classes, subclasses, items, magic items, creatures) into dndbuilder / Aurora-format XML content, then validate it with the engine. Use when the user asks to convert, import or transcribe a book, PDF or pages into content for the builder.
+description: Convert pages of a D&D 5e rulebook PDF (spells, feats, backgrounds, races, classes, subclasses, items, magic items, creatures) into DaybreakBuilder / Aurora-format XML content, then validate it with the engine. Use when the user asks to convert, import or transcribe a book, PDF or pages into content for the builder.
 ---
 
-# Convert a rulebook PDF into dndbuilder content
+# Convert a rulebook PDF into DaybreakBuilder content
 
 You turn pages of a PDF the user owns into Aurora-format `<elements>` XML that
-dndbuilder loads, and you keep fixing it until the validator passes. The
+DaybreakBuilder loads, and you keep fixing it until the validator passes. The
 output is for the user's personal use.
 
 ## Ground rules
@@ -31,8 +31,8 @@ Find out, from the request or by asking only for what's missing:
    **abbreviation** for ids (e.g. `PHB`, `XGTE`, `TCE`).
 4. **Output folder.** Default: the app's custom content folder, which the app
    loads on start (or Content page → Custom folder → Rescan):
-   - Linux/macOS: `~/Documents/dndbuilder/custom/<book-slug>/`
-   - Windows: `%USERPROFILE%\Documents\dndbuilder\custom\<book-slug>\`
+   - Linux/macOS: `~/Documents/DaybreakBuilder/custom/<book-slug>/`
+   - Windows: `%USERPROFILE%\Documents\DaybreakBuilder\custom\<book-slug>\`
    - If the user wants it inside the repo, use `converted/<book-slug>/` (git-ignored).
 
 For more than a chapter, keep a progress file `<output>/CONVERSION.md`: pages

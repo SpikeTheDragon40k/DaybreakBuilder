@@ -1,5 +1,5 @@
 {
-  "name": "dndbuilder",
+  "name": "daybreakbuilder",
   "private": true,
   "version": "0.9.5",
   "description": "Open-source, cross-platform D&D 5e character builder compatible with Aurora Builder content files",
@@ -8,11 +8,11 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build -w @dndbuilder/engine && npm run build -w @dndbuilder/desktop",
+    "build": "npm run build -w @daybreakbuilder/engine && npm run build -w @daybreakbuilder/desktop",
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "dev": "npm run dev -w @dndbuilder/desktop",
-    "tauri": "npm run tauri -w @dndbuilder/desktop",
+    "dev": "npm run dev -w @daybreakbuilder/desktop",
+    "tauri": "npm run tauri -w @daybreakbuilder/desktop",
     "validate-content": "tsx packages/engine/scripts/validate-content.ts"
   },
   "engines": {

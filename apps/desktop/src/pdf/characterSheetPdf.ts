@@ -4,7 +4,7 @@
  * not redistributable): a summary page, then spellcasting, companion and
  * background pages as needed. Long sections flow onto continuation pages.
  */
-import { attackDetails, convertUnits, currencyValue, formatCurrency, formatModifier, formatPrice, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@dndbuilder/engine";
+import { attackDetails, convertUnits, currencyValue, formatCurrency, formatModifier, formatPrice, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@daybreakbuilder/engine";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
@@ -266,7 +266,7 @@ class Ctx {
     if (this.pal.page) page.drawRectangle({ x: 0, y: 0, width: page.getWidth(), height: page.getHeight(), color: this.pal.page });
     const n = this.doc.getPageCount();
     this.text(page, `${this.characterName} · page ${n}`, MARGIN, 16, 7, this.fonts.regular, this.pal.muted);
-    this.text(page, "dndbuilder", page.getWidth() - MARGIN - 34, 16, 7, this.fonts.italic, this.pal.muted);
+    this.text(page, "DaybreakBuilder", page.getWidth() - MARGIN - 34, 16, 7, this.fonts.italic, this.pal.muted);
     return page;
   }
 
@@ -319,8 +319,8 @@ export async function characterSheetPdf(
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   doc.setTitle(`${sheet.name} - Character Sheet`);
-  doc.setCreator("dndbuilder");
-  doc.setProducer("dndbuilder (pdf-lib)");
+  doc.setCreator("DaybreakBuilder");
+  doc.setProducer("DaybreakBuilder (pdf-lib)");
   const fonts: Fonts = {
     regular: await doc.embedFont(StandardFonts.Helvetica),
     bold: await doc.embedFont(StandardFonts.HelveticaBold),

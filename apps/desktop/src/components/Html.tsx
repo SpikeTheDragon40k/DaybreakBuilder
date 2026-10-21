@@ -1,4 +1,4 @@
-import type { ContentRegistry } from "@dndbuilder/engine";
+import type { ContentRegistry } from "@daybreakbuilder/engine";
 import DOMPurify from "dompurify";
 import { useMemo } from "react";
 import { useUnits } from "../units";
