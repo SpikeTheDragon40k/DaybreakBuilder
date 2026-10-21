@@ -23,7 +23,7 @@ const PACKAGES = ["package.json", "packages/engine/package.json", "apps/desktop/
 const TAURI_CONF = "apps/desktop/src-tauri/tauri.conf.json";
 const CARGO_TOML = "apps/desktop/src-tauri/Cargo.toml";
 const CARGO_LOCK = "apps/desktop/src-tauri/Cargo.lock";
-const CRATE = "dndbuilder";
+const CRATE = "daybreakbuilder";
 
 const readJson = (p) => JSON.parse(readFileSync(path(p), "utf8"));
 const writeJson = (p, data) => writeFileSync(path(p), JSON.stringify(data, null, 2) + "\n");
@@ -57,7 +57,7 @@ function setVersion(version) {
   for (const p of PACKAGES) {
     const pkg = readJson(p);
     pkg.version = version;
-    if (pkg.dependencies?.["@dndbuilder/engine"]) pkg.dependencies["@dndbuilder/engine"] = version;
+    if (pkg.dependencies?.["@daybreakbuilder/engine"]) pkg.dependencies["@daybreakbuilder/engine"] = version;
     writeJson(p, pkg);
   }
 
@@ -67,7 +67,7 @@ function setVersion(version) {
   for (const ws of ["packages/engine", "apps/desktop"]) {
     if (lock.packages?.[ws]) {
       lock.packages[ws].version = version;
-      if (lock.packages[ws].dependencies?.["@dndbuilder/engine"]) lock.packages[ws].dependencies["@dndbuilder/engine"] = version;
+      if (lock.packages[ws].dependencies?.["@daybreakbuilder/engine"]) lock.packages[ws].dependencies["@daybreakbuilder/engine"] = version;
     }
   }
   writeJson("package-lock.json", lock);

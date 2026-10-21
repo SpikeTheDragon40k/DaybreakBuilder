@@ -1,4 +1,4 @@
-import type { CharacterDetails } from "@dndbuilder/engine";
+import type { CharacterDetails } from "@daybreakbuilder/engine";
 import { useCharacter } from "../../state/app";
 
 const SHORT: [keyof CharacterDetails, string][] = [

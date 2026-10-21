@@ -4,7 +4,7 @@ import {
   type CharacterSheet,
   type CharacterState,
   type ResolvedCharacter,
-} from "@dndbuilder/engine";
+} from "@daybreakbuilder/engine";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { characters, settings } from "../platform";
 import { loadAllContent, type LoadedContent } from "./content";

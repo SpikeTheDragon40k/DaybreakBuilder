@@ -5,7 +5,7 @@
 	<info>
 		<name>SRD 5.1: Backgrounds</name>
 		<description>The Acolyte background.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)</author>
 	</info>
 
 	<element name="Acolyte" type="Background" source="System Reference Document 5.1" id="ID_BACKGROUND_ACOLYTE">

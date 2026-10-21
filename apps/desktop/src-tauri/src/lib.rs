@@ -15,7 +15,19 @@ struct CustomContent {
     files: Vec<StoredFile>,
 }
 
-/// Portable mode keeps everything in a `dndbuilder-data` folder next to the executable, so
+/// Returns `dir/name`, first moving `dir/legacy` there if only the folder from before the app
+/// was renamed to DaybreakBuilder exists. If the move fails (e.g. the folder is in use), the
+/// legacy folder keeps being used so nothing the user saved goes missing.
+fn renamed_dir(dir: &Path, name: &str, legacy: &str) -> PathBuf {
+    let new = dir.join(name);
+    let old = dir.join(legacy);
+    if !new.exists() && old.is_dir() && fs::rename(&old, &new).is_err() {
+        return old;
+    }
+    new
+}
+
+/// Portable mode keeps everything in a `DaybreakBuilder-data` folder next to the executable, so
 /// the app can run from a USB stick without touching the user profile. It is on when the
 /// executable's name contains "portable" (the released `..._portable.exe`) or a file named
 /// `portable` / `portable.txt` sits next to it. Returns `None` when portable mode is off or
@@ -32,7 +44,7 @@ fn portable_data_dir() -> Option<PathBuf> {
     if !named_portable && !marker {
         return None;
     }
-    let data = dir.join("dndbuilder-data");
+    let data = renamed_dir(dir, "DaybreakBuilder-data", "dndbuilder-data");
     fs::create_dir_all(&data).ok()?;
     Some(data)
 }
@@ -47,7 +59,7 @@ fn custom_content_dir(app: &tauri::AppHandle) -> Result<PathBuf, String> {
         .document_dir()
         .or_else(|_| app.path().app_data_dir())
         .map_err(|e| e.to_string())?;
-    Ok(base.join("dndbuilder").join("custom"))
+    Ok(renamed_dir(&base, "DaybreakBuilder", "dndbuilder").join("custom"))
 }
 
 fn collect_xml(root: &Path, dir: &Path, out: &mut Vec<StoredFile>) -> std::io::Result<()> {
@@ -149,5 +161,5 @@ pub fn run() {
             Ok(())
         })
         .run(tauri::generate_context!())
-        .expect("error while running dndbuilder");
+        .expect("error while running DaybreakBuilder");
 }

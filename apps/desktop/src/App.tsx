@@ -31,7 +31,7 @@ export function App() {
   return (
     <div className="app">
       <nav className="topbar no-print">
-        <span className="brand">dndbuilder</span>
+        <span className="brand">DaybreakBuilder</span>
         {TABS.map((t) => (
           <button
             key={t.page}

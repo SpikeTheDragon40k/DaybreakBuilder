@@ -50,6 +50,7 @@ export type AbilityMethod = "point-buy" | "standard-array" | "manual";
  * available choices) is recomputed from this by `resolveCharacter`.
  */
 export interface CharacterState {
+  /** Kept from before the rename to DaybreakBuilder so older saved characters still load. */
   format: "dndbuilder-character";
   version: 1;
   name: string;
@@ -170,7 +171,7 @@ export function pointBuySpent(abilities: Record<Ability, number>): number | null
 export function loadCharacterJson(data: unknown): CharacterState {
   if (!data || typeof data !== "object") throw new Error("Not a character file");
   const d = data as Partial<CharacterState>;
-  if (d.format !== "dndbuilder-character") throw new Error("Not a dndbuilder character file");
+  if (d.format !== "dndbuilder-character") throw new Error("Not a DaybreakBuilder character file");
   const base = newCharacter();
   return {
     ...base,

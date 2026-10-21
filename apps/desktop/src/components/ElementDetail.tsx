@@ -1,5 +1,5 @@
-import type { ContentRegistry, ElementDef } from "@dndbuilder/engine";
-import { featCategory, getSetter } from "@dndbuilder/engine";
+import type { ContentRegistry, ElementDef } from "@daybreakbuilder/engine";
+import { featCategory, getSetter } from "@daybreakbuilder/engine";
 import { Html } from "./Html";
 import { isItem, ItemDetail } from "./ItemDetail";
 import { useUnits } from "../units";

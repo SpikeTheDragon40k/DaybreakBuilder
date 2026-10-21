@@ -1,4 +1,4 @@
-import { currencyValue, formatPrice, type CharacterState, type ContentRegistry } from "@dndbuilder/engine";
+import { currencyValue, formatPrice, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
 
 /** A character state the user can go back to, labelled with the change that came after it. */
 export interface HistoryEntry {

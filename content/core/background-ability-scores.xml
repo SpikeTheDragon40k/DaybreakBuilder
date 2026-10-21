@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Background Ability Scores</name>
 		<description>Ability score increases for 2024 backgrounds: the +2/+1 or +1/+1/+1 choice over three abilities.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="Background Ability Score Improvement" type="Grants" source="Internal" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI">

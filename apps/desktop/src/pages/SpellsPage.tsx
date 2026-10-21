@@ -6,7 +6,7 @@ import {
   spellLevel,
   type Caster,
   type ElementDef,
-} from "@dndbuilder/engine";
+} from "@daybreakbuilder/engine";
 import { useMemo, useState } from "react";
 import { ElementDetail } from "../components/ElementDetail";
 import { useCharacter } from "../state/app";

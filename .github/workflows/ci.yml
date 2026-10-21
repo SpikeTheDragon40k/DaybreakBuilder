@@ -20,7 +20,7 @@ jobs:
         run: git clone --depth 1 https://github.com/AuroraLegacy/elements.git fixtures/external/aurora-legacy || true
       - run: npm run typecheck
       - run: npm test
-      - run: npm run build -w @dndbuilder/desktop
+      - run: npm run build -w @daybreakbuilder/desktop
 
   desktop:
     needs: test
@@ -52,7 +52,7 @@ jobs:
         run: npx tauri build
       - uses: actions/upload-artifact@v6
         with:
-          name: dndbuilder-${{ runner.os }}
+          name: DaybreakBuilder-${{ runner.os }}
           path: |
             apps/desktop/src-tauri/target/release/bundle/deb/*.deb
             apps/desktop/src-tauri/target/release/bundle/rpm/*.rpm
@@ -68,11 +68,11 @@ jobs:
         run: |
           version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
           mkdir -p portable
-          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "portable/dndbuilder_${version}_x64_portable.exe"
+          cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "portable/DaybreakBuilder_${version}_x64_portable.exe"
           ls -l portable
       - uses: actions/upload-artifact@v6
         if: runner.os == 'Windows'
         with:
-          name: dndbuilder-Windows-portable
+          name: DaybreakBuilder-Windows-portable
           path: portable/*.exe
           if-no-files-found: error
