@@ -7,6 +7,7 @@ import {
   type EquipSlot,
   type InventoryItem,
 } from "./character.js";
+import { hiddenByRules, supersededIn2024 } from "./editions.js";
 import { evaluateString, matchesSupports, parseBracket } from "./expressions.js";
 import {
   ABILITIES,
@@ -570,8 +571,12 @@ export function selectionOptions(rc: ResolvedCharacter, point: SelectionPoint): 
   const vars = dynamic?.vars;
   const has = (id: string) => (rc.ids.get(id) ?? 0) > 0;
   const out: SelectionOption[] = [];
+  // A 2014 element already on the character (such as a 2014 Elf) keeps its own 2014 options.
+  let legacyOwner = false;
+  for (let n: ResolvedNode | undefined = point.owner; n && !legacyOwner; n = n.parent) legacyOwner = supersededIn2024(registry, n.element);
   for (const el of registry.ofType(rule.type)) {
     if (rc.state.excludedSources.includes(el.source) && !point.chosen.includes(el.id)) continue;
+    if (!legacyOwner && hiddenByRules(registry, rc.state, el) && !point.chosen.includes(el.id)) continue;
     const extra =
       dynamic !== null &&
       dynamic.extraIds.includes(el.id) &&

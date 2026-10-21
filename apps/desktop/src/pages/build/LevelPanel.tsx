@@ -1,4 +1,4 @@
-import { hitDieSize, maxLevel, meetsRequirements, selectionOptions } from "@dndbuilder/engine";
+import { hiddenByRules, hitDieSize, maxLevel, meetsRequirements, selectionOptions } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
@@ -19,7 +19,7 @@ export function LevelPanel() {
   const multiclassOptions = useMemo(() => {
     return registry
       .ofType("Class")
-      .filter((c) => !takenClasses.includes(c.id))
+      .filter((c) => !takenClasses.includes(c.id) && !hiddenByRules(registry, character.state, c))
       .map((c) => {
         const mc = registry.multiclassOf(c.id);
         // Both the new class's and the current classes' prerequisites must be met.
@@ -33,7 +33,7 @@ export function LevelPanel() {
           reason: !mc ? "Cannot be multiclassed" : ok ? undefined : `Requires ${mc.prerequisite ?? "prerequisites"}`,
         };
       });
-  }, [registry, resolved, takenClasses.join(",")]);
+  }, [registry, resolved, takenClasses.join(","), character.state.rules]);
 
   const setMainClass = (id: string | null) => {
     update((d) => {

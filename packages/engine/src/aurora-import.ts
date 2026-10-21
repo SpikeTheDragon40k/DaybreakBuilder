@@ -8,6 +8,7 @@
  * the tree directly onto `CharacterState.selections`.
  */
 import { newCharacter, PATH_SEP, selectionKey, type CharacterState, type EquipSlot } from "./character.js";
+import { supersededIn2024 } from "./editions.js";
 import { ABILITIES } from "./model.js";
 import type { ContentRegistry } from "./registry.js";
 import { childElements, firstChild, parseXml, textContent, type XmlElement } from "./xml.js";
@@ -107,6 +108,9 @@ export function importAuroraCharacter(xml: string, registry: ContentRegistry): A
   });
   if (levels.length) state.levels = levels;
   if (mainClass && !registry.get(mainClass)) warnings.push(`Class ${mainClass} is not in the loaded content`);
+  // A build made with 2014 classes keeps seeing 2014 options.
+  const classEl = mainClass ? registry.get(mainClass) : undefined;
+  if (classEl && supersededIn2024(registry, classEl)) state.rules = "2014";
 
   // Rolled hit points: Aurora keeps one array per class (index = class level - 1).
   const averageHp = Object.entries(state.options).some(([id, on]) => on && id === "ID_INTERNAL_OPTION_ALLOW_AVERAGE_HP");

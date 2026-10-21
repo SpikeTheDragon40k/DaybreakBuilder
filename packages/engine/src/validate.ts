@@ -501,6 +501,7 @@ function runBuilds(registry: ContentRegistry, graph: Graph, targetEls: ElementDe
     builds++;
     try {
       const state = newCharacter();
+      state.rules = "2014"; // test every element, whatever edition it belongs to
       state.abilities = { strength: 15, dexterity: 14, constitution: 14, intelligence: 13, wisdom: 13, charisma: 13 };
       state.levels = Array(plan.levels).fill(plan.classEl.id);
       const rc = autoChoose(registry, state, new Set(plan.prefer));

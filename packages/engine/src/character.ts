@@ -1,4 +1,5 @@
 import type { StartingWealthTaken } from "./currency.js";
+import type { RulesEdition } from "./editions.js";
 import type { Ability } from "./model.js";
 
 export type EquipSlot = "armor" | "main" | "offhand" | "worn";
@@ -83,6 +84,8 @@ export interface CharacterState {
   startingWealth?: StartingWealthTaken;
   /** Sources the user excluded, by source element name. */
   excludedSources: string[];
+  /** Ruleset for choices: "2024" hides 2014 core options once 2024 content is loaded (see `supersededIn2024`). */
+  rules: RulesEdition;
   /** Prepared spell ids per caster name (for casters that prepare spells). */
   preparedSpells: Record<string, string[]>;
 }
@@ -121,6 +124,7 @@ export function newCharacter(): CharacterState {
     inventory: [],
     currency: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
     excludedSources: [],
+    rules: "2024",
     preparedSpells: {},
   };
 }
@@ -180,6 +184,8 @@ export function loadCharacterJson(data: unknown): CharacterState {
     options: d.options ?? {},
     inventory: d.inventory ?? [],
     excludedSources: d.excludedSources ?? [],
+    // Characters saved before the switch existed were built with every source shown.
+    rules: d.rules === "2024" ? "2024" : "2014",
     preparedSpells: d.preparedSpells ?? {},
     portrait: typeof d.portrait === "string" ? d.portrait : "",
     version: 1,
