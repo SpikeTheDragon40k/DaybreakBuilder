@@ -11,6 +11,7 @@
  */
 import { getSetter, type ElementDef } from "./model.js";
 import { matchesSupports } from "./expressions.js";
+import { hiddenByRules } from "./editions.js";
 import type { ResolvedCharacter, ResolvedNode, SelectionPoint } from "./resolver.js";
 
 export type PrepareMode = "known" | "spellbook" | "list";
@@ -211,7 +212,7 @@ export function preparableSpells(rc: ResolvedCharacter, caster: Caster): Element
   for (const el of rc.registry.ofType("Spell")) {
     const lv = spellLevel(el);
     if (lv === 0 || !levels.has(lv)) continue;
-    if (rc.state.excludedSources.includes(el.source)) continue;
+    if (rc.state.excludedSources.includes(el.source) || hiddenByRules(rc.registry, rc.state, el)) continue;
     const onList =
       caster.extraSpellIds.includes(el.id) || (caster.listExpression ? matchesSupports(caster.listExpression, el) : false);
     if (onList) out.push(el);

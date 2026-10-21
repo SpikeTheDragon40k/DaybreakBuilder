@@ -131,6 +131,7 @@ export function describeChange(before: CharacterState, after: CharacterState, re
 
   if (JSON.stringify(before.excludedSources) !== JSON.stringify(after.excludedSources))
     changes.push({ key: "excludedSources", label: "Changed sources" });
+  if (before.rules !== after.rules) changes.push({ key: "rules", label: `${after.rules} rules` });
   for (const caster of new Set([...Object.keys(before.preparedSpells), ...Object.keys(after.preparedSpells)])) {
     const b = before.preparedSpells[caster] ?? [];
     const a = after.preparedSpells[caster] ?? [];

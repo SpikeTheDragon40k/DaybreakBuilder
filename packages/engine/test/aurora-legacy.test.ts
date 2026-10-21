@@ -151,6 +151,34 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     expect(options.every((o) => o.element.supports.includes("Origin"))).toBe(true);
     expect(options.map((o) => o.element.name)).toEqual(expect.arrayContaining(["Alert", "Lucky", "Tough"]));
   });
+
+  it("2024 rules: species choices drop the 2014 core races and their subraces", () => {
+    const state = newCharacter();
+    state.levels = ["ID_WOTC_PHB24_CLASS_FIGHTER"];
+    let rc = resolveCharacter(registry, state);
+    const racePoint = rc.selections.find((p) => p.key === selectionKey("ID_LEVEL_1", "Race"))!;
+    const races = selectionOptions(rc, racePoint).map((o) => o.element);
+    const sources = new Set(races.map((r) => r.source));
+    expect(sources).toContain("Player’s Handbook (2024)");
+    for (const legacy of ["Player’s Handbook", "System Reference Document 5.1"]) expect(sources).not.toContain(legacy);
+    // Supplements stay available (2024 rules allow older species).
+    expect(races.some((r) => r.source.includes("Tasha") || r.source.includes("Monsters of the Multiverse"))).toBe(true);
+    expect(races.filter((r) => r.name === "Elf").map((r) => r.id)).toEqual(["ID_WOTC_PHB24_RACE_ELF"]);
+
+    // 2014 rules show the 2014 races again.
+    state.rules = "2014";
+    rc = resolveCharacter(registry, state);
+    expect(selectionOptions(rc, racePoint).map((o) => o.element.id)).toContain("ID_RACE_ELF");
+  });
+
+  it("2024 rules: a 2014 race chosen before keeps its subraces", () => {
+    const state = newCharacter();
+    state.levels = ["ID_WOTC_PHB24_CLASS_FIGHTER"];
+    state.selections[selectionKey("ID_LEVEL_1", "Race")] = ["ID_RACE_ELF"];
+    const rc = resolveCharacter(registry, state);
+    const subrace = rc.selections.find((p) => p.rule.type === "Sub Race")!;
+    expect(selectionOptions(rc, subrace).map((o) => o.element.name)).toContain("High Elf");
+  });
 });
 
 export { auroraLegacyDir };

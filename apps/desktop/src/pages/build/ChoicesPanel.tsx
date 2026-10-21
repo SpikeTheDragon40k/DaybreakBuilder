@@ -1,4 +1,4 @@
-import { featCategory, selectionOptions, type ResolvedNode, type SelectionPoint } from "@dndbuilder/engine";
+import { featCategory, hasRevisedContent, selectionOptions, type ResolvedNode, type RulesEdition, type SelectionPoint } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
@@ -62,6 +62,7 @@ export function ChoicesPanel() {
     <section className="panel choices">
       <header className="panel-header">
         <h2>Choices</h2>
+        <RulesSwitch />
       </header>
       {sections.length === 0 && <p className="muted">Choose a race, class and background to get started.</p>}
       {sections.map((s) => (
@@ -76,6 +77,38 @@ export function ChoicesPanel() {
         </div>
       ))}
     </section>
+  );
+}
+
+const RULES: { rules: RulesEdition; title: string }[] = [
+  { rules: "2014", title: "2014 rules: every loaded race, subrace, class and option" },
+  { rules: "2024", title: "2024 rules: hide 2014 core options (PHB, SRD 5.1) and anything reprinted in a 2024 book" },
+];
+
+/** Which ruleset the character's choices follow. */
+function RulesSwitch() {
+  const { character, content, update } = useCharacter();
+  const revised = useMemo(() => hasRevisedContent(content.registry), [content.registry]);
+  return (
+    <span className="rules-switch">
+      {!revised && character.state.rules === "2024" && (
+        <span className="muted small" title="Load 2024 content (such as the 2024 Player's Handbook) on the Content tab">
+          no 2024 content loaded
+        </span>
+      )}
+      <span className="theme-switch" role="group" aria-label="Rules">
+        {RULES.map((r) => (
+          <button
+            key={r.rules}
+            aria-pressed={character.state.rules === r.rules}
+            title={r.title}
+            onClick={() => update((d) => void (d.rules = r.rules))}
+          >
+            {r.rules} rules
+          </button>
+        ))}
+      </span>
+    </span>
   );
 }
 

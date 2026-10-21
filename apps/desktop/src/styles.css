@@ -1088,6 +1088,12 @@ ul.plain {
   color: var(--text);
 }
 
+.rules-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 /* Undo / redo / history */
 .history-controls {
   display: inline-flex;
