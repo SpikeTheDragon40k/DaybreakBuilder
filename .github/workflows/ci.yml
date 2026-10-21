@@ -9,8 +9,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -32,8 +32,8 @@ jobs:
           - os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -50,7 +50,7 @@ jobs:
       - name: Build desktop app
         working-directory: apps/desktop
         run: npx tauri build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: dndbuilder-${{ runner.os }}
           path: |
@@ -70,7 +70,7 @@ jobs:
           mkdir -p portable
           cp apps/desktop/src-tauri/target/release/dndbuilder.exe "portable/dndbuilder_${version}_x64_portable.exe"
           ls -l portable
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: runner.os == 'Windows'
         with:
           name: dndbuilder-Windows-portable
