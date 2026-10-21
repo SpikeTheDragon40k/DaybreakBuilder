@@ -7,7 +7,9 @@ import { beforeAll, describe, expect, it } from "vitest";
 import {
   buildSheet,
   ContentRegistry,
+  distinctOptions,
   featCategory,
+  levelWhenGained,
   newCharacter,
   resolveCharacter,
   selectionKey,
@@ -163,5 +165,149 @@ describe("2024 backgrounds and Origin feats", () => {
     // The chosen feat's own choices become available.
     expect(point(rc, "Skill (Handy)").key).toBe(`ID_LEVEL_1/${CUSTOM}/ID_TEST_FEAT_HANDY|Skill (Handy)`);
     expect(point(rc, "Ability Score Improvement Option").owner.element.name).toBe("Strength, Dexterity, Constitution");
+  });
+});
+
+/** The same rules with a 2024 book loaded, so the 2024-rules filter is active. */
+const REVISED = `<elements>
+  <element name="Test Book (2024)" type="Source" source="Test Book (2024)" id="ID_TEST24_SOURCE" />
+  <element name="Lucky Break" type="Feat" source="Test Book (2024)" id="ID_TEST24_FEAT_LUCKY_BREAK">
+    <supports>Origin</supports>
+    <description><p>Luck.</p></description>
+  </element>
+  <element name="Practiced" type="Feat" source="Test Book (2024)" id="ID_TEST24_FEAT_PRACTICED">
+    <supports>Origin</supports>
+    <description><p>You can take this feat more than once.</p></description>
+  </element>
+  <element name="Practiced" type="Feat" source="Test Book (2024)" id="ID_TEST24_FEAT_PRACTICED_2">
+    <supports>Origin</supports>
+    <requirements>ID_TEST24_FEAT_PRACTICED</requirements>
+    <description><p>You can take this feat more than once.</p></description>
+  </element>
+  <element name="Grand Boon" type="Class Feature" source="Test Book (2024)" id="ID_TEST24_BOON">
+    <supports>Improvement Option</supports>
+    <requirements>[character:19]</requirements>
+    <description><p>Level 19+.</p></description>
+  </element>
+  <!-- An unrelated 2024 element that shares a helper's name and type. -->
+  <element name="Dexterity" type="Ability Score Improvement" source="Test Book (2024)" id="ID_TEST24_ITEM_DEXTERITY">
+    <description><p>Set by a magic item.</p></description>
+  </element>
+  <element name="Wanderer" type="Background" source="Test Book (2024)" id="ID_TEST24_BACKGROUND_WANDERER">
+    <description><p>Ability Scores: Dexterity, Wisdom, Charisma. Feat: Lucky Break.</p></description>
+    <rules>
+      <grant type="Ability Score Improvement" id="ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_DEX_WIS_CHA" />
+      <grant type="Feat" id="ID_TEST24_FEAT_LUCKY_BREAK" />
+      <grant type="Grants" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+    </rules>
+  </element>
+  <element name="Old Sailor" type="Background" source="Test Supplement" id="ID_TEST_BACKGROUND_OLD_SAILOR">
+    <description><p>A background written before the 2024 rules.</p></description>
+    <rules><grant type="Proficiency" id="ID_PROFICIENCY_SKILL_ATHLETICS" /></rules>
+  </element>
+  <element name="Old Scholar" type="Background" source="Test Supplement" id="ID_TEST_BACKGROUND_OLD_SCHOLAR">
+    <description><p>An older background that already gives a feat.</p></description>
+    <rules><grant type="Feat" id="ID_TEST24_FEAT_LUCKY_BREAK" /></rules>
+  </element>
+</elements>`;
+
+describe("2024 backgrounds and Origin feats with 2024 content loaded", () => {
+  let registry: ContentRegistry;
+  beforeAll(() => {
+    registry = loadDirs(new ContentRegistry(), coreDir, srdDir);
+    registry.addXml(REVISED, "revised.xml");
+    registry.finalize();
+  });
+
+  function character(background: string, rules: "2014" | "2024" = "2024", level = 1): CharacterState {
+    const s = newCharacter();
+    s.rules = rules;
+    s.abilities = { strength: 15, dexterity: 13, constitution: 14, intelligence: 8, wisdom: 12, charisma: 10 };
+    s.levels = Array(level).fill("ID_WOTC_PHB_CLASS_FIGHTER");
+    s.selections[selectionKey("ID_LEVEL_1", "Race")] = ["ID_SRD_RACE_DWARF"];
+    s.selections[selectionKey("ID_LEVEL_1", "Background")] = [background];
+    return s;
+  }
+  const find = (rc: ResolvedCharacter, name: string) => rc.selections.find((x) => x.rule.name === name);
+  const WANDERER = "ID_TEST24_BACKGROUND_WANDERER";
+  const COMBO24 = "ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_DEX_WIS_CHA";
+
+  it("offers the +2 and +1 abilities even when a 2024 book has an element with the same name", () => {
+    const s = character(WANDERER);
+    s.selections[selectionKey(`ID_LEVEL_1/${WANDERER}/${COMBO24}`, "Ability Score Improvement Option")] = [`${COMBO24}_1`];
+    let rc = resolveCharacter(registry, s);
+    const plus2 = find(rc, "Background Ability Score Improvement +2")!;
+    expect(selectionOptions(rc, plus2).map((o) => o.element.id).sort()).toEqual(
+      [increase("charisma", 2), increase("dexterity", 2), increase("wisdom", 2)].sort(),
+    );
+    s.selections[plus2.key] = [increase("dexterity", 2)];
+    rc = resolveCharacter(registry, s);
+    const plus1 = find(rc, "Background Ability Score Improvement +1")!;
+    expect(selectionOptions(rc, plus1).filter((o) => o.available).map((o) => o.element.name).sort()).toEqual(["Charisma", "Wisdom"]);
+    s.selections[plus1.key] = [increase("wisdom", 1)];
+    rc = resolveCharacter(registry, s);
+    expect(rc.stats.abilityScore("dexterity")).toBe(15);
+    expect(rc.stats.abilityScore("wisdom")).toBe(13);
+    // The dwarf's own +2 Constitution gives way to the background's increases.
+    expect(rc.stats.abilityScore("constitution")).toBe(14);
+  });
+
+  it("gives an older background the 2024 ability scores and an Origin feat", () => {
+    const s = character("ID_TEST_BACKGROUND_OLD_SAILOR");
+    let rc = resolveCharacter(registry, s);
+    const scores = find(rc, "Ability Scores (2024 rules)")!;
+    const feat = find(rc, "Origin Feat (2024 rules)")!;
+    expect(selectionOptions(rc, scores)).toHaveLength(20);
+    expect(selectionOptions(rc, feat).map((o) => o.element.name)).toContain("Lucky Break");
+    // The species' increases no longer apply.
+    expect(rc.stats.abilityScore("constitution")).toBe(14);
+
+    s.selections[feat.key] = ["ID_TEST24_FEAT_LUCKY_BREAK"];
+    s.selections[scores.key] = ["ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_STR_DEX_CON"];
+    rc = resolveCharacter(registry, s);
+    s.selections[find(rc, "Ability Score Improvement Option")!.key] = ["ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_STR_DEX_CON_2"];
+    rc = resolveCharacter(registry, s);
+    expect(rc.ids.has("ID_TEST24_FEAT_LUCKY_BREAK")).toBe(true);
+    expect(rc.stats.abilityScore("strength")).toBe(16);
+    expect(rc.stats.abilityScore("constitution")).toBe(15);
+  });
+
+  it("doesn't add a second feat to an older background that already gives one", () => {
+    const rc = resolveCharacter(registry, character("ID_TEST_BACKGROUND_OLD_SCHOLAR"));
+    expect(find(rc, "Ability Scores (2024 rules)")).toBeDefined();
+    expect(find(rc, "Origin Feat (2024 rules)")).toBeUndefined();
+  });
+
+  it("leaves older backgrounds alone under the 2014 rules", () => {
+    const rc = resolveCharacter(registry, character("ID_TEST_BACKGROUND_OLD_SAILOR", "2014"));
+    expect(find(rc, "Ability Scores (2024 rules)")).toBeUndefined();
+    expect(find(rc, "Origin Feat (2024 rules)")).toBeUndefined();
+    expect(rc.stats.abilityScore("constitution")).toBe(16);
+  });
+
+  it("lists a repeatable feat once", () => {
+    const s = character("ID_TEST_BACKGROUND_OLD_SAILOR");
+    let rc = resolveCharacter(registry, s);
+    const feat = find(rc, "Origin Feat (2024 rules)")!;
+    const listed = distinctOptions(selectionOptions(rc, feat), feat).filter((o) => o.element.name === "Practiced");
+    expect(listed.map((o) => o.element.id)).toEqual(["ID_TEST24_FEAT_PRACTICED"]);
+    // Once the first copy is taken, its slot keeps showing it, and any other slot offers the next copy.
+    s.selections[feat.key] = ["ID_TEST24_FEAT_PRACTICED"];
+    rc = resolveCharacter(registry, s);
+    const again = find(rc, "Origin Feat (2024 rules)")!;
+    const practiced = (current: string | null) =>
+      distinctOptions(selectionOptions(rc, again), again, current).find((o) => o.element.name === "Practiced")?.element.id;
+    expect(practiced("ID_TEST24_FEAT_PRACTICED")).toBe("ID_TEST24_FEAT_PRACTICED");
+    expect(practiced(null)).toBe("ID_TEST24_FEAT_PRACTICED_2");
+  });
+
+  it("checks feat prerequisites at the level the feat was gained", () => {
+    const rc = resolveCharacter(registry, character(WANDERER, "2024", 19));
+    const at = (name: string) => {
+      const p = find(rc, name)!;
+      return { gained: levelWhenGained(rc, p), boon: selectionOptions(rc, p).find((o) => o.element.id === "ID_TEST24_BOON")! };
+    };
+    expect(at("Improvement Option (Fighter 4)")).toMatchObject({ gained: 4, boon: { available: false } });
+    expect(at("Improvement Option (Fighter 19)")).toMatchObject({ gained: 19, boon: { available: true } });
   });
 });
