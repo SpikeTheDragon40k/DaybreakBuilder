@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch or PR cancels the run still in progress.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -50,9 +56,14 @@ jobs:
       - name: Build desktop app
         working-directory: apps/desktop
         run: npx tauri build
+      # Installers count against Actions storage, so PRs only check that the build works.
+      # Pushes to main and manual runs keep them for a few days; releases live on
+      # GitHub Releases.
       - uses: actions/upload-artifact@v6
+        if: github.event_name != 'pull_request'
         with:
           name: DaybreakBuilder-${{ runner.os }}
+          retention-days: 3
           path: |
             apps/desktop/src-tauri/target/release/bundle/deb/*.deb
             apps/desktop/src-tauri/target/release/bundle/rpm/*.rpm
@@ -63,7 +74,7 @@ jobs:
       # The bare release binary embeds the UI, so it runs without installing anything
       # (Windows 10/11 ship the WebView2 runtime). Its name turns on portable mode.
       - name: Prepare portable Windows exe
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && github.event_name != 'pull_request'
         shell: bash
         run: |
           version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
@@ -71,8 +82,9 @@ jobs:
           cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "portable/DaybreakBuilder_${version}_x64_portable.exe"
           ls -l portable
       - uses: actions/upload-artifact@v6
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && github.event_name != 'pull_request'
         with:
           name: DaybreakBuilder-Windows-portable
+          retention-days: 3
           path: portable/*.exe
           if-no-files-found: error
