@@ -1,7 +1,7 @@
 {
   "name": "daybreakbuilder",
   "private": true,
-  "version": "0.9.5",
+  "version": "1.0.0",
   "description": "Open-source, cross-platform D&D 5e character builder compatible with Aurora Builder content files",
   "workspaces": [
     "packages/*",
