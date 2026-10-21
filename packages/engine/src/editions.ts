@@ -19,6 +19,9 @@ const LEGACY_CORE = new Set([
   "system reference document 5.1",
 ]);
 
+/** Builder plumbing rather than published rules (helper elements such as "Dexterity +2"). */
+const HELPER_SOURCES = new Set(["internal", "core", ""]);
+
 const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’`]/g, "'");
 
 interface EditionIndex {
@@ -70,9 +73,12 @@ export function hasRevisedContent(registry: ContentRegistry): boolean {
  * Whether the 2024 rules leave this element out: it comes from a 2014 core book
  * (PHB, DMG, MM, SRD 5.1) or has been reprinted under the same name in a 2024
  * source. Only applies when 2024 content of the same type is loaded, so a 2024
- * character never ends up with nothing to choose from.
+ * character never ends up with nothing to choose from. Helper elements (source
+ * "Internal" or "Core") are never superseded: their generic names, such as
+ * "Dexterity", collide with unrelated elements in 2024 books.
  */
 export function supersededIn2024(registry: ContentRegistry, el: ElementDef): boolean {
+  if (HELPER_SOURCES.has(norm(el.source))) return false;
   const idx = editionIndex(registry);
   if (!idx.revisedTypes.has(el.type) || idx.revisedSources.has(el.source)) return false;
   return LEGACY_CORE.has(norm(el.source)) || idx.revisedNames.has(`${el.type}|${norm(el.name)}`);

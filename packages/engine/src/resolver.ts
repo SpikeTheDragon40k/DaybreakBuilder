@@ -7,8 +7,8 @@ import {
   type EquipSlot,
   type InventoryItem,
 } from "./character.js";
-import { hiddenByRules, supersededIn2024 } from "./editions.js";
-import { evaluateString, matchesSupports, parseBracket } from "./expressions.js";
+import { hasRevisedContent, hiddenByRules, supersededIn2024 } from "./editions.js";
+import { evaluateString, isIdRange, matchesSupports, parseBracket } from "./expressions.js";
 import {
   ABILITIES,
   ABILITY_ABBR,
@@ -162,6 +162,10 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
 
   const characterScope: Scope = { kind: "character" };
 
+  // Under the 2024 rules an older background also gets the ability scores and Origin feat it lacks.
+  const revisedRules = state.rules === "2024" && hasRevisedContent(registry);
+  const rulesOf = (el: ElementDef) => (revisedRules && el.type === "Background" ? withLegacyBackgroundRules(registry, el) : el.rules);
+
   const has = (id: string, exclude?: string[]): boolean => {
     const count = ctx.prevIds.get(id) ?? 0;
     if (count === 0) return false;
@@ -261,7 +265,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
       issues.push({ severity: "warning", message: `Element nesting too deep at ${node.element.name}`, path: node.path });
       return;
     }
-    for (const rule of node.element.rules) {
+    for (const rule of rulesOf(node.element)) {
       if (rule.kind === "stat") continue;
       if (rule.level > node.level) continue;
       if (rule.kind === "grant") {
@@ -432,6 +436,28 @@ function statContribution(rule: StatRule, node: ResolvedNode): StatContribution 
   };
 }
 
+const BACKGROUND_ASI_MARKER = "ID_INTERNAL_GRANTS_BACKGROUND_ASI";
+const LEGACY_BACKGROUND_ABILITY_SCORES = "ID_INTERNAL_LEGACY_BACKGROUND_ABILITY_SCORES";
+const LEGACY_BACKGROUND_ORIGIN_FEAT = "ID_INTERNAL_LEGACY_BACKGROUND_ORIGIN_FEAT";
+/** Community 2024 content's optional background feature that swaps the feature for an Origin feat. */
+const OPTIONAL_ORIGIN_FEAT = "ID_WOTC_PHB24_BACKGROUND_FEATURE_ORIGIN_FEAT";
+
+/**
+ * A background's rules under the 2024 rules: one written before them (no
+ * background ability scores, no feat) also lets the player raise three ability
+ * scores and choose an Origin feat, as the 2024 Player's Handbook says.
+ */
+function withLegacyBackgroundRules(registry: ContentRegistry, el: ElementDef): ElementDef["rules"] {
+  const extra: GrantRule[] = [];
+  const add = (id: string, requirements?: string) => {
+    if (registry.get(id)) extra.push({ kind: "grant", type: "Grants", id, level: 1, requirements, setters: {} });
+  };
+  if (!el.rules.some((r) => r.kind === "grant" && r.id === BACKGROUND_ASI_MARKER)) add(LEGACY_BACKGROUND_ABILITY_SCORES);
+  // Not twice: some content offers the Origin feat as an optional background feature instead.
+  if (!el.rules.some((r) => (r.kind === "grant" || r.kind === "select") && r.type === "Feat")) add(LEGACY_BACKGROUND_ORIGIN_FEAT, `!${OPTIONAL_ORIGIN_FEAT}`);
+  return extra.length ? [...el.rules, ...extra] : el.rules;
+}
+
 export function levelOf(el: ElementDef): number {
   const v = getSetter(el, "Level") ?? el.name;
   const n = parseInt(v, 10);
@@ -570,9 +596,11 @@ export function selectionOptions(rc: ResolvedCharacter, point: SelectionPoint): 
   const dynamic = rule.supports?.includes("$(") ? spellcastingVariables(rc, point) : null;
   const vars = dynamic?.vars;
   const has = (id: string) => (rc.ids.get(id) ?? 0) > 0;
+  const gainedAt = levelWhenGained(rc, point);
   const out: SelectionOption[] = [];
-  // A 2014 element already on the character (such as a 2014 Elf) keeps its own 2014 options.
-  let legacyOwner = false;
+  // A 2014 element already on the character (such as a 2014 Elf) keeps its own 2014 options,
+  // and a select that lists its options by id offers exactly those.
+  let legacyOwner = rule.supports !== undefined && isIdRange(rule.supports);
   for (let n: ResolvedNode | undefined = point.owner; n && !legacyOwner; n = n.parent) legacyOwner = supersededIn2024(registry, n.element);
   for (const el of registry.ofType(rule.type)) {
     if (rc.state.excludedSources.includes(el.source) && !point.chosen.includes(el.id)) continue;
@@ -589,7 +617,8 @@ export function selectionOptions(rc: ResolvedCharacter, point: SelectionPoint): 
         el.requirements,
         {
           id: has,
-          bracket: (key, value) => requireValue(rc, point.owner, key, value),
+          // Prerequisites such as "Level 19+" apply when the choice is gained, not at the current level.
+          bracket: (key, value) => (key === "character" ? gainedAt >= parseInt(value, 10) : requireValue(rc, point.owner, key, value)),
         },
         false,
       );
@@ -605,6 +634,53 @@ export function selectionOptions(rc: ResolvedCharacter, point: SelectionPoint): 
     out.push({ element: el, available, reason });
   }
   return out;
+}
+
+/**
+ * The character level at which a choice became available: a feat chosen at
+ * fighter level 4 on a level 19 character was taken at the character level when
+ * the fighter reached 4.
+ */
+export function levelWhenGained(rc: ResolvedCharacter, point: SelectionPoint): number {
+  let needed = point.rule.level;
+  let node: ResolvedNode | undefined = point.owner;
+  const scope = node.scope;
+  for (; node && node.scope.kind === scope.kind; node = node.parent) {
+    if (node.via.kind === "grant") needed = Math.max(needed, node.via.rule.level);
+    else if (node.via.kind === "select") needed = Math.max(needed, node.via.point.rule.level);
+    if (!node.parent && node.element.type === "Level") needed = Math.max(needed, levelOf(node.element));
+  }
+  if (scope.kind === "class") {
+    let count = 0;
+    for (let i = 0; i < rc.state.levels.length; i++) {
+      if (rc.state.levels[i] === scope.classId && ++count >= needed) return i + 1;
+    }
+    return rc.level;
+  }
+  return Math.min(rc.level, needed);
+}
+
+/**
+ * One option per name and source. Content lists a feat that can be taken more
+ * than once as copies ("Skilled", then "Skilled" requiring the first, ...);
+ * the player should see one "Skilled". Keeps the copy already in the slot being
+ * edited, else the first one that can still be taken, else the first.
+ */
+export function distinctOptions(options: SelectionOption[], point: SelectionPoint, current?: string | null): SelectionOption[] {
+  const groups = new Map<string, SelectionOption[]>();
+  for (const o of options) {
+    const key = `${o.element.name}|${o.element.source}`;
+    const group = groups.get(key);
+    if (group) group.push(o);
+    else groups.set(key, [o]);
+  }
+  return [...groups.values()].map(
+    (g) =>
+      g.find((o) => o.element.id === current) ??
+      g.find((o) => o.available && !point.chosen.includes(o.element.id)) ??
+      g.find((o) => o.available) ??
+      g[0],
+  );
 }
 
 /** Evaluate a single [key:value] requirement against a resolved character. */
