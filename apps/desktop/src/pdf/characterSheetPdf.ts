@@ -44,6 +44,14 @@ interface Fonts {
   regular: PDFFont;
   bold: PDFFont;
   italic: PDFFont;
+  boldItalic: PDFFont;
+}
+
+/** A styled stretch of text inside a paragraph. */
+interface Run {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
 }
 
 /** Replace characters the standard (WinAnsi) fonts can't encode. */
@@ -56,6 +64,8 @@ function makeSanitizer(font: PDFFont): (s: string) => string {
       const cp = ch.codePointAt(0)!;
       if (ch === "\n" || supported.has(cp)) out += ch;
       else if (map[ch]) out += map[ch];
+      // Tabs and exotic spaces (e.g. indentation inside imported XML) read as plain spaces.
+      else if (/\s/.test(ch)) out += " ";
       else {
         const base = ch.normalize("NFD").replace(/[̀-ͯ]/g, "");
         out += base && [...base].every((c) => supported.has(c.codePointAt(0)!)) ? base : "?";
@@ -142,8 +152,67 @@ class Flow {
     this.y -= opts.gap ?? 2;
   }
 
+  /** Paragraphs of mixed bold/italic runs, e.g. a spell description with run-in headings. */
+  rich(paragraphs: Run[][], opts: { size?: number; gap?: number } = {}) {
+    const size = opts.size ?? 8.5;
+    const { fonts, pal } = this.ctx;
+    const fontOf = (r: Run) => (r.bold && r.italic ? fonts.boldItalic : r.bold ? fonts.bold : r.italic ? fonts.italic : fonts.regular);
+    const space = fonts.regular.widthOfTextAtSize(" ", size);
+    const lh = size * 1.25;
+    for (const para of paragraphs) {
+      // Split into words; a word may change style midway ("<b>Eyes.</b>"), so it holds pieces.
+      type Piece = { text: string; font: PDFFont; width: number };
+      const words: Piece[][] = [[]];
+      for (const run of para) {
+        const font = fontOf(run);
+        for (const part of this.ctx.clean(run.text).split(/(\s+)/)) {
+          if (!part) continue;
+          if (/^\s+$/.test(part)) {
+            if (words[words.length - 1].length) words.push([]);
+          } else words[words.length - 1].push({ text: part, font, width: font.widthOfTextAtSize(part, size) });
+        }
+      }
+      const lines: Piece[][][] = [[]];
+      let lineWidth = 0;
+      for (const word of words.filter((w) => w.length)) {
+        const w = word.reduce((n, p) => n + p.width, 0);
+        const line = lines[lines.length - 1];
+        if (line.length && lineWidth + space + w > this.width) {
+          lines.push([word]);
+          lineWidth = w;
+        } else {
+          lineWidth += (line.length ? space : 0) + w;
+          line.push(word);
+        }
+      }
+      for (const line of lines) {
+        this.ensure(lh);
+        // Draw same-font stretches as one string so the viewer handles the spacing inside them.
+        const segments: { text: string; font: PDFFont }[] = [];
+        line.forEach((word, i) =>
+          word.forEach((p, j) => {
+            const last = segments[segments.length - 1];
+            const sep = i > 0 && j === 0 ? " " : "";
+            if (last && last.font === p.font) last.text += sep + p.text;
+            else {
+              if (last) last.text += sep;
+              segments.push({ text: p.text, font: p.font });
+            }
+          }),
+        );
+        let x = this.x;
+        for (const seg of segments) {
+          this.page.drawText(seg.text, { x, y: this.y - size, size, font: seg.font, color: pal.ink });
+          x += seg.font.widthOfTextAtSize(seg.text, size);
+        }
+        this.y -= lh;
+      }
+    }
+    this.y -= opts.gap ?? 2;
+  }
+
   /** "Label. text" with a bold lead-in. */
-  entry(title: string, text: string, meta?: string) {
+  entry(title: string, text: string | Run[][], meta?: string) {
     const size = 8.5;
     const { bold, regular } = this.ctx.fonts;
     this.ensure(size * 2.6);
@@ -154,7 +223,8 @@ class Flow {
       this.page.drawText(this.ctx.clean(`  ${meta}`), { x: this.x + w, y: this.y - size, size: 7, font: regular, color: this.ctx.pal.muted });
     }
     this.y -= size * 1.3;
-    if (text) this.paragraph(text, { size: 8, gap: 4 });
+    if (typeof text !== "string") this.rich(text, { size: 8, gap: 4 });
+    else if (text) this.paragraph(text, { size: 8, gap: 4 });
     else this.y -= 3;
   }
 
@@ -255,6 +325,7 @@ export async function characterSheetPdf(
     regular: await doc.embedFont(StandardFonts.Helvetica),
     bold: await doc.embedFont(StandardFonts.HelveticaBold),
     italic: await doc.embedFont(StandardFonts.HelveticaOblique),
+    boldItalic: await doc.embedFont(StandardFonts.HelveticaBoldOblique),
   };
   const units = options.units ?? "imperial";
   const pal = PALETTES[options.style ?? "classic"];
@@ -433,7 +504,7 @@ export async function characterSheetPdf(
         if (!el) continue;
         const get = (k: string) => el.setters.find((x) => x.name === k)?.value;
         const metaLine = [get("time"), get("range"), get("duration")].filter(Boolean).join(" · ");
-        flow.entry(el.name, stripHtml(el.description), metaLine);
+        flow.entry(el.name, htmlToRuns(el.description), metaLine);
       }
     }
   }
@@ -499,15 +570,47 @@ async function embedPortrait(doc: PDFDocument, dataUrl: string | undefined): Pro
   }
 }
 
-function stripHtml(html: string): string {
-  return html
-    .replace(/<\s*br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|div|li|h\d)>/gi, "\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/\n{2,}/g, "\n")
-    .trim();
+const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
+
+/**
+ * Turn description markup into paragraphs of styled runs. Whitespace is collapsed the way
+ * a browser would, so the XML file's own line breaks and tab indentation don't leak through.
+ */
+export function htmlToRuns(html: string): Run[][] {
+  const paragraphs: Run[][] = [];
+  let current: Run[] = [];
+  let bold = 0;
+  let italic = 0;
+  const flush = () => {
+    if (current.some((r) => r.text.trim())) {
+      current[0].text = current[0].text.trimStart();
+      current[current.length - 1].text = current[current.length - 1].text.trimEnd();
+      paragraphs.push(current.filter((r) => r.text));
+    }
+    current = [];
+  };
+  for (const [, tag, text] of html.matchAll(/(<[^>]*>)|([^<]+)/g)) {
+    if (text) {
+      let t = text
+        .replace(/&(#x?[0-9a-f]+|\w+);/gi, (m, e: string) =>
+          e[0] === "#" ? String.fromCodePoint(parseInt(e[1].toLowerCase() === "x" ? e.slice(2) : e.slice(1), e[1].toLowerCase() === "x" ? 16 : 10)) : ENTITIES[e.toLowerCase()] ?? m,
+        )
+        .replace(/[ \t\r\n\f]+/g, " ");
+      // Don't double a space across a style change: "<b>Eyes.</b> You".
+      const prev = current[current.length - 1];
+      if (t.startsWith(" ") && (!prev || prev.text.endsWith(" "))) t = t.slice(1);
+      if (t) current.push({ text: t, bold: bold > 0, italic: italic > 0 });
+      continue;
+    }
+    const m = /^<\s*(\/?)\s*([a-z0-9]+)/i.exec(tag);
+    if (!m) continue;
+    const close = m[1] === "/";
+    const name = m[2].toLowerCase();
+    if (name === "b" || name === "strong") bold = Math.max(0, bold + (close ? -1 : 1));
+    else if (name === "i" || name === "em") italic = Math.max(0, italic + (close ? -1 : 1));
+    else if (["p", "div", "br", "li", "ul", "ol", "table", "tr", "h1", "h2", "h3", "h4", "h5", "h6"].includes(name)) flush();
+    else if (name === "td" || name === "th") current.push({ text: " " });
+  }
+  flush();
+  return paragraphs;
 }
