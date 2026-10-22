@@ -16,3 +16,4 @@ export * from "./units.js";
 export * from "./attacks.js";
 export * from "./currency.js";
 export * from "./editions.js";
+export * from "./encounters.js";

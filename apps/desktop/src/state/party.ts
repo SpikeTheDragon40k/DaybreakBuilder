@@ -1,4 +1,4 @@
-import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Currency } from "@daybreakbuilder/engine";
+import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Currency, type RulesEdition } from "@daybreakbuilder/engine";
 
 /** A group of saved characters a DM runs together. Members are character ids. */
 export interface Party {
@@ -6,11 +6,34 @@ export interface Party {
   name: string;
   memberIds: string[];
   notes: string;
+  /** The encounter the DM is planning. Missing in parties saved before the calculator. */
+  encounter?: PartyEncounter;
   updatedAt: string;
 }
 
+/** One line of the encounter: a kind of monster and how many of them. */
+export interface EncounterLine {
+  id: string;
+  name: string;
+  cr: string;
+  /** XP per monster when it differs from the CR's (0 = use the CR). */
+  xp: number;
+  count: number;
+}
+
+export interface PartyEncounter {
+  rules: RulesEdition;
+  monsters: EncounterLine[];
+  /** Extra party members not in the roster (sidekicks, guest players), by level. */
+  extraLevels: number[];
+}
+
+export function newEncounter(): PartyEncounter {
+  return { rules: "2024", monsters: [], extraLevels: [] };
+}
+
 export function newParty(id: string, name = "New Party"): Party {
-  return { id, name, memberIds: [], notes: "", updatedAt: new Date().toISOString() };
+  return { id, name, memberIds: [], notes: "", encounter: newEncounter(), updatedAt: new Date().toISOString() };
 }
 
 /** What the DM needs at the table about one character. */
@@ -68,43 +91,6 @@ export function currencyInGp(c: Currency): number {
   return c.cp / 100 + c.sp / 10 + c.ep / 2 + c.gp + c.pp * 10;
 }
 
-export type Difficulty = "easy" | "medium" | "hard" | "deadly";
-export const DIFFICULTIES: Difficulty[] = ["easy", "medium", "hard", "deadly"];
-
-/** XP thresholds per character level (Dungeon Master's Guide 2014, p. 82). */
-const XP_THRESHOLDS: Record<number, [number, number, number, number]> = {
-  1: [25, 50, 75, 100],
-  2: [50, 100, 150, 200],
-  3: [75, 150, 225, 400],
-  4: [125, 250, 375, 500],
-  5: [250, 500, 750, 1100],
-  6: [300, 600, 900, 1400],
-  7: [350, 750, 1100, 1700],
-  8: [450, 900, 1400, 2100],
-  9: [550, 1100, 1600, 2400],
-  10: [600, 1200, 1900, 2800],
-  11: [800, 1600, 2400, 3600],
-  12: [1000, 2000, 3000, 4500],
-  13: [1100, 2200, 3400, 5100],
-  14: [1250, 2500, 3800, 5700],
-  15: [1400, 2800, 4300, 6400],
-  16: [1600, 3200, 4800, 7200],
-  17: [2000, 3900, 5900, 8800],
-  18: [2100, 4200, 6300, 9500],
-  19: [2400, 4900, 7300, 10900],
-  20: [2800, 5700, 8500, 12700],
-};
-
-/** The party's combined XP threshold for each encounter difficulty. */
-export function encounterBudget(levels: number[]): Record<Difficulty, number> {
-  const budget: Record<Difficulty, number> = { easy: 0, medium: 0, hard: 0, deadly: 0 };
-  for (const level of levels) {
-    const row = XP_THRESHOLDS[Math.min(20, Math.max(1, level))];
-    DIFFICULTIES.forEach((d, i) => (budget[d] += row[i]));
-  }
-  return budget;
-}
-
 export interface Best {
   value: number;
   names: string[];
@@ -113,7 +99,6 @@ export interface Best {
 export interface PartySummary {
   size: number;
   averageLevel: number;
-  budget: Record<Difficulty, number>;
   wealthGp: number;
   passivePerception: Best;
   passiveInsight: Best;
@@ -142,7 +127,6 @@ export function summarizeParty(members: PartyMember[]): PartySummary {
   return {
     size: members.length,
     averageLevel: members.length ? members.reduce((n, m) => n + m.level, 0) / members.length : 0,
-    budget: encounterBudget(members.map((m) => m.level)),
     wealthGp: members.reduce((n, m) => n + m.wealthGp, 0),
     passivePerception: best(members, (m) => m.passivePerception),
     passiveInsight: best(members, (m) => m.passiveInsight),

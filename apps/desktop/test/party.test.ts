@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey } from "@daybreakbuilder/engine";
 import { describe, expect, it } from "vitest";
-import { currencyInGp, encounterBudget, formatGp, memberFromSheet, summarizeParty } from "../src/state/party";
+import { currencyInGp, formatGp, memberFromSheet, summarizeParty } from "../src/state/party";
 
 const root = join(import.meta.dirname, "..", "..", "..", "content");
 
@@ -34,13 +34,6 @@ describe("party", () => {
     return memberFromSheet(name, s, buildSheet(resolveCharacter(registry, s)));
   }
 
-  it("adds up DMG encounter thresholds per character level", () => {
-    expect(encounterBudget([1, 1, 1, 1])).toEqual({ easy: 100, medium: 200, hard: 300, deadly: 400 });
-    expect(encounterBudget([5, 3])).toEqual({ easy: 325, medium: 650, hard: 975, deadly: 1500 });
-    // Out-of-range levels are clamped.
-    expect(encounterBudget([0, 25])).toEqual(encounterBudget([1, 20]));
-  });
-
   it("converts coin to gold", () => {
     expect(currencyInGp({ cp: 150, sp: 5, ep: 2, gp: 10, pp: 1 })).toBeCloseTo(23);
     expect(formatGp(12.5)).toBe("12.5 gp");
@@ -62,7 +55,6 @@ describe("party", () => {
     expect(sum.size).toBe(2);
     expect(sum.averageLevel).toBe(2.5);
     expect(sum.wealthGp).toBe(15);
-    expect(sum.budget.easy).toBe(75 + 50);
     // Elves have darkvision, humans don't.
     expect(sum.noDarkvision).toEqual(["Thora"]);
     // Common is spoken by everyone and listed first.

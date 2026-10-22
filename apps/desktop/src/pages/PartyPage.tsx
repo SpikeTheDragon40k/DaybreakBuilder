@@ -1,9 +1,10 @@
-import { buildSheet, formatModifier, loadCharacterJson, resolveCharacter, type CharacterState } from "@daybreakbuilder/engine";
+import { buildSheet, formatModifier, loadCharacterJson, resolveCharacter, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Portrait } from "../components/Portrait";
+import { EncounterCalculator } from "./EncounterCalculator";
 import { characters, parties, type CharacterMeta } from "../platform";
 import { newId, useApp } from "../state/app";
-import { DIFFICULTIES, formatGp, memberFromSheet, newParty, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
+import { formatGp, memberFromSheet, newParty, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
 import { useUnits } from "../units";
 
 export function PartyPage() {
@@ -97,7 +98,7 @@ export function PartyPage() {
       {!party ? (
         <div className="callout">
           Create a party to keep your players' characters side by side: armor class, hit points, passive senses, spell DCs, languages and
-          the party's encounter budget.
+          an encounter difficulty calculator.
         </div>
       ) : (
         <PartyDetail
@@ -109,6 +110,7 @@ export function PartyPage() {
           onChange={save}
           onDelete={() => remove(party)}
           onOpen={(id) => states[id] && openCharacter(id, states[id])}
+          registry={content?.registry}
         />
       )}
     </div>
@@ -123,6 +125,7 @@ function PartyDetail({
   onChange,
   onDelete,
   onOpen,
+  registry,
 }: {
   party: Party;
   members: PartyMember[];
@@ -131,6 +134,7 @@ function PartyDetail({
   onChange: (p: Party) => void;
   onDelete: () => void;
   onOpen: (id: string) => void;
+  registry: ContentRegistry | undefined;
 }) {
   const units = useUnits();
   const [adding, setAdding] = useState("");
@@ -188,20 +192,12 @@ function PartyDetail({
             <Tile label="Party coin" value={formatGp(summary.wealthGp)} />
           </div>
 
-          <section className="panel">
-            <div className="panel-header">
-              <h2>Encounter budget</h2>
-              <span className="muted small">XP thresholds, DMG 2014</span>
-            </div>
-            <div className="budget">
-              {DIFFICULTIES.map((d) => (
-                <div key={d} className={`budget-cell budget-${d}`}>
-                  <div className="label">{d}</div>
-                  <div className="value">{summary.budget[d].toLocaleString()} XP</div>
-                </div>
-              ))}
-            </div>
-          </section>
+          <EncounterCalculator
+            levels={members.map((m) => m.level)}
+            encounter={party.encounter}
+            registry={registry}
+            onChange={(encounter) => onChange({ ...party, encounter })}
+          />
 
           <section className="panel party-table-wrap">
             <table className="party-table">
