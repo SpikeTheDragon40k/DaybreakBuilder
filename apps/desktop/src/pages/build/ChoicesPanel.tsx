@@ -1,4 +1,4 @@
-import { distinctOptions, featCategory, hasRevisedContent, selectionOptions, type ResolvedNode, type RulesEdition, type SelectionPoint } from "@daybreakbuilder/engine";
+import { distinctOptions, featCategory, findCasters, hasRevisedContent, selectionOptions, type ResolvedNode, type RulesEdition, type SelectionPoint } from "@daybreakbuilder/engine";
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
@@ -14,6 +14,8 @@ interface Section {
   points: SelectionPoint[];
   /** Feats granted outright (such as a 2024 background's Origin feat), shown read-only. */
   granted: ResolvedNode[];
+  /** Casters that prepare spells: their spells are picked on the Spells page, not here. */
+  casters: string[];
 }
 
 function sectionOf(owner: ResolvedNode): { key: string; title: string; order: number } {
@@ -45,7 +47,7 @@ export function ChoicesPanel() {
     const sectionFor = (owner: ResolvedNode) => {
       const s = sectionOf(owner);
       let sec = map.get(s.key);
-      if (!sec) map.set(s.key, (sec = { ...s, points: [], granted: [] }));
+      if (!sec) map.set(s.key, (sec = { ...s, points: [], granted: [], casters: [] }));
       return sec;
     };
     for (const n of resolved.nodes) {
@@ -55,6 +57,7 @@ export function ChoicesPanel() {
       if (p.rule.type === "Class") continue;
       sectionFor(p.owner).points.push(p);
     }
+    for (const c of findCasters(resolved)) if (c.mode !== "known") sectionFor(c.node).casters.push(c.name);
     return [...map.values()].sort((a, b) => a.order - b.order);
   }, [resolved]);
 
@@ -73,6 +76,9 @@ export function ChoicesPanel() {
           ))}
           {s.points.map((p) => (
             <SelectionRow key={p.key} point={p} />
+          ))}
+          {s.casters.map((name) => (
+            <PreparedSpellsRow key={name} caster={name} />
           ))}
         </div>
       ))}
@@ -124,6 +130,27 @@ function GrantedFeatRow({ node }: { node: ResolvedNode }) {
         <span className="granted" title={`Granted by ${node.parent?.element.name ?? ""}`}>
           {node.element.name}
         </span>
+      </div>
+    </div>
+  );
+}
+
+/** Prepared casters (cleric, druid, wizard…) prepare level 1+ spells on the Spells page. */
+function PreparedSpellsRow({ caster }: { caster: string }) {
+  const { sheet, setPage } = useCharacter();
+  const row = sheet.spellcasting.find((r) => r.name === caster);
+  if (!row || row.prepareCount === undefined) return null;
+  const missing = row.prepareCount - row.preparedCount;
+  return (
+    <div className="choice-row">
+      <div className="choice-label">
+        <span>Prepared Spells ({caster})</span>
+        {missing > 0 && <span className="dot" title="Spells to prepare" />}
+      </div>
+      <div className="choice-slots">
+        <button className={missing > 0 ? "unchosen" : "chosen"} onClick={() => setPage("spells")}>
+          {row.preparedCount}/{row.prepareCount} prepared · Prepare spells…
+        </button>
       </div>
     </div>
   );

@@ -7,7 +7,9 @@ import { beforeAll, describe, expect, it } from "vitest";
 import {
   buildSheet,
   ContentRegistry,
+  findCaster,
   newCharacter,
+  preparableSpells,
   resolveCharacter,
   selectionKey,
   selectionOptions,
@@ -169,6 +171,31 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     state.rules = "2014";
     rc = resolveCharacter(registry, state);
     expect(selectionOptions(rc, racePoint).map((o) => o.element.id)).toContain("ID_RACE_ELF");
+  });
+
+  it.each([
+    ["Druid", "ID_WOTC_PHB24_CLASS_DRUID", 4, 7],
+    ["Cleric", "ID_WOTC_PHB24_CLASS_CLERIC", 5, 9],
+  ])("2024: a %s prepares spells from the whole class list", (name, id, level, count) => {
+    const state = newCharacter();
+    state.abilities.wisdom = 15;
+    state.levels = Array(level).fill(id);
+    let rc = resolveCharacter(registry, state);
+    const caster = findCaster(rc, name)!;
+    expect(caster.mode).toBe("list");
+    let row = buildSheet(rc).spellcasting.find((r) => r.name === name)!;
+    expect(row).toMatchObject({ prepareCount: count, preparedCount: 0 });
+    expect(buildSheet(rc).warnings).toContain(`Prepared Spells (${name}): ${count} spells to prepare`);
+
+    const options = preparableSpells(rc, caster);
+    expect(options.length).toBeGreaterThan(count);
+    state.preparedSpells[name] = options.slice(0, count).map((el) => el.id);
+    rc = resolveCharacter(registry, state);
+    const sheet = buildSheet(rc);
+    row = sheet.spellcasting.find((r) => r.name === name)!;
+    expect(row.preparedCount).toBe(count);
+    expect(row.spells.filter((s) => s.prepared && s.level > 0).length).toBeGreaterThanOrEqual(count);
+    expect(sheet.warnings.some((w) => w.startsWith("Prepared Spells"))).toBe(false);
   });
 
   it("2024 rules: a 2014 race chosen before keeps its subraces", () => {

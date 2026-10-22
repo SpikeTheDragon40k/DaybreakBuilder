@@ -267,6 +267,10 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
     const missing = p.chosen.filter((c) => c === null).length;
     if (missing > 0) warnings.push(`${p.rule.name}: ${missing} choice${missing > 1 ? "s" : ""} remaining`);
   }
+  for (const r of spellcasting) {
+    const missing = (r.prepareCount ?? 0) - r.preparedCount;
+    if (missing > 0) warnings.push(`Prepared Spells (${r.name}): ${missing} spell${missing > 1 ? "s" : ""} to prepare`);
+  }
   if (!rc.mainClass) warnings.push("No class chosen");
   // A new character (no coins or gear yet) still has to pick its starting wealth.
   const st = rc.state;

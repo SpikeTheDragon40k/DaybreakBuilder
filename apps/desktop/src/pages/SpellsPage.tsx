@@ -40,7 +40,10 @@ export function SpellsPage() {
           <CasterPanel key={c.name} caster={c} onFocus={setFocused} />
         ))}
         <p className="small muted">
-          Learn new spells in the <button className="link" onClick={() => setPage("build")}>Build</button> tab (choices named after your class).
+          {casters.some((c) => c.mode === "list")
+            ? "Tick spells above to prepare them from your class list. "
+            : ""}
+          Cantrips and learned spells are chosen in the <button className="link" onClick={() => setPage("build")}>Build</button> tab (choices named after your class).
         </p>
       </div>
       <section className="panel sticky">
