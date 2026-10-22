@@ -62,7 +62,7 @@ npm test
 
 ## Using the app
 
-1. **Content** tab → *Download* (the AuroraLegacy index URL is prefilled) or *Import XML files…*. In the desktop app
+1. **Content** tab → *Download* (prefilled with the AuroraLegacy index limited to the 2024 rules; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
    you can also drop XML files into `Documents/DaybreakBuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
@@ -83,6 +83,32 @@ Characters autosave locally. Use *Export* to get a portable `.json` file.
 **Units:** the *ft / m* switch in the top bar shows distances and weights in meters and kilograms everywhere
 (sheet, descriptions, compendium, PDF export). It uses the convention of the game's metric editions, which keeps the
 5-foot grid: 5 ft = 1.5 m, 1 mile = 1.5 km, 1 inch = 2.5 cm, 1 lb = 0.5 kg. Content files stay in feet and pounds.
+
+## 2024-only community index
+
+`content/indexes/aurora-legacy-2024.index` is the [AuroraLegacy](https://github.com/AuroraLegacy/elements) index reduced
+to the 2024 rules (D&D 5.5e):
+
+* the edition-neutral `internal.xml` and `ALE.xml`;
+* the released 2024 books: the 2024 Player's Handbook, the 2024 Dungeon Master's Guide and the 2025 Monster Manual;
+* 2024 books still waiting in open AuroraLegacy pull requests (Astarion's Book of Hungers, Netheril's Fall, Heroes of
+  Faerûn, Adventures in Faerûn, Lorwyn: First Light, Eberron: Forge of the Artificer, Arcana Unleashed and Deadfall,
+  Ravenloft: The Horrors Within), linked at each pull request's latest commit, together with the changes those pull
+  requests make to the shared files. They haven't been reviewed by the AuroraLegacy team yet.
+
+The index contains links only; the files stay hosted by AuroraLegacy. The app ships a copy, so it installs even when this
+repository isn't public. Files load in the order the index lists them, so a pull request's version of a shared element
+replaces the released one.
+
+`scripts/generate-2024-index.mjs` rebuilds it with git (no GitHub API needed). It recognizes 2024 books by their source
+(5.5e, release date) or title, takes the pull requests listed in `PULL_REQUESTS` (dropping them once merged), and
+reports 2024 books AuroraLegacy doesn't have yet. Rerun it when AuroraLegacy adds books, merges a pull request, or a pull
+request gets new commits:
+
+```sh
+node scripts/generate-2024-index.mjs                 # clones AuroraLegacy into a temporary folder
+node scripts/generate-2024-index.mjs --local <dir>   # uses an existing git checkout of AuroraLegacy/elements
+```
 
 ## Writing and converting content
 

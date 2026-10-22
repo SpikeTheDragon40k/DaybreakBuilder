@@ -4,6 +4,11 @@ import { getPlatform, packs, settings, type PackMeta, type StoredFile } from "..
 // Content shipped with the app: system elements (and the SRD pack, when present).
 const bundledCore = import.meta.glob("../../../../content/core/**/*.xml", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
 const bundledSrd = import.meta.glob("../../../../content/srd/**/*.xml", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+const bundledIndexes = import.meta.glob("../../../../content/indexes/*.index", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+
+/** Indexes the app ships (by their published URL); installing one doesn't need to fetch it. */
+const shippedIndex = (url: string): string | undefined =>
+  Object.entries(bundledIndexes).find(([path]) => url.endsWith(path.slice(path.lastIndexOf("/content/"))))?.[1];
 
 export interface ContentSourceSummary {
   id: string;
@@ -69,7 +74,10 @@ export async function installIndex(
   onProgress?: (done: number, total: number) => void,
 ): Promise<{ meta: PackMeta; errors: { url: string; message: string }[] }> {
   const platform = await getPlatform();
-  const result = await downloadIndex(url, { fetchText: (u) => platform.fetchText(u), onProgress: (d, t) => onProgress?.(d, t) });
+  const result = await downloadIndex(url, {
+    fetchText: async (u) => shippedIndex(u) ?? platform.fetchText(u),
+    onProgress: (d, t) => onProgress?.(d, t),
+  });
   if (result.files.length === 0) {
     throw new Error(result.errors[0]?.message ?? "The index did not list any element files.");
   }

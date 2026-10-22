@@ -22,56 +22,57 @@ export interface DownloadOptions {
 
 /**
  * Walk an Aurora *.index file and everything it references (nested indexes
- * and element XML files), downloading all element files.
+ * and element XML files), downloading all element files. Files come back in
+ * the order the indexes list them, so a later file overrides an earlier one
+ * deterministically (the registry keeps the last element with a given id).
  */
 export async function downloadIndex(indexUrl: string, opts: DownloadOptions): Promise<IndexDownloadResult> {
   const errors: { url: string; message: string }[] = [];
-  const files = new Map<string, DownloadedFile>();
   const seenIndexes = new Set<string>();
-  const xmlQueue: { url: string; path: string }[] = [];
   let rootInfo: ElementsFileInfo = {};
 
-  const walk = async (url: string, isRoot: boolean): Promise<void> => {
-    if (seenIndexes.has(url)) return;
+  type Job = { url: string; path: string };
+  const walk = async (url: string, isRoot: boolean): Promise<Job[]> => {
+    if (seenIndexes.has(url)) return [];
     seenIndexes.add(url);
     let text: string;
     try {
       text = await opts.fetchText(url);
     } catch (e) {
       errors.push({ url, message: (e as Error).message });
-      return;
+      return [];
     }
     let parsed;
     try {
       parsed = parseIndexFile(text);
     } catch (e) {
       errors.push({ url, message: `invalid index: ${(e as Error).message}` });
-      return;
+      return [];
     }
     if (isRoot) rootInfo = parsed.info;
-    const nested: Promise<void>[] = [];
-    for (const f of parsed.files) {
-      if (f.name.toLowerCase().endsWith(".index") || f.url.toLowerCase().endsWith(".index")) {
-        nested.push(walk(f.url, false));
-      } else {
-        xmlQueue.push({ url: f.url, path: relativePath(indexUrl, f.url, f.name) });
-      }
-    }
-    await Promise.all(nested);
+    // Nested indexes are fetched in parallel but keep their place in the list.
+    const parts = await Promise.all(
+      parsed.files.map((f) =>
+        f.name.toLowerCase().endsWith(".index") || f.url.toLowerCase().endsWith(".index")
+          ? walk(f.url, false)
+          : Promise.resolve([{ url: f.url, path: relativePath(indexUrl, f.url, f.name) }]),
+      ),
+    );
+    return parts.flat();
   };
 
-  await walk(indexUrl, true);
-
-  const unique = [...new Map(xmlQueue.map((q) => [q.url, q])).values()];
+  const queue = await walk(indexUrl, true);
+  const unique = [...new Map(queue.map((q) => [q.url, q])).values()];
+  const contents: (string | undefined)[] = new Array(unique.length);
   let done = 0;
   const concurrency = Math.max(1, opts.concurrency ?? 6);
   let next = 0;
   const worker = async () => {
     while (next < unique.length) {
-      const job = unique[next++];
+      const i = next++;
+      const job = unique[i];
       try {
-        const content = await opts.fetchText(job.url);
-        files.set(job.url, { path: job.path, url: job.url, content });
+        contents[i] = await opts.fetchText(job.url);
       } catch (e) {
         errors.push({ url: job.url, message: (e as Error).message });
       }
@@ -81,7 +82,11 @@ export async function downloadIndex(indexUrl: string, opts: DownloadOptions): Pr
   };
   await Promise.all(Array.from({ length: Math.min(concurrency, unique.length) }, worker));
 
-  return { info: rootInfo, files: [...files.values()], errors };
+  const files: DownloadedFile[] = [];
+  unique.forEach((job, i) => {
+    if (contents[i] !== undefined) files.push({ path: job.path, url: job.url, content: contents[i]! });
+  });
+  return { info: rootInfo, files, errors };
 }
 
 /** Best-effort relative path of a file under the index's directory. */
@@ -98,3 +103,11 @@ function relativePath(indexUrl: string, fileUrl: string, name: string): string {
 
 /** Well-known community content index. */
 export const AURORA_LEGACY_INDEX = "https://raw.githubusercontent.com/AuroraLegacy/elements/master/AuroraLegacy.index";
+
+/**
+ * The same community content limited to the 2024 rules (content/indexes/aurora-legacy-2024.index,
+ * built by scripts/generate-2024-index.mjs). The app ships a copy, so it installs even while this
+ * URL isn't reachable.
+ */
+export const AURORA_LEGACY_2024_INDEX =
+  "https://raw.githubusercontent.com/SpikeTheDragon40k/DaybreakBuilder/main/content/indexes/aurora-legacy-2024.index";
