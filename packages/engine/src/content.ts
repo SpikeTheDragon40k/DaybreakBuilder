@@ -105,9 +105,7 @@ function relativePath(indexUrl: string, fileUrl: string, name: string): string {
 export const AURORA_LEGACY_INDEX = "https://raw.githubusercontent.com/AuroraLegacy/elements/master/AuroraLegacy.index";
 
 /**
- * The same community content limited to the 2024 rules (content/indexes/aurora-legacy-2024.index,
- * built by scripts/generate-2024-index.mjs). The app ships a copy, so it installs even while this
- * URL isn't reachable.
+ * The same community content for the 2024 rules only: the dnd-2024 branch of the project's fork,
+ * which drops every 2014 book and adds the 2024 books still waiting in AuroraLegacy pull requests.
  */
-export const AURORA_LEGACY_2024_INDEX =
-  "https://raw.githubusercontent.com/SpikeTheDragon40k/DaybreakBuilder/main/content/indexes/aurora-legacy-2024.index";
+export const AURORA_LEGACY_2024_INDEX = "https://raw.githubusercontent.com/SpikeTheDragon40k/elements/dnd-2024/AuroraLegacy.index";

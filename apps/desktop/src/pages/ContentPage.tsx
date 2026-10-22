@@ -8,7 +8,8 @@ const PRESETS = [
   {
     label: "Aurora Legacy: 2024 rules",
     url: AURORA_LEGACY_2024_INDEX,
-    detail: "Only the 2024 (5.5e) books: Player’s Handbook 2024, Dungeon Master’s Guide 2024, Monster Manual 2025",
+    detail:
+      "Only the 2024 (5.5e) books: the 2024 core rulebooks plus Heroes of Faerûn, Eberron, Lorwyn, Arcana Unleashed, Ravenloft and more",
   },
   { label: "Aurora Legacy: everything", url: AURORA_LEGACY_INDEX, detail: "Every book, 2014 and 2024 rules" },
 ];
