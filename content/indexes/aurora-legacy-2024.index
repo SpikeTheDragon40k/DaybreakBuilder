@@ -7,7 +7,7 @@
 		<description>The AuroraLegacy community content limited to the 2024 rules (D&amp;D 5.5e): Player’s Handbook (2024), Dungeon Master’s Guide (2024), Monster Manual (2025), Astarion’s Book of Hungers (pull request #334), Netheril’s Fall (pull request #334), Forgotten Realms: Adventures in Faerûn (pull request #335), Forgotten Realms: Heroes of Faerûn (pull request #335), Lorwyn: First Light (pull request #340), Eberron: Forge of the Artificer (pull request #341), Arcana Unleashed: Deadfall (pull request #354), Arcana Unleashed (pull request #354), Ravenloft: The Horrors Within (pull request #355). Books from pull requests haven't been reviewed by the AuroraLegacy team yet.</description>
 		<author url="https://github.com/AuroraLegacy/elements">Aurora Legacy Team and contributors</author>
 		<update version="1.1.0">
-			<file name="aurora-legacy-2024.index" url="https://raw.githubusercontent.com/SpikeTheDragon40k/dndbuilderclaude/main/content/indexes/aurora-legacy-2024.index" />
+			<file name="aurora-legacy-2024.index" url="https://raw.githubusercontent.com/SpikeTheDragon40k/DaybreakBuilder/main/content/indexes/aurora-legacy-2024.index" />
 		</update>
 	</info>
 	<files>

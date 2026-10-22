@@ -35,7 +35,7 @@ const OUT = join(root, "content", "indexes", "aurora-legacy-2024.index");
 const REPO = "https://github.com/AuroraLegacy/elements";
 const RAW = "https://raw.githubusercontent.com/AuroraLegacy/elements/";
 /** Where this file is published, so the index can update itself (Aurora reads <update>). */
-const SELF_URL = "https://raw.githubusercontent.com/SpikeTheDragon40k/dndbuilderclaude/main/content/indexes/aurora-legacy-2024.index";
+const SELF_URL = "https://raw.githubusercontent.com/SpikeTheDragon40k/DaybreakBuilder/main/content/indexes/aurora-legacy-2024.index";
 const REVISED_RELEASE = 20240917;
 
 /** Books written for the 2024 rules, by (part of) their title. */

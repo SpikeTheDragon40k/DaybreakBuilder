@@ -110,4 +110,4 @@ export const AURORA_LEGACY_INDEX = "https://raw.githubusercontent.com/AuroraLega
  * URL isn't reachable.
  */
 export const AURORA_LEGACY_2024_INDEX =
-  "https://raw.githubusercontent.com/SpikeTheDragon40k/dndbuilderclaude/main/content/indexes/aurora-legacy-2024.index";
+  "https://raw.githubusercontent.com/SpikeTheDragon40k/DaybreakBuilder/main/content/indexes/aurora-legacy-2024.index";
