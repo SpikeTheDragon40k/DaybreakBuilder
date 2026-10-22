@@ -1066,6 +1066,10 @@ ul.plain {
 .feature-text {
   margin: 0.2rem 0;
 }
+.pending-companion button.link {
+  color: var(--accent);
+  text-decoration: underline;
+}
 
 /* Theme switcher */
 .theme-switch {

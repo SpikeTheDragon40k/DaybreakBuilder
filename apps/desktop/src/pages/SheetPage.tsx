@@ -2,7 +2,7 @@ import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPri
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";
-import { CompanionBlock } from "../components/CompanionBlock";
+import { CompanionBlock, PendingCompanion } from "../components/CompanionBlock";
 import { Portrait } from "../components/Portrait";
 import { useCharacter } from "../state/app";
 import { useUnits } from "../units";
@@ -231,7 +231,12 @@ export function SheetPage() {
                 </div>
               ))}
             </Box>
-            {s.companion && <CompanionBlock c={s.companion} />}
+            {s.companions.map((c, i) => (
+              <CompanionBlock key={`${c.id}-${i}`} c={c} />
+            ))}
+            {s.pendingCompanions.map((name) => (
+              <PendingCompanion key={name} name={name} />
+            ))}
             {(character.state.details.traits || character.state.details.backstory) && (
               <Box title="Personality & Background">
                 {(["traits", "ideals", "bonds", "flaws", "backstory"] as const).map((k) =>

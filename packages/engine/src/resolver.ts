@@ -71,6 +71,12 @@ export interface ResolveIssue {
   path?: string;
 }
 
+/** A companion in the tree and the statistics its stat block is computed from. */
+export interface ResolvedCompanion {
+  node: ResolvedNode;
+  stats: StatValues;
+}
+
 export interface ResolvedCharacter {
   state: CharacterState;
   registry: ContentRegistry;
@@ -80,6 +86,8 @@ export interface ResolvedCharacter {
   ids: Map<string, number>;
   selections: SelectionPoint[];
   stats: StatValues;
+  /** Companions in tree order; with one companion its stats are `stats`. */
+  companions: ResolvedCompanion[];
   /** Values of inline stat rules (text substitutions). */
   inline: Map<string, string>;
   level: number;
@@ -383,6 +391,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
   const finalHas = (id: string) => (ids.get(id) ?? 0) > 0;
   const equipped = equippedEvaluator(registry, state.inventory, ids);
   const contributions: StatContribution[] = [];
+  const owners: ResolvedNode[] = [];
   const inline = new Map<string, string>();
   for (const node of nodes) {
     for (const rule of node.element.rules) {
@@ -394,19 +403,33 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
         continue;
       }
       contributions.push(statContribution(rule, node));
+      owners.push(node);
     }
   }
 
-  const companion = nodes.find((n) => n.element.type === "Companion")?.element;
+  const companionNodes = nodes.filter((n) => n.element.type === "Companion");
   const seeds = seedStats(registry, state, perClass, level);
-  if (companion) seeds.push({ stat: "companion:proficiency", value: companionProficiency(companion), source: companion.name });
-  const stats = new StatValues({
-    contributions,
-    seeds,
-    baseAbilities: state.abilities,
-    companionAbilities: companion ? companionBaseAbilities(companion) : undefined,
-    useAbilityMaximum: useMax,
-  });
+  const statsFor = (companion: ResolvedNode | undefined, list: StatContribution[]) =>
+    new StatValues({
+      contributions: list,
+      seeds: companion
+        ? [...seeds, { stat: "companion:proficiency", value: companionProficiency(companion.element), source: companion.element.name }]
+        : seeds,
+      baseAbilities: state.abilities,
+      companionAbilities: companion ? companionBaseAbilities(companion.element) : undefined,
+      useAbilityMaximum: useMax,
+    });
+  const stats = statsFor(companionNodes[0], contributions);
+  const companions: ResolvedCompanion[] =
+    companionNodes.length === 1
+      ? [{ node: companionNodes[0], stats }]
+      : companionNodes.map((c) => ({
+          node: c,
+          stats: statsFor(
+            c,
+            contributions.filter((x, i) => !x.stat.startsWith("companion:") || appliesToCompanion(owners[i], c, companionNodes)),
+          ),
+        }));
 
   return {
     state,
@@ -416,6 +439,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
     ids,
     selections,
     stats,
+    companions,
     inline,
     level,
     classLevels: perClass,
@@ -423,6 +447,38 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
     issues,
     iterations: 0,
   };
+}
+
+/** Elements whose subtree a companion belongs to: its companion:* rules apply to that companion only. */
+const COMPANION_ANCHORS = new Set(["Class", "Multiclass", "Archetype", "Spell", "Feat", "Race", "Sub Race", "Background", "Magic Item"]);
+
+function isWithin(node: ResolvedNode, ancestor: ResolvedNode): boolean {
+  for (let n: ResolvedNode | undefined = node; n; n = n.parent) if (n === ancestor) return true;
+  return false;
+}
+
+function companionAnchor(companion: ResolvedNode): ResolvedNode | undefined {
+  for (let n = companion.parent; n; n = n.parent) if (COMPANION_ANCHORS.has(n.element.type)) return n;
+  return undefined;
+}
+
+/**
+ * Whether a companion:* rule from `owner` modifies `companion` when the
+ * character has several: a companion's own rules apply only to it, and a
+ * feature's rules only to the companion granted by the same class, subclass,
+ * spell or feat (Beast Master features don't touch a Find Familiar familiar).
+ * Rules from anywhere else apply to every companion.
+ */
+function appliesToCompanion(owner: ResolvedNode, companion: ResolvedNode, all: ResolvedNode[]): boolean {
+  if (isWithin(owner, companion)) return true;
+  if (all.some((c) => c !== companion && isWithin(owner, c))) return false;
+  const anchor = companionAnchor(companion);
+  if (anchor && isWithin(owner, anchor)) return true;
+  return !all.some((c) => {
+    if (c === companion) return false;
+    const other = companionAnchor(c);
+    return other !== undefined && isWithin(owner, other);
+  });
 }
 
 function statContribution(rule: StatRule, node: ResolvedNode): StatContribution {
