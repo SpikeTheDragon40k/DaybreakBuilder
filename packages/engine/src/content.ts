@@ -98,3 +98,11 @@ function relativePath(indexUrl: string, fileUrl: string, name: string): string {
 
 /** Well-known community content index. */
 export const AURORA_LEGACY_INDEX = "https://raw.githubusercontent.com/AuroraLegacy/elements/master/AuroraLegacy.index";
+
+/**
+ * The same community content limited to the 2024 rules (content/indexes/aurora-legacy-2024.index,
+ * built by scripts/generate-2024-index.mjs). The app ships a copy, so it installs even while this
+ * URL isn't reachable.
+ */
+export const AURORA_LEGACY_2024_INDEX =
+  "https://raw.githubusercontent.com/SpikeTheDragon40k/dndbuilderclaude/main/content/indexes/aurora-legacy-2024.index";

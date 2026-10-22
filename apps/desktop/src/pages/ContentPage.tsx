@@ -1,12 +1,21 @@
-import { AURORA_LEGACY_INDEX } from "@dndbuilder/engine";
+import { AURORA_LEGACY_2024_INDEX, AURORA_LEGACY_INDEX } from "@dndbuilder/engine";
 import { useMemo, useState } from "react";
 import { getPlatform, isTauri, packs, settings } from "../platform";
 import { useApp } from "../state/app";
 import { importLocalFiles, installIndex } from "../state/content";
 
+const PRESETS = [
+  {
+    label: "Aurora Legacy: 2024 rules",
+    url: AURORA_LEGACY_2024_INDEX,
+    detail: "Only the 2024 (5.5e) books: Player’s Handbook 2024, Dungeon Master’s Guide 2024, Monster Manual 2025",
+  },
+  { label: "Aurora Legacy: everything", url: AURORA_LEGACY_INDEX, detail: "Every book, 2014 and 2024 rules" },
+];
+
 export function ContentPage() {
   const { content, reloadContent, character, update } = useApp();
-  const [url, setUrl] = useState(AURORA_LEGACY_INDEX);
+  const [url, setUrl] = useState(AURORA_LEGACY_2024_INDEX);
   const [busy, setBusy] = useState<string | null>(null);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
@@ -133,9 +142,16 @@ export function ContentPage() {
         </header>
         <p className="small muted">
           Content uses the Aurora Builder XML format. Paste the URL of an <code>.index</code> file to download it and everything it
-          references. The community-maintained Aurora Legacy index is filled in below. Only install content you own or that is
+          references, or pick one of the community-maintained Aurora Legacy indexes. Only install content you own or that is
           licensed for use.
         </p>
+        <div className="row" role="group" aria-label="Aurora Legacy indexes">
+          {PRESETS.map((p) => (
+            <button key={p.url} className="small" aria-pressed={url === p.url} title={p.detail} onClick={() => setUrl(p.url)}>
+              {p.label}
+            </button>
+          ))}
+        </div>
         <div className="row">
           <input className="grow" type="url" value={url} onChange={(e) => setUrl(e.target.value)} aria-label="Index URL" />
           <button className="primary" disabled={!!busy || !url.trim()} onClick={() => install(url.trim())}>

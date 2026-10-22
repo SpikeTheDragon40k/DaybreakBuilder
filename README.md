@@ -62,7 +62,7 @@ npm test
 
 ## Using the app
 
-1. **Content** tab → *Download* (the AuroraLegacy index URL is prefilled) or *Import XML files…*. In the desktop app
+1. **Content** tab → *Download* (prefilled with the AuroraLegacy index limited to the 2024 rules; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
    you can also drop XML files into `Documents/dndbuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
@@ -83,6 +83,23 @@ Characters autosave locally. Use *Export* to get a portable `.json` file.
 **Units:** the *ft / m* switch in the top bar shows distances and weights in meters and kilograms everywhere
 (sheet, descriptions, compendium, PDF export). It uses the convention of the game's metric editions, which keeps the
 5-foot grid: 5 ft = 1.5 m, 1 mile = 1.5 km, 1 inch = 2.5 cm, 1 lb = 0.5 kg. Content files stay in feet and pounds.
+
+## 2024-only community index
+
+`content/indexes/aurora-legacy-2024.index` is the [AuroraLegacy](https://github.com/AuroraLegacy/elements) index reduced
+to the 2024 rules: the edition-neutral `internal.xml` and `ALE.xml` plus every book written for the 2024 rules (D&D 5.5e).
+Today AuroraLegacy has three: the 2024 Player's Handbook, the 2024 Dungeon Master's Guide and the 2025 Monster Manual.
+The index contains links only; the files stay hosted by AuroraLegacy. The app ships a copy, so it installs even when this
+repository isn't public.
+
+The generator knows the 2024 books by title (Astarion's Book of Hungers, Arcana Unleashed, Dragon Delves, Eberron: Forge
+of the Artificer, Forgotten Realms: Heroes of Faerûn and Adventures in Faerûn, Lorwyn: First Light, Netheril's Fall, …) and
+reports which of them AuroraLegacy doesn't have yet. When it adds some, regenerate the index:
+
+```sh
+node scripts/generate-2024-index.mjs                 # from GitHub
+node scripts/generate-2024-index.mjs --local <dir>   # from a local checkout of AuroraLegacy/elements
+```
 
 ## Writing and converting content
 
