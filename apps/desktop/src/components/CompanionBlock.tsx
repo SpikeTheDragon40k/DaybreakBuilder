@@ -1,7 +1,8 @@
 import { formatModifier, type CompanionSheet } from "@daybreakbuilder/engine";
+import { useApp } from "../state/app";
 import { useUnits } from "../units";
 
-/** Monster-manual style stat block for the character's companion. */
+/** Monster-manual style stat block for one of the character's companions. */
 export function CompanionBlock({ c }: { c: CompanionSheet }) {
   const units = useUnits();
   const speeds = [
@@ -11,7 +12,7 @@ export function CompanionBlock({ c }: { c: CompanionSheet }) {
   const saves = c.savingThrows.filter((s) => s.proficient);
   return (
     <section className="box companion">
-      <h3>Companion</h3>
+      <h3>{c.grantedBy || "Companion"}</h3>
       <h4 className="statblock-name">{c.name}</h4>
       <div className="muted small">{c.summary}</div>
       <div className="statblock-line">
@@ -20,6 +21,7 @@ export function CompanionBlock({ c }: { c: CompanionSheet }) {
         </span>
         <span>
           <strong>Hit Points</strong> {c.maxHp}
+          {c.hitDice && <span className="muted"> ({c.hitDice})</span>}
         </span>
         <span>
           <strong>Speed</strong> {speeds.join(", ")}
@@ -53,41 +55,65 @@ export function CompanionBlock({ c }: { c: CompanionSheet }) {
           {d}
         </p>
       ))}
-      {c.senses && (
-        <p className="prof-line">
-          <strong>Senses</strong> {units.text(c.senses)}
-        </p>
-      )}
+      <p className="prof-line">
+        <strong>Senses</strong> {units.text(c.senses)}
+      </p>
       <p className="prof-line">
         <strong>Languages</strong> {c.languages}
-        {c.challenge && (
+      </p>
+      <p className="prof-line">
+        {c.challenge && c.challenge !== "—" && (
           <>
-            {" "}
-            · <strong>Challenge</strong> {c.challenge} · <strong>Proficiency</strong> {formatModifier(c.proficiencyBonus)}
+            <strong>Challenge</strong> {c.challenge} ·{" "}
           </>
         )}
+        <strong>Proficiency Bonus</strong> {formatModifier(c.proficiencyBonus)}
       </p>
       {(c.attackBonus !== 0 || c.damageBonus !== 0) && (
         <p className="prof-line small">
           Bonuses from your features: attack {formatModifier(c.attackBonus)}, damage {formatModifier(c.damageBonus)}
         </p>
       )}
-      {[
-        ["Traits", c.traits],
-        ["Actions", c.actions],
-        ["Reactions", c.reactions],
-      ].map(([title, list]) =>
-        (list as CompanionSheet["traits"]).length ? (
-          <div key={title as string}>
-            <h5>{title as string}</h5>
-            {(list as CompanionSheet["traits"]).map((f) => (
-              <p key={f.id} className="feature-text">
-                <strong>{f.name}.</strong> {units.text(f.text)}
-              </p>
-            ))}
+      {(
+        [
+          ["Traits", c.traits],
+          ["Actions", c.actions],
+          ["Reactions", c.reactions],
+        ] as const
+      ).map(([title, list]) =>
+        list.length ? (
+          <div key={title}>
+            <h5>{title}</h5>
+            {list.map((f) =>
+              f.text.split("\n").map((para, i) => (
+                <p key={`${f.id}-${i}`} className="feature-text">
+                  {i === 0 && <strong>{f.name}. </strong>}
+                  {units.text(para)}
+                </p>
+              )),
+            )}
           </div>
         ) : null,
       )}
+    </section>
+  );
+}
+
+/** Placeholder for a companion the character can have but hasn't chosen yet (flagged, never blocking). */
+export function PendingCompanion({ name }: { name: string }) {
+  const { setPage } = useApp();
+  return (
+    <section className="box companion pending-companion">
+      <h3>
+        {name} <span className="dot" title="Choice needed" />
+      </h3>
+      <p className="muted">
+        No companion chosen yet. Pick one on the{" "}
+        <button className="link" onClick={() => setPage("build")}>
+          Build
+        </button>{" "}
+        page to see its stat block here.
+      </p>
     </section>
   );
 }

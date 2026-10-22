@@ -211,6 +211,23 @@ class Flow {
     this.y -= opts.gap ?? 2;
   }
 
+  /** A row of equal boxes with a small label over a value, like a stat block's ability scores. */
+  cells(cells: { label: string; value: string }[], height = 28) {
+    const { fonts, pal } = this.ctx;
+    this.ensure(height + 6);
+    const gap = 6;
+    const w = (this.width - gap * (cells.length - 1)) / cells.length;
+    cells.forEach((c, i) => {
+      const x = this.x + i * (w + gap);
+      this.ctx.box(this.page, x, this.y - height, w, height);
+      const label = this.ctx.clean(c.label);
+      const value = this.ctx.clean(c.value);
+      this.page.drawText(label, { x: x + (w - fonts.bold.widthOfTextAtSize(label, 7)) / 2, y: this.y - 10, size: 7, font: fonts.bold, color: pal.muted });
+      this.page.drawText(value, { x: x + (w - fonts.regular.widthOfTextAtSize(value, 9.5)) / 2, y: this.y - height + 6, size: 9.5, font: fonts.regular, color: pal.ink });
+    });
+    this.y -= height + 6;
+  }
+
   /** "Label. text" with a bold lead-in. */
   entry(title: string, text: string | Run[][], meta?: string) {
     const size = 8.5;
@@ -509,26 +526,59 @@ export async function characterSheetPdf(
     }
   }
 
-  // Companion.
-  if (sheet.companion) {
-    const c = sheet.companion;
+  // Companions: each as a stat block, together on one page while they fit.
+  if (sheet.companions.length || sheet.pendingCompanions.length) {
     const cp = ctx.newPage();
-    ctx.pageTitle(cp, `Companion: ${c.name}`);
-    const flow = new Flow(ctx, cp, MARGIN, cp.getWidth() - 2 * MARGIN, cp.getHeight() - MARGIN - 28, "Companion (continued)");
-    flow.paragraph(c.summary, { color: pal.muted });
-    const speeds = [`${c.speed.walk} ft.`, ...(["climb", "swim", "fly", "burrow"] as const).filter((k) => c.speed[k] > 0).map((k) => `${k} ${c.speed[k]} ft.`)];
-    flow.paragraph(`Armor Class ${c.armorClass}    Hit Points ${c.maxHp}    Speed ${speeds.join(", ")}    Initiative ${formatModifier(c.initiative)}`, { font: bold });
-    flow.paragraph(c.abilities.map((a) => `${a.ability.slice(0, 3).toUpperCase()} ${a.score} (${formatModifier(a.modifier)})`).join("    "));
-    const saves = c.savingThrows.filter((s) => s.proficient);
-    if (saves.length) flow.entry("Saving Throws", saves.map((s) => `${s.name.slice(0, 3)} ${formatModifier(s.total)}`).join(", "));
-    if (c.skills.length) flow.entry("Skills", c.skills.map((s) => `${s.name} ${formatModifier(s.total)}`).join(", "));
-    for (const d of c.defenses) flow.paragraph(d);
-    if (c.senses) flow.entry("Senses", c.senses);
-    flow.entry("Languages", `${c.languages}    Challenge ${c.challenge}    Proficiency ${formatModifier(c.proficiencyBonus)}`);
-    for (const [title, list] of [["Traits", c.traits], ["Actions", c.actions], ["Reactions", c.reactions]] as const) {
-      if (!list.length) continue;
-      flow.heading(title);
-      for (const f of list) flow.entry(f.name, f.text);
+    const single = sheet.companions.length === 1 && !sheet.pendingCompanions.length;
+    ctx.pageTitle(cp, single ? `Companion: ${sheet.companions[0].name}` : "Companions");
+    const flow = new Flow(ctx, cp, MARGIN, cp.getWidth() - 2 * MARGIN, cp.getHeight() - MARGIN - 28, "Companions (continued)");
+    const line = (label: string, text: string) => flow.rich([[{ text: `${label} `, bold: true }, { text }]], { gap: 2 });
+    sheet.companions.forEach((c, i) => {
+      if (i > 0) flow.y -= 10;
+      flow.heading(`${c.grantedBy || "Companion"}: ${c.name}`);
+      flow.paragraph(c.summary, { color: pal.muted, size: 8, gap: 4 });
+      const speeds = [`${c.speed.walk} ft.`, ...(["climb", "swim", "fly", "burrow"] as const).filter((k) => c.speed[k] > 0).map((k) => `${k} ${c.speed[k]} ft.`)];
+      flow.rich(
+        [
+          [
+            { text: "Armor Class ", bold: true },
+            { text: `${c.armorClass}  · ` },
+            { text: "Hit Points ", bold: true },
+            { text: `${c.maxHp}${c.hitDice ? ` (${c.hitDice})` : ""}  · ` },
+            { text: "Speed ", bold: true },
+            { text: `${speeds.join(", ")}  · ` },
+            { text: "Initiative ", bold: true },
+            { text: formatModifier(c.initiative) },
+          ],
+        ],
+        { gap: 6 },
+      );
+      flow.cells(c.abilities.map((a) => ({ label: a.ability.slice(0, 3).toUpperCase(), value: `${a.score} (${formatModifier(a.modifier)})` })));
+      const saves = c.savingThrows.filter((s) => s.proficient);
+      if (saves.length) line("Saving Throws", saves.map((s) => `${s.name.slice(0, 3)} ${formatModifier(s.total)}`).join(", "));
+      if (c.skills.length) line("Skills", c.skills.map((s) => `${s.name} ${formatModifier(s.total)}`).join(", "));
+      for (const d of c.defenses) {
+        const [label, ...rest] = d.split(": ");
+        line(label, rest.join(": "));
+      }
+      line("Senses", c.senses);
+      line("Languages", c.languages);
+      flow.rich(
+        [[...(c.challenge && c.challenge !== "—" ? [{ text: "Challenge ", bold: true }, { text: `${c.challenge}  · ` }] : []), { text: "Proficiency Bonus ", bold: true }, { text: formatModifier(c.proficiencyBonus) }]],
+        { gap: 4 },
+      );
+      for (const [title, list] of [["Traits", c.traits], ["Actions", c.actions], ["Reactions", c.reactions]] as const) {
+        if (!list.length) continue;
+        flow.paragraph(title, { font: bold, color: pal.accent, size: 8.5, gap: 1 });
+        for (const f of list) {
+          const [first, ...more] = f.text.split("\n");
+          flow.rich([[{ text: `${f.name}. `, bold: true, italic: true }, { text: first ?? "" }], ...more.map((t) => [{ text: t }])], { size: 8, gap: 4 });
+        }
+      }
+    });
+    for (const name of sheet.pendingCompanions) {
+      flow.heading(name);
+      flow.paragraph("Not chosen yet: pick it on the Build page.", { color: pal.muted });
     }
   }
 

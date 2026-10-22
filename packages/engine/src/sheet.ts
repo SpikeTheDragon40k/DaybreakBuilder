@@ -91,7 +91,12 @@ export interface CharacterSheet {
   attacks: AttackRow[];
   features: FeatureRow[];
   spellcasting: SpellcastingRow[];
+  /** The first of `companions`, kept for older callers. */
   companion: CompanionSheet | null;
+  /** Every companion the character has: a beast companion, a familiar, a steel defender… */
+  companions: CompanionSheet[];
+  /** Names of companion choices still open ("Primal Companion"); flagged on the sheet, never blocking. */
+  pendingCompanions: string[];
   /** Shared slots when several classes contribute to the multiclass caster level. */
   multiclassSpellcasting: { casterLevel: number; slots: number[] } | null;
   conditions: string[];
@@ -251,7 +256,10 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
   }
 
   const { rows: spellcasting, multiclass: multiclassSpellcasting } = buildSpellcasting(rc);
-  const companionNode = rc.nodes.find((n) => n.element.type === "Companion");
+  const companions = buildCompanions(rc, spellcasting);
+  const pendingCompanions = rc.selections
+    .filter((p) => p.rule.type === "Companion" && !p.rule.optional && p.chosen.some((c) => c === null))
+    .map((p) => p.rule.name);
 
   const warnings: string[] = rc.issues.filter((i) => i.severity !== "info").map((i) => i.message);
   for (const p of rc.selections) {
@@ -314,10 +322,28 @@ export function buildSheet(rc: ResolvedCharacter): CharacterSheet {
     features,
     spellcasting,
     multiclassSpellcasting,
-    companion: companionNode ? buildCompanionSheet(companionNode.element, s, rc.registry) : null,
+    companion: companions[0] ?? null,
+    companions,
+    pendingCompanions: unique(pendingCompanions),
     conditions: unique(conditions),
     warnings: unique(warnings),
   };
+}
+
+function buildCompanions(rc: ResolvedCharacter, spellcasting: SpellcastingRow[]): CompanionSheet[] {
+  const classLevels = new Map<string, number>();
+  for (const [id, lv] of rc.classLevels) {
+    const name = rc.registry.get(id)?.name.toLowerCase();
+    if (name) classLevels.set(name, lv);
+  }
+  return rc.companions.map((c) => {
+    // "Your spell attack modifier" is the one of the class the companion comes from.
+    const scope = c.node.scope;
+    const caster =
+      (scope.kind === "class" ? spellcasting.find((r) => r.name.toLowerCase() === scope.className.toLowerCase()) : undefined) ??
+      (spellcasting.length === 1 ? spellcasting[0] : undefined);
+    return buildCompanionSheet(c, rc.registry, { classLevels, spellAttack: caster?.attack, spellDc: caster?.dc });
+  });
 }
 
 function buildSpellcasting(rc: ResolvedCharacter): { rows: SpellcastingRow[]; multiclass: { casterLevel: number; slots: number[] } | null } {
