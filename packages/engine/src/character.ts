@@ -9,6 +9,8 @@ export interface InventoryItem {
   uid: string;
   /** Element id of the item (Item, Weapon, Armor or Magic Item). */
   id: string;
+  /** Base item a generic magic item ("Weapon, +1") is made from. */
+  base?: string;
   quantity: number;
   equipped?: EquipSlot;
   attuned?: boolean;

@@ -1,5 +1,5 @@
 import type { ContentRegistry, ElementDef } from "@daybreakbuilder/engine";
-import { getSetter, getSetters, needsAttunement } from "@daybreakbuilder/engine";
+import { armorKind, getSetter, getSetters, needsAttunement } from "@daybreakbuilder/engine";
 import type { ReactNode } from "react";
 import { Html } from "./Html";
 import { useUnits } from "../units";
@@ -22,8 +22,8 @@ function subtitle(el: ElementDef): string {
     const cat = el.supports.find((s) => /^(simple|martial) (melee|ranged)$/i.test(s));
     return cat ? `${cap(cat.toLowerCase())} weapon` : "Weapon";
   }
-  const armor = getSetter(el, "armor");
-  if (armor) return armor.toLowerCase() === "shield" ? "Shield" : `${cap(armor.toLowerCase())} armor`;
+  const armor = armorKind(el);
+  if (armor && el.type !== "Magic Item") return armor === "shield" ? "Shield" : `${cap(armor)} armor`;
   if (el.type === "Magic Item") {
     const kind = getSetter(el, "type") ?? "Magic item";
     const rarity = getSetter(el, "rarity");
@@ -77,7 +77,7 @@ export function ItemDetail({
   const price = cost(element);
   const stats: [string, string][] = [];
   if (dmg) stats.push(["Damage", dmg]);
-  if (ac) stats.push(["Armor Class", /^\d+$/.test(ac) && getSetter(element, "armor")?.toLowerCase() === "shield" ? `+${ac}` : ac]);
+  if (ac) stats.push(["Armor Class", /^\d+$/.test(ac) && armorKind(element) === "shield" ? `+${ac}` : ac]);
   if (getSetter(element, "versatile")) stats.push(["Versatile", getSetter(element, "versatile")!]);
   if (getSetter(element, "range")) stats.push(["Range", units.text(`${getSetter(element, "range")} ft.`)]);
   if (weight) stats.push(["Weight", units.text(weight)]);

@@ -1,4 +1,4 @@
-import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, type StatPart } from "@daybreakbuilder/engine";
+import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, itemName, type StatPart } from "@daybreakbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";
@@ -145,7 +145,7 @@ export function SheetPage() {
                 {character.state.inventory.map((i) => (
                   <li key={i.uid}>
                     {i.quantity > 1 ? `${i.quantity}× ` : ""}
-                    {i.name || content.registry.get(i.id)?.name || i.id}
+                    {itemName(content.registry, i)}
                     {i.equipped && <span className="muted small"> (equipped)</span>}
                     {i.attuned && <span className="muted small"> (attuned)</span>}
                   </li>

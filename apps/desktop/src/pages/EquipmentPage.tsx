@@ -4,11 +4,15 @@ import {
   coinWeight,
   consolidateCurrency,
   currencyValue,
+  equipItem,
+  equipSlots,
   formatPrice,
-  getSetter,
   itemCost,
   makeChange,
   needsAttunement,
+  resolveItem,
+  baseItemCandidates,
+  baseItemFilter,
   spendCurrency,
   type CharacterState,
   type Coin,
@@ -22,15 +26,6 @@ import { newId, useCharacter } from "../state/app";
 import { useUnits } from "../units";
 
 const ITEM_TYPES = ["Item", "Weapon", "Armor", "Magic Item"];
-
-function defaultSlots(el: ElementDef | undefined): EquipSlot[] {
-  if (!el) return ["worn"];
-  const armor = (getSetter(el, "armor") ?? "").toLowerCase();
-  if (armor === "shield") return ["offhand"];
-  if (el.type === "Armor" || armor) return ["armor"];
-  if (el.type === "Weapon") return ["main", "offhand"];
-  return ["worn", "main", "offhand"];
-}
 
 const SLOT_LABEL: Record<EquipSlot, string> = { armor: "Armor", main: "Main hand", offhand: "Off hand", worn: "Worn" };
 
@@ -184,7 +179,9 @@ export function EquipmentPage() {
           <tbody>
             {inv.map((item) => {
               const el = registry.get(item.id);
-              const slots = defaultSlots(el);
+              const resolved = resolveItem(registry, item);
+              const slots = equipSlots(resolved?.element);
+              const bases = el && baseItemFilter(el) ? baseItemCandidates(registry, el, character.state) : [];
               return (
                 <tr key={item.uid} className={el && el === focused ? "selected" : undefined} onMouseEnter={() => el && setFocused(el)}>
                   <td>
@@ -204,23 +201,43 @@ export function EquipmentPage() {
                   </td>
                   <td className="grow">
                     <button className="link" onClick={() => el && setFocused(el)}>
-                      {item.name || el?.name || item.id}
+                      {item.name || resolved?.element.name || item.id}
                     </button>
                     {!el && <span className="error-text small"> (not loaded)</span>}
+                    {el && baseItemFilter(el) && (
+                      <div className="base-item">
+                        {resolved?.needsBase && <span className="dot" title="Choice needed" />}
+                        <select
+                          className="small"
+                          value={item.base ?? ""}
+                          aria-label={`Base ${baseItemFilter(el)!.type.toLowerCase()}`}
+                          onChange={(e) =>
+                            update((d) => {
+                              const it = d.inventory.find((x) => x.uid === item.uid);
+                              if (!it) return;
+                              it.base = e.target.value || undefined;
+                              // A shield can't stay in the armor slot, nor a greatsword beside a shield.
+                              if (it.equipped && !equipSlots(resolveItem(registry, it)?.element).includes(it.equipped)) it.equipped = undefined;
+                            })
+                          }
+                        >
+                          <option value="">Choose {baseItemFilter(el)!.type === "Weapon" ? "weapon" : "armor"}…</option>
+                          {bases.map((b, i) => (
+                            <option key={b.id} value={b.id}>
+                              {b.name}
+                              {bases[i - 1]?.name === b.name || bases[i + 1]?.name === b.name ? ` (${b.source})` : ""}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                   </td>
                   <td>
                     <select
                       value={item.equipped ?? ""}
                       aria-label="Equip slot"
                       onChange={(e) =>
-                        update((d) => {
-                          const slot = (e.target.value || undefined) as EquipSlot | undefined;
-                          for (const other of d.inventory) {
-                            if (slot && slot !== "worn" && other.equipped === slot) other.equipped = undefined;
-                          }
-                          const it = d.inventory.find((x) => x.uid === item.uid);
-                          if (it) it.equipped = slot;
-                        })
+                        update((d) => equipItem(registry, d.inventory, item.uid, (e.target.value || undefined) as EquipSlot | undefined))
                       }
                     >
                       <option value="">Not equipped</option>

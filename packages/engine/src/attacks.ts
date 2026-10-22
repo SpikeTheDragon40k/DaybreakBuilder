@@ -1,4 +1,5 @@
 import { getSetter, type Ability, type ElementDef } from "./model.js";
+import { itemElement, resolveItem } from "./items.js";
 import type { ResolvedCharacter } from "./resolver.js";
 import type { StatPart } from "./stats.js";
 import { formatDistance, formatNumber, METERS_PER_FOOT, type UnitSystem } from "./units.js";
@@ -85,17 +86,17 @@ export function buildAttacks(rc: ResolvedCharacter): AttackRow[] {
   const dueling = hasFeature(rc, DUELING);
   const twoWeapon = hasFeature(rc, TWO_WEAPON);
   const offhandWeapon = rc.state.inventory.some((i) => {
-    const el = i.equipped === "offhand" ? rc.registry.get(i.id) : undefined;
+    const el = i.equipped === "offhand" ? itemElement(rc.registry, i) : undefined;
     return !!el && isWeapon(el);
   });
 
   const rows: AttackRow[] = [];
   const items = rc.state.inventory
-    .map((item, index) => ({ item, index, el: rc.registry.get(item.id) }))
-    .filter((x): x is typeof x & { el: ElementDef } => !!x.el && isWeapon(x.el))
+    .map((item, index) => ({ item, index, ...resolveItem(rc.registry, item) }))
+    .filter((x): x is typeof x & { element: ElementDef } => !!x.element && isWeapon(x.element))
     .sort((a, b) => rank(a.item.equipped) - rank(b.item.equipped) || a.index - b.index);
 
-  for (const { item, el } of items) {
+  for (const { item, element: el, base } of items) {
     const properties = weaponProperties(el);
     const ranged = isRanged(el);
     const finesse = properties.includes("Finesse");
@@ -104,7 +105,8 @@ export function buildAttacks(rc: ResolvedCharacter): AttackRow[] {
     const proficient = !profId || (rc.ids.get(profId) ?? 0) > 0;
     const enhancement = Number(getSetter(el, "enhancement") ?? 0) || 0;
     const kind = ranged ? "ranged" : "melee";
-    const name = el.name.toLowerCase();
+    // Stats name the weapon ("longsword:attack"), so a +1 Longsword still counts as a longsword.
+    const name = (base ?? el).name.toLowerCase();
 
     const attackBreakdown: StatPart[] = [{ source: ability.charAt(0).toUpperCase() + ability.slice(1), value: mod(ability) }];
     if (proficient) attackBreakdown.push({ source: "Proficiency", value: prof });

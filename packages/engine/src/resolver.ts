@@ -7,6 +7,7 @@ import {
   type EquipSlot,
   type InventoryItem,
 } from "./character.js";
+import { armorKind, isWeaponItem, itemElement } from "./items.js";
 import { hasRevisedContent, hiddenByRules, supersededIn2024 } from "./editions.js";
 import { evaluateString, isIdRange, matchesSupports, parseBracket } from "./expressions.js";
 import {
@@ -372,7 +373,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
   // Roots: equipped or attuned inventory items.
   for (const item of state.inventory) {
     if (!item.equipped && !item.attuned) continue;
-    const el = registry.get(item.id);
+    const el = itemElement(registry, item);
     if (!el) {
       issues.push({ severity: "warning", message: `Inventory item ${item.id} is not loaded.` });
       continue;
@@ -583,9 +584,8 @@ function seedStats(registry: ContentRegistry, state: CharacterState, perClass: M
 function equippedEvaluator(registry: ContentRegistry, inventory: InventoryItem[], ids: Map<string, number>) {
   const inSlot = (slot: EquipSlot) => {
     const it = inventory.find((i) => i.equipped === slot);
-    return it ? registry.get(it.id) : undefined;
+    return it ? itemElement(registry, it) : undefined;
   };
-  const armorKind = (el: ElementDef | undefined) => (el ? (getSetter(el, "armor") ?? "").toLowerCase() : "");
   const has = (id: string) => (ids.get(id) ?? 0) > 0;
   const matchesItem = (el: ElementDef, v: string) => el.name.toLowerCase() === v || el.id.toLowerCase() === v;
 
@@ -620,7 +620,7 @@ function equippedEvaluator(registry: ContentRegistry, inventory: InventoryItem[]
         if (v === "" || v === "any") return !!el;
         if (v === "none") return !el;
         if (!el) return false;
-        if (v === "weapon") return el.type === "Weapon" || (getSetter(el, "category") ?? "").toLowerCase().startsWith("weapon");
+        if (v === "weapon") return isWeaponItem(el);
         return matchesItem(el, v);
       }
       case "attunement":
