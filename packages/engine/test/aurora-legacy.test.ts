@@ -37,6 +37,7 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
 
   function hillDwarfFighter(level: number): CharacterState {
     const s = newCharacter();
+    s.rules = "2014";
     s.abilities = { strength: 15, dexterity: 13, constitution: 14, intelligence: 8, wisdom: 12, charisma: 10 };
     s.levels = Array(level).fill(FIGHTER);
     s.selections[selectionKey("ID_LEVEL_1", "Race")] = ["ID_SRD_RACE_DWARF"];
@@ -123,6 +124,7 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     const acolyte = "ID_WOTC_PHB24_BACKGROUND_ACOLYTE";
     const combo = "ID_INTERNAL_ABILITY_SCORE_IMPROVEMENT_COMBINATION_INT_WIS_CHA";
     const state = hillDwarfFighter(1);
+    state.rules = "2024";
     state.selections[selectionKey("ID_LEVEL_1", "Background")] = [acolyte];
     state.selections[selectionKey(`ID_LEVEL_1/${acolyte}/${combo}`, "Ability Score Improvement Option")] = [`${combo}_1`];
     let rc = resolveCharacter(registry, state);
@@ -196,6 +198,21 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     expect(row.preparedCount).toBe(count);
     expect(row.spells.filter((s) => s.prepared && s.level > 0).length).toBeGreaterThanOrEqual(count);
     expect(sheet.warnings.some((w) => w.startsWith("Prepared Spells"))).toBe(false);
+  });
+
+  it("2024 rules: a species never offers its own ability scores, even before a background is chosen", () => {
+    const state = newCharacter();
+    state.levels = ["ID_WOTC_PHB24_CLASS_FIGHTER"];
+    const speciesAsi = () =>
+      resolveCharacter(registry, state).selections.filter((p) => p.rule.type === "Ability Score Improvement").map((p) => p.rule.name);
+    for (const race of ["ID_WOTC_PHB24_RACE_HALFLING", "ID_WOTC_MOTM_RACE_GOBLIN"]) {
+      state.selections[selectionKey("ID_LEVEL_1", "Race")] = [race];
+      state.rules = "2024";
+      expect(speciesAsi()).toEqual([]);
+      // 2014 rules keep the flexible increase on a Monsters of the Multiverse race until a 2024 background takes over.
+      state.rules = "2014";
+      if (race === "ID_WOTC_MOTM_RACE_GOBLIN") expect(speciesAsi()).toEqual(["Ability Score Improvement Option (Goblin)"]);
+    }
   });
 
   it("2024 rules: a 2014 race chosen before keeps its subraces", () => {

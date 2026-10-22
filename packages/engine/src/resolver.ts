@@ -175,7 +175,10 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
   const revisedRules = state.rules === "2024" && hasRevisedContent(registry);
   const rulesOf = (el: ElementDef) => (revisedRules && el.type === "Background" ? withLegacyBackgroundRules(registry, el) : el.rules);
 
+  // Every background gives the ability scores under the 2024 rules (see withLegacyBackgroundRules),
+  // so a species' fallback increase never applies, not even before a background is chosen.
   const has = (id: string, exclude?: string[]): boolean => {
+    if (revisedRules && id === BACKGROUND_ASI_MARKER) return true;
     const count = ctx.prevIds.get(id) ?? 0;
     if (count === 0) return false;
     if (!exclude) return true;
@@ -389,7 +392,7 @@ function buildPass(registry: ContentRegistry, state: CharacterState, ctx: PassCo
   for (const n of nodes) ids.set(n.element.id, (ids.get(n.element.id) ?? 0) + 1);
 
   // Stats are evaluated against this pass's elements.
-  const finalHas = (id: string) => (ids.get(id) ?? 0) > 0;
+  const finalHas = (id: string) => (revisedRules && id === BACKGROUND_ASI_MARKER) || (ids.get(id) ?? 0) > 0;
   const equipped = equippedEvaluator(registry, state.inventory, ids);
   const contributions: StatContribution[] = [];
   const owners: ResolvedNode[] = [];
