@@ -87,18 +87,27 @@ Characters autosave locally. Use *Export* to get a portable `.json` file.
 ## 2024-only community index
 
 `content/indexes/aurora-legacy-2024.index` is the [AuroraLegacy](https://github.com/AuroraLegacy/elements) index reduced
-to the 2024 rules: the edition-neutral `internal.xml` and `ALE.xml` plus every book written for the 2024 rules (D&D 5.5e).
-Today AuroraLegacy has three: the 2024 Player's Handbook, the 2024 Dungeon Master's Guide and the 2025 Monster Manual.
-The index contains links only; the files stay hosted by AuroraLegacy. The app ships a copy, so it installs even when this
-repository isn't public.
+to the 2024 rules (D&D 5.5e):
 
-The generator knows the 2024 books by title (Astarion's Book of Hungers, Arcana Unleashed, Dragon Delves, Eberron: Forge
-of the Artificer, Forgotten Realms: Heroes of Faerûn and Adventures in Faerûn, Lorwyn: First Light, Netheril's Fall, …) and
-reports which of them AuroraLegacy doesn't have yet. When it adds some, regenerate the index:
+* the edition-neutral `internal.xml` and `ALE.xml`;
+* the released 2024 books: the 2024 Player's Handbook, the 2024 Dungeon Master's Guide and the 2025 Monster Manual;
+* 2024 books still waiting in open AuroraLegacy pull requests (Astarion's Book of Hungers, Netheril's Fall, Heroes of
+  Faerûn, Adventures in Faerûn, Lorwyn: First Light, Eberron: Forge of the Artificer, Arcana Unleashed and Deadfall,
+  Ravenloft: The Horrors Within), linked at each pull request's latest commit, together with the changes those pull
+  requests make to the shared files. They haven't been reviewed by the AuroraLegacy team yet.
+
+The index contains links only; the files stay hosted by AuroraLegacy. The app ships a copy, so it installs even when this
+repository isn't public. Files load in the order the index lists them, so a pull request's version of a shared element
+replaces the released one.
+
+`scripts/generate-2024-index.mjs` rebuilds it with git (no GitHub API needed). It recognizes 2024 books by their source
+(5.5e, release date) or title, takes the pull requests listed in `PULL_REQUESTS` (dropping them once merged), and
+reports 2024 books AuroraLegacy doesn't have yet. Rerun it when AuroraLegacy adds books, merges a pull request, or a pull
+request gets new commits:
 
 ```sh
-node scripts/generate-2024-index.mjs                 # from GitHub
-node scripts/generate-2024-index.mjs --local <dir>   # from a local checkout of AuroraLegacy/elements
+node scripts/generate-2024-index.mjs                 # clones AuroraLegacy into a temporary folder
+node scripts/generate-2024-index.mjs --local <dir>   # uses an existing git checkout of AuroraLegacy/elements
 ```
 
 ## Writing and converting content
