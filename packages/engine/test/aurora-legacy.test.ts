@@ -215,6 +215,21 @@ describe.skipIf(!hasAuroraLegacy)("AuroraLegacy content", () => {
     }
   });
 
+  it("2024 rules: no species raises ability scores while no background is chosen", () => {
+    const offenders: string[] = [];
+    for (const race of registry.ofType("Race")) {
+      const state = newCharacter();
+      state.rules = "2024";
+      state.levels = ["ID_WOTC_PHB24_CLASS_FIGHTER"];
+      state.selections[selectionKey("ID_LEVEL_1", "Race")] = [race.id];
+      const rc = resolveCharacter(registry, state);
+      const choices = rc.selections.filter((p) => p.rule.type === "Ability Score Improvement");
+      const raised = buildSheet(rc).abilities.filter((a) => a.score !== state.abilities[a.ability]);
+      if (choices.length || raised.length) offenders.push(`${race.name} (${race.source})`);
+    }
+    expect(offenders).toEqual([]);
+  });
+
   it("2024 rules: a 2014 race chosen before keeps its subraces", () => {
     const state = newCharacter();
     state.levels = ["ID_WOTC_PHB24_CLASS_FIGHTER"];
