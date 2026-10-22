@@ -1,30 +1,10 @@
-/** Indexes the app ships alongside its content. */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+/** Content indexes: the 2024 rules index and how indexes are downloaded. */
 import { describe, expect, it } from "vitest";
-import { AURORA_LEGACY_2024_INDEX, downloadIndex, parseIndexFile } from "../src/index.js";
-import { repoRoot } from "./helpers.js";
+import { AURORA_LEGACY_2024_INDEX, downloadIndex } from "../src/index.js";
 
-describe("aurora-legacy-2024.index", () => {
-  const path = join(repoRoot, "content", "indexes", "aurora-legacy-2024.index");
-  const index = parseIndexFile(readFileSync(path, "utf8"));
-
-  it("is published where the app expects it", () => {
-    expect(AURORA_LEGACY_2024_INDEX.endsWith("/content/indexes/aurora-legacy-2024.index")).toBe(true);
-    expect(index.info.updateUrl).toBe(AURORA_LEGACY_2024_INDEX);
-  });
-
-  it("only links to AuroraLegacy files, released ones on master and pull requests at a fixed commit", () => {
-    for (const f of index.files) {
-      expect(f.url).toMatch(/^https:\/\/raw\.githubusercontent\.com\/AuroraLegacy\/elements\/(master|[0-9a-f]{40})\//);
-    }
-  });
-
-  it("lists the shared files and only the 2024 books", () => {
-    const names = index.files.map((f) => f.name);
-    expect(names).toEqual(expect.arrayContaining(["internal.xml", "players-handbook-2024.index", "dungeon-masters-guide-2024.index"]));
-    expect(names).not.toContain("players-handbook.index");
-    expect(names).not.toContain("supplements.index");
+describe("2024 rules index", () => {
+  it("is the dnd-2024 branch of the project's AuroraLegacy fork", () => {
+    expect(AURORA_LEGACY_2024_INDEX).toBe("https://raw.githubusercontent.com/SpikeTheDragon40k/elements/dnd-2024/AuroraLegacy.index");
   });
 });
 

@@ -62,7 +62,7 @@ npm test
 
 ## Using the app
 
-1. **Content** tab → *Download* (prefilled with the AuroraLegacy index limited to the 2024 rules; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
+1. **Content** tab → *Download* (prefilled with the 2024-rules index; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
    you can also drop XML files into `Documents/DaybreakBuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
@@ -86,29 +86,20 @@ Characters autosave locally. Use *Export* to get a portable `.json` file.
 
 ## 2024-only community index
 
-`content/indexes/aurora-legacy-2024.index` is the [AuroraLegacy](https://github.com/AuroraLegacy/elements) index reduced
-to the 2024 rules (D&D 5.5e):
+The Content page offers two community indexes. *Aurora Legacy: 2024 rules* (the default) is the `dnd-2024` branch of
+the project's fork, [SpikeTheDragon40k/elements](https://github.com/SpikeTheDragon40k/elements/tree/dnd-2024):
 
-* the edition-neutral `internal.xml` and `ALE.xml`;
-* the released 2024 books: the 2024 Player's Handbook, the 2024 Dungeon Master's Guide and the 2025 Monster Manual;
-* 2024 books still waiting in open AuroraLegacy pull requests (Astarion's Book of Hungers, Netheril's Fall, Heroes of
-  Faerûn, Adventures in Faerûn, Lorwyn: First Light, Eberron: Forge of the Artificer, Arcana Unleashed and Deadfall,
-  Ravenloft: The Horrors Within), linked at each pull request's latest commit, together with the changes those pull
-  requests make to the shared files. They haven't been reviewed by the AuroraLegacy team yet.
-
-The index contains links only; the files stay hosted by AuroraLegacy. The app ships a copy, so it installs even when this
-repository isn't public. Files load in the order the index lists them, so a pull request's version of a shared element
-replaces the released one.
-
-`scripts/generate-2024-index.mjs` rebuilds it with git (no GitHub API needed). It recognizes 2024 books by their source
-(5.5e, release date) or title, takes the pull requests listed in `PULL_REQUESTS` (dropping them once merged), and
-reports 2024 books AuroraLegacy doesn't have yet. Rerun it when AuroraLegacy adds books, merges a pull request, or a pull
-request gets new commits:
-
-```sh
-node scripts/generate-2024-index.mjs                 # clones AuroraLegacy into a temporary folder
-node scripts/generate-2024-index.mjs --local <dir>   # uses an existing git checkout of AuroraLegacy/elements
 ```
+https://raw.githubusercontent.com/SpikeTheDragon40k/elements/dnd-2024/AuroraLegacy.index
+```
+
+It has only content for the 2024 rules (D&D 5.5e), so nothing written for the 2014 rules can end up on a 5.5e
+character: the shared `internal.xml` and `ALE.xml`, the 2024 Player's Handbook, Dungeon Master's Guide and Monster Manual,
+and the 2024 books still waiting in AuroraLegacy pull requests (Astarion's Book of Hungers, Netheril's Fall, Heroes of
+Faerûn, Adventures in Faerûn, Lorwyn: First Light, Eberron: Forge of the Artificer, Arcana Unleashed and Deadfall,
+Ravenloft: The Horrors Within), with their broken references fixed. The fork's `master` stays an unmodified copy of
+AuroraLegacy; to pick up upstream changes, merge them into `dnd-2024`. *Aurora Legacy: everything* is the upstream index
+with every book, 2014 and 2024.
 
 ## Writing and converting content
 
