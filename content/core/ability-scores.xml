@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Ability Score Improvements</name>
 		<description>Single-point ability score increases used by Ability Score Improvement features.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="Strength" type="Ability Score Improvement" source="Core" id="ID_INTERNAL_ASI_STRENGTH">

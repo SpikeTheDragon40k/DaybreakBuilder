@@ -14,7 +14,7 @@ import {
   type Coin,
   type ElementDef,
   type EquipSlot,
-} from "@dndbuilder/engine";
+} from "@daybreakbuilder/engine";
 import { useMemo, useState } from "react";
 import { ItemDetail } from "../components/ItemDetail";
 import { StartingWealthCard } from "../components/StartingWealthCard";

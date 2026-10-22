@@ -1,4 +1,4 @@
-import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Currency } from "@dndbuilder/engine";
+import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Currency } from "@daybreakbuilder/engine";
 
 /** A group of saved characters a DM runs together. Members are character ids. */
 export interface Party {

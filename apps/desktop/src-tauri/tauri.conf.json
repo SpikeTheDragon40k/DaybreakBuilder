@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "dndbuilder",
-  "version": "0.9.2",
+  "productName": "DaybreakBuilder",
+  "version": "1.0.0",
   "identifier": "io.github.dndbuilder",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "dndbuilder",
+        "title": "DaybreakBuilder",
         "create": false,
         "width": 1400,
         "height": 900,
@@ -30,6 +30,32 @@
     "category": "RolePlayingGame",
     "shortDescription": "D&D 5e character builder",
     "longDescription": "Open-source, cross-platform D&D 5e character builder that loads Aurora Builder content files.",
+    "windows": {
+      "wix": {
+        "upgradeCode": "0aad4583-4b77-553d-bdb5-f9072fdf769b"
+      },
+      "nsis": {
+        "installerHooks": "windows/installer-hooks.nsh"
+      }
+    },
+    "linux": {
+      "deb": {
+        "conflicts": [
+          "dndbuilder"
+        ],
+        "replaces": [
+          "dndbuilder"
+        ]
+      },
+      "rpm": {
+        "conflicts": [
+          "dndbuilder"
+        ],
+        "obsoletes": [
+          "dndbuilder"
+        ]
+      }
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

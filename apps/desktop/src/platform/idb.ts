@@ -1,5 +1,6 @@
 /** Tiny promise wrapper over IndexedDB (available in browsers and in the Tauri webview). */
 
+// Kept from before the rename to DaybreakBuilder so existing saved data stays readable.
 const DB_NAME = "dndbuilder";
 const DB_VERSION = 2;
 export const STORES = ["packs", "packFiles", "characters", "parties"] as const;

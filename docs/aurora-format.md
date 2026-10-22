@@ -1,7 +1,7 @@
 # Aurora content format: behaviour reference
 
 This document describes how Aurora Builder content files behave, as implemented by
-`@dndbuilder/engine`. It was written by observing the file format, the
+`@daybreakbuilder/engine`. It was written by observing the file format, the
 community content in [AuroraLegacy/elements](https://github.com/AuroraLegacy/elements)
 and the original application's behaviour. It is the reference for anyone changing
 the engine. If you find content that behaves differently in Aurora, add a test and
@@ -229,7 +229,7 @@ character so the gold is granted once and can be changed or removed.
 
 ## Character files
 
-dndbuilder saves characters as JSON (`CharacterState` in `character.ts`). The state
+DaybreakBuilder saves characters as JSON (`CharacterState` in `character.ts`). The state
 stores only decisions (levels, choices keyed by path, ability scores, inventory). The
 engine recomputes everything else, so characters update when content changes.
 

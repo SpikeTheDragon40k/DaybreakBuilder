@@ -1,4 +1,4 @@
-import { ContentRegistry, downloadIndex, type RegistryWarning } from "@dndbuilder/engine";
+import { ContentRegistry, downloadIndex, type RegistryWarning } from "@daybreakbuilder/engine";
 import { getPlatform, packs, settings, type PackMeta, type StoredFile } from "../platform";
 
 // Content shipped with the app: system elements (and the SRD pack, when present).

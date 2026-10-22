@@ -4,13 +4,19 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch or PR cancels the run still in progress.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -20,7 +26,7 @@ jobs:
         run: git clone --depth 1 https://github.com/AuroraLegacy/elements.git fixtures/external/aurora-legacy || true
       - run: npm run typecheck
       - run: npm test
-      - run: npm run build -w @dndbuilder/desktop
+      - run: npm run build -w @daybreakbuilder/desktop
 
   desktop:
     needs: test
@@ -32,8 +38,8 @@ jobs:
           - os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -50,9 +56,14 @@ jobs:
       - name: Build desktop app
         working-directory: apps/desktop
         run: npx tauri build
-      - uses: actions/upload-artifact@v4
+      # Installers count against Actions storage, so PRs only check that the build works.
+      # Pushes to main and manual runs keep them for a few days; releases live on
+      # GitHub Releases.
+      - uses: actions/upload-artifact@v6
+        if: github.event_name != 'pull_request'
         with:
-          name: dndbuilder-${{ runner.os }}
+          name: DaybreakBuilder-${{ runner.os }}
+          retention-days: 3
           path: |
             apps/desktop/src-tauri/target/release/bundle/deb/*.deb
             apps/desktop/src-tauri/target/release/bundle/rpm/*.rpm
@@ -63,16 +74,17 @@ jobs:
       # The bare release binary embeds the UI, so it runs without installing anything
       # (Windows 10/11 ship the WebView2 runtime). Its name turns on portable mode.
       - name: Prepare portable Windows exe
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && github.event_name != 'pull_request'
         shell: bash
         run: |
           version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
           mkdir -p portable
-          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "portable/dndbuilder_${version}_x64_portable.exe"
+          cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "portable/DaybreakBuilder_${version}_x64_portable.exe"
           ls -l portable
-      - uses: actions/upload-artifact@v4
-        if: runner.os == 'Windows'
+      - uses: actions/upload-artifact@v6
+        if: runner.os == 'Windows' && github.event_name != 'pull_request'
         with:
-          name: dndbuilder-Windows-portable
+          name: DaybreakBuilder-Windows-portable
+          retention-days: 3
           path: portable/*.exe
           if-no-files-found: error

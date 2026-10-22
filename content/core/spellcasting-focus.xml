@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Spellcasting Focus</name>
 		<description>Spellcasting focus proficiency groups.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="Arcane Focus" type="Proficiency" source="Core" id="ID_INTERNAL_PROFICIENCY_SPELLFOCUS_GROUP_ARCANE_FOCUS">

@@ -35,8 +35,8 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -54,10 +54,10 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
       release_id: ${{ steps.release.outputs.id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -90,7 +90,7 @@ jobs:
           if ! git diff --quiet; then
             git commit -am "Release $TAG"
           fi
-          git tag -a "$TAG" -m "dndbuilder $TAG"
+          git tag -a "$TAG" -m "DaybreakBuilder $TAG"
           git push origin "HEAD:$GITHUB_REF_NAME" "$TAG"
 
       - name: Check that every version file matches the tag
@@ -108,7 +108,7 @@ jobs:
           case "$TAG" in *-*) prerelease=true ;; esac
           id=$(gh api "repos/$GITHUB_REPOSITORY/releases" \
             -f tag_name="$TAG" \
-            -f name="dndbuilder $TAG" \
+            -f name="DaybreakBuilder $TAG" \
             -F draft=true \
             -F prerelease="$prerelease" \
             -F generate_release_notes=true \
@@ -128,10 +128,10 @@ jobs:
             os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ needs.prepare.outputs.tag }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -160,8 +160,8 @@ jobs:
           RELEASE_ID: ${{ needs.prepare.outputs.release_id }}
           TAG: ${{ needs.prepare.outputs.tag }}
         run: |
-          name="dndbuilder_${TAG#v}_x64_portable.exe"
-          cp apps/desktop/src-tauri/target/release/dndbuilder.exe "$name"
+          name="DaybreakBuilder_${TAG#v}_x64_portable.exe"
+          cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "$name"
           gh api -X POST -H "Content-Type: application/octet-stream" \
             "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=$name" \
             --input "$name" --jq .browser_download_url

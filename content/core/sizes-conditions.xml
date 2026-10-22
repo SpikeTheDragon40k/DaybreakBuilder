@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Sizes and Conditions</name>
 		<description>Creature sizes, damage types, resistances, immunities and vulnerabilities.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="Tiny" type="Size" source="Core" id="ID_SIZE_TINY">

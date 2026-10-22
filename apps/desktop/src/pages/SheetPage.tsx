@@ -1,4 +1,4 @@
-import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, type StatPart } from "@dndbuilder/engine";
+import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, type StatPart } from "@daybreakbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";

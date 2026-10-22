@@ -10,8 +10,8 @@ export const LICENSE =
 export const FILE_INFO = (title, description) => ({
   title,
   description,
-  author: "dndbuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)",
-  authorUrl: "https://github.com/SpikeTheDragon40k/dndbuilderclaude",
+  author: "DaybreakBuilder contributors (SRD 5.1 content by Wizards of the Coast, CC-BY-4.0)",
+  authorUrl: "https://github.com/SpikeTheDragon40k/DaybreakBuilder",
   license: LICENSE,
 });
 

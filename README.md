@@ -1,10 +1,10 @@
-# dndbuilder
+# DaybreakBuilder
 
 An open-source, cross-platform (Linux and Windows) character builder for D&D 5th edition, compatible with
 **[Aurora Builder](https://aurorabuilder.com/)** content files.
 
 Aurora was a well-loved Windows-only builder whose development stopped around 2020. Its data format lives on in the
-community-maintained [AuroraLegacy/elements](https://github.com/AuroraLegacy/elements) repository. dndbuilder is a
+community-maintained [AuroraLegacy/elements](https://github.com/AuroraLegacy/elements) repository. DaybreakBuilder is a
 from-scratch reimplementation of the rules engine, with a modern UI that you can keep developing:
 
 * loads Aurora `.xml` element files and `.index` content indexes, including updates from the AuroraLegacy repository;
@@ -63,7 +63,7 @@ npm test
 ## Using the app
 
 1. **Content** tab → *Download* (prefilled with the AuroraLegacy index limited to the 2024 rules; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
-   you can also drop XML files into `Documents/dndbuilder/custom` (like Aurora's custom folder) and press *Rescan*.
+   you can also drop XML files into `Documents/DaybreakBuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
 3. **Build**: choose class and levels, ability scores, and work through the choices. Red dots mark open choices.
    Click the portrait square next to the name to pick a portrait from the built-in gallery or from an image file.
@@ -115,7 +115,7 @@ node scripts/generate-2024-index.mjs --local <dir>   # uses an existing git chec
 Check your own XML (homebrew, or books you own converted for personal use) before loading it:
 
 ```sh
-npm run validate-content -- ~/Documents/dndbuilder/custom/my-homebrew
+npm run validate-content -- ~/Documents/DaybreakBuilder/custom/my-homebrew
 npm run validate-content -- my-files/ --base other-pack/   # content that builds on another pack
 ```
 
@@ -133,15 +133,18 @@ Converted books are for your own use: don't commit them or share them.
 
 ### Portable Windows version
 
-Every release also ships `dndbuilder_X.Y.Z_x64_portable.exe`: a single file that runs without installing anything
+Every release also ships `DaybreakBuilder_X.Y.Z_x64_portable.exe`: a single file that runs without installing anything
 (it needs the WebView2 runtime, which Windows 10 and 11 already include). Put it in any folder you can write to, for
-example on a USB stick, and run it. It keeps all of its data in a `dndbuilder-data` folder next to the exe: saved
+example on a USB stick, and run it. It keeps all of its data in a `DaybreakBuilder-data` folder next to the exe: saved
 characters and settings in `webview`, your own XML content in `custom`. Move or copy the exe together with that
 folder to take everything with you.
 
+The app used to be called dndbuilder. Updating keeps your saved characters and settings, and an existing
+`dndbuilder-data` folder (or `Documents/dndbuilder`) is renamed to the new name the first time the app runs.
+
 Portable mode is on whenever the exe's file name contains `portable`, or a file called `portable` or `portable.txt`
 sits next to it. If the folder isn't writable the app falls back to the normal locations (your Documents and AppData
-folders), like the installed version. Pull-request builds publish the same exe as the `dndbuilder-Windows-portable`
+folders), like the installed version. Pull-request builds publish the same exe as the `DaybreakBuilder-Windows-portable`
 CI artifact.
 
 ## Releasing

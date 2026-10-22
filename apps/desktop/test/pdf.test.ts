@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey, selectionOptions } from "@dndbuilder/engine";
+import { buildSheet, ContentRegistry, newCharacter, resolveCharacter, selectionKey, selectionOptions } from "@daybreakbuilder/engine";
 import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
 import { describe, expect, it } from "vitest";
-import { characterSheetPdf } from "../src/pdf/characterSheetPdf";
+import { characterSheetPdf, htmlToRuns } from "../src/pdf/characterSheetPdf";
 
 const root = join(import.meta.dirname, "..", "..", "..", "content");
 
@@ -102,5 +102,25 @@ describe("character sheet PDF", () => {
       writeFileSync(join(process.env.PDF_OUT, "imperial.pdf"), imperial);
       writeFileSync(join(process.env.PDF_OUT, "metric.pdf"), metric);
     }
+  });
+});
+
+describe("htmlToRuns", () => {
+  it("drops XML indentation and keeps run-in headings bold", () => {
+    const html = `
+			<p>You manifest a minor wonder.</p>
+			<p class="indent"><b><i>Altered Eyes.</i></b> You alter the appearance of your eyes.</p>
+			<p><strong>Cantrip Upgrade.</strong> The beam&nbsp;count increases.</p>`;
+    expect(htmlToRuns(html)).toEqual([
+      [{ text: "You manifest a minor wonder.", bold: false, italic: false }],
+      [
+        { text: "Altered Eyes.", bold: true, italic: true },
+        { text: " You alter the appearance of your eyes.", bold: false, italic: false },
+      ],
+      [
+        { text: "Cantrip Upgrade.", bold: true, italic: false },
+        { text: " The beam count increases.", bold: false, italic: false },
+      ],
+    ]);
   });
 });

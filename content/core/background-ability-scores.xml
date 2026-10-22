@@ -4,7 +4,7 @@
 	<info>
 		<name>Core: Background Ability Scores</name>
 		<description>Ability score increases for 2024 backgrounds: the +2/+1 or +1/+1/+1 choice over three abilities.</description>
-		<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+		<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 	</info>
 
 	<element name="Background Ability Score Improvement" type="Grants" source="Internal" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI">
@@ -688,6 +688,23 @@
 			<stat name="intelligence" value="1" alt="Ability Score Increase (Background)" />
 			<stat name="wisdom" value="1" alt="Ability Score Increase (Background)" />
 			<stat name="charisma" value="1" alt="Ability Score Increase (Background)" />
+		</rules>
+	</element>
+
+	<element name="Ability Scores (2024 rules)" type="Grants" source="Internal" id="ID_INTERNAL_LEGACY_BACKGROUND_ABILITY_SCORES">
+		<description><p>Under the 2024 rules, a background without its own ability scores lets you increase one ability score by 2 and another by 1, or three scores by 1. This replaces your species' ability score increases.</p></description>
+		<sheet display="false" />
+		<rules>
+			<grant type="Grants" id="ID_INTERNAL_GRANTS_BACKGROUND_ASI" />
+			<select type="Ability Score Improvement" name="Ability Scores (2024 rules)" supports="Custom Background Ability Score Combination" />
+		</rules>
+	</element>
+
+	<element name="Origin Feat (2024 rules)" type="Grants" source="Internal" id="ID_INTERNAL_LEGACY_BACKGROUND_ORIGIN_FEAT">
+		<description><p>Under the 2024 rules, a background that doesn't give a feat lets you choose an Origin feat.</p></description>
+		<sheet display="false" />
+		<rules>
+			<select type="Feat" name="Origin Feat (2024 rules)" supports="Origin" />
 		</rules>
 	</element>
 </elements>

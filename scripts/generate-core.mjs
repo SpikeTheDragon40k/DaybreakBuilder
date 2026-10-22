@@ -53,7 +53,7 @@ function file(name, title, description, elements) {
 \t<info>
 \t\t<name>${esc(title)}</name>
 \t\t<description>${esc(description)}</description>
-\t\t<author url="https://github.com/SpikeTheDragon40k/dndbuilderclaude">dndbuilder contributors</author>
+\t\t<author url="https://github.com/SpikeTheDragon40k/DaybreakBuilder">DaybreakBuilder contributors</author>
 \t</info>
 
 ${elements.join("\n\n")}
@@ -411,6 +411,34 @@ for (let i = 0; i < ABILITIES.length; i++) {
     }
   }
 }
+// Older backgrounds under the 2024 rules: a background with no ability scores of its own
+// lets the player raise three abilities of their choice (+2/+1 or +1/+1/+1), and one
+// without a feat gives an Origin feat of their choice. The resolver attaches these to
+// such a background on a 2024-rules character (see LEGACY_BACKGROUND_* in resolver.ts).
+backgroundAsi.push(
+  element({
+    name: "Ability Scores (2024 rules)",
+    type: "Grants",
+    id: "ID_INTERNAL_LEGACY_BACKGROUND_ABILITY_SCORES",
+    source: "Internal",
+    description:
+      "<p>Under the 2024 rules, a background without its own ability scores lets you increase one ability score by 2 and another by 1, or three scores by 1. This replaces your species' ability score increases.</p>",
+    sheet: false,
+    rules: [
+      grant({ type: "Grants", id: BACKGROUND_ASI_MARKER }),
+      select({ type: "Ability Score Improvement", name: "Ability Scores (2024 rules)", supports: "Custom Background Ability Score Combination" }),
+    ],
+  }),
+  element({
+    name: "Origin Feat (2024 rules)",
+    type: "Grants",
+    id: "ID_INTERNAL_LEGACY_BACKGROUND_ORIGIN_FEAT",
+    source: "Internal",
+    description: "<p>Under the 2024 rules, a background that doesn't give a feat lets you choose an Origin feat.</p>",
+    sheet: false,
+    rules: [select({ type: "Feat", name: "Origin Feat (2024 rules)", supports: "Origin" })],
+  }),
+);
 file(
   "background-ability-scores.xml",
   "Core: Background Ability Scores",

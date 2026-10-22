@@ -1,5 +1,5 @@
 /**
- * Check content files before loading them into dndbuilder.
+ * Check content files before loading them into DaybreakBuilder.
  *
  *   npm run validate-content -- <file or folder>... [options]
  *

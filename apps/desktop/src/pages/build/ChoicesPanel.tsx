@@ -1,4 +1,4 @@
-import { featCategory, hasRevisedContent, selectionOptions, type ResolvedNode, type RulesEdition, type SelectionPoint } from "@dndbuilder/engine";
+import { distinctOptions, featCategory, hasRevisedContent, selectionOptions, type ResolvedNode, type RulesEdition, type SelectionPoint } from "@daybreakbuilder/engine";
 import { useMemo, useState } from "react";
 import { Picker } from "../../components/Picker";
 import { useCharacter } from "../../state/app";
@@ -134,7 +134,10 @@ function SelectionRow({ point }: { point: SelectionPoint }) {
   const [slot, setSlot] = useState<number | null>(null);
   const units = useUnits();
   const rule = point.rule;
-  const options = useMemo(() => (slot !== null ? selectionOptions(resolved, point) : []), [slot, resolved, point]);
+  const options = useMemo(
+    () => (slot !== null ? distinctOptions(selectionOptions(resolved, point), point, point.chosen[slot]) : []),
+    [slot, resolved, point],
+  );
   const missing = point.chosen.filter((c) => c === null).length;
 
   const setChoice = (index: number, id: string | null) => {
