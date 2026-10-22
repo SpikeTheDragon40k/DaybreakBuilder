@@ -9,7 +9,8 @@
  */
 import { newCharacter, PATH_SEP, selectionKey, type CharacterState, type EquipSlot } from "./character.js";
 import { supersededIn2024 } from "./editions.js";
-import { ABILITIES } from "./model.js";
+import { armorKind, baseItemCandidates, baseItemFilter } from "./items.js";
+import { ABILITIES, getSetter } from "./model.js";
 import type { ContentRegistry } from "./registry.js";
 import { childElements, firstChild, parseXml, textContent, type XmlElement } from "./xml.js";
 
@@ -167,16 +168,23 @@ export function importAuroraCharacter(xml: string, registry: ContentRegistry): A
       if (loc === "Armor") slot = "armor";
       else if (loc.startsWith("Primary") || loc.startsWith("Two-Handed")) slot = mainUsed ? "offhand" : "main";
       else if (loc.startsWith("Secondary")) slot = "offhand";
-      else if (el && (el.type === "Armor" || /^armor$/i.test(el.setters.find((s) => s.name === "category")?.value ?? ""))) {
-        const kind = (el.setters.find((s) => s.name === "armor")?.value ?? "").toLowerCase();
-        slot = kind === "shield" ? "offhand" : "armor";
+      else if (el && (el.type === "Armor" || armorKind(el) || baseItemFilter(el)?.type === "Armor" || /^armor$/i.test(getSetter(el, "category") ?? ""))) {
+        slot = armorKind(el) === "shield" ? "offhand" : "armor";
       } else slot = "worn";
       if (slot === "main") mainUsed = true;
     }
     const details = firstChild(item, "details");
+    // A generic magic item's name usually names its base ("Longsword +1").
+    const itemLabel = (item.attrs.name ?? "").toLowerCase();
+    const base = el
+      ? baseItemCandidates(registry, el)
+          .filter((c) => itemLabel.includes(c.name.toLowerCase()))
+          .sort((a, b) => b.name.length - a.name.length)[0]
+      : undefined;
     state.inventory.push({
       uid: `aurora-${++uid}`,
       id,
+      base: base?.id,
       quantity: parseInt(item.attrs.amount ?? "1", 10) || 1,
       equipped: slot,
       attuned: text(item, "attunement") === "true" || undefined,

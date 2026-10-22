@@ -14,6 +14,7 @@ export * from "./companion.js";
 export * from "./validate.js";
 export * from "./units.js";
 export * from "./attacks.js";
+export * from "./items.js";
 export * from "./currency.js";
 export * from "./editions.js";
 export * from "./encounters.js";

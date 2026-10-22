@@ -4,7 +4,7 @@
  * not redistributable): a summary page, then spellcasting, companion and
  * background pages as needed. Long sections flow onto continuation pages.
  */
-import { attackDetails, convertUnits, currencyValue, formatCurrency, formatModifier, formatPrice, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@daybreakbuilder/engine";
+import { attackDetails, convertUnits, currencyValue, formatCurrency, formatModifier, formatPrice, itemName, type CharacterSheet, type CharacterState, type ContentRegistry, type UnitSystem } from "@daybreakbuilder/engine";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib";
 
 export type PaperSize = "letter" | "a4";
@@ -439,7 +439,7 @@ export async function characterSheetPdf(
   mid.heading("Equipment");
   if (state.inventory.length === 0) mid.paragraph("—", { color: pal.muted });
   for (const item of state.inventory) {
-    const name = item.name || registry.get(item.id)?.name || item.id;
+    const name = itemName(registry, item);
     const flags = [item.equipped && "equipped", item.attuned && "attuned"].filter(Boolean).join(", ");
     mid.paragraph(`${item.quantity > 1 ? `${item.quantity}x ` : ""}${name}${flags ? ` (${flags})` : ""}`, { gap: 0 });
   }

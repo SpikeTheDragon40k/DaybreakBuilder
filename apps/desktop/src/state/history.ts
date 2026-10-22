@@ -1,4 +1,4 @@
-import { currencyValue, formatPrice, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
+import { currencyValue, formatPrice, itemName, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
 
 /** A character state the user can go back to, labelled with the change that came after it. */
 export interface HistoryEntry {
@@ -38,6 +38,7 @@ const DETAIL_LABELS: Record<string, string> = { traits: "personality traits", or
 /** Describe the difference between two character states for the history list, or null if nothing changed. */
 export function describeChange(before: CharacterState, after: CharacterState, registry?: ContentRegistry): Change | null {
   const name = (id: string | null | undefined) => (id ? (registry?.get(id)?.name ?? id) : "nothing");
+  const itemLabel = (item: CharacterState["inventory"][number]) => (registry ? itemName(registry, item) : item.name || name(item.id));
   const changes: Change[] = [];
 
   if (before.name !== after.name) changes.push({ key: "name", label: `Renamed to “${after.name}”` });
@@ -101,11 +102,12 @@ export function describeChange(before: CharacterState, after: CharacterState, re
   const afterItems = new Map(after.inventory.map((i) => [i.uid, i]));
   for (const item of after.inventory) {
     const old = beforeItems.get(item.uid);
-    const label = item.name || name(item.id);
+    const label = itemLabel(item);
     if (!old) changes.push({ key: `inventory.add`, label: `${paid > 0 ? "Bought" : "Added"} ${label}` });
     else if (old.quantity !== item.quantity && paid !== 0)
       changes.push({ key: `inventory.trade`, label: `${paid > 0 ? "Bought" : "Sold"} ${label}` });
     else if (old.quantity !== item.quantity) changes.push({ key: `inventory.qty.${item.uid}`, label: `${label} ×${item.quantity}` });
+    else if (old.base !== item.base) changes.push({ key: `inventory.base.${item.uid}`, label: `Made ${name(item.id)} from ${name(item.base)}` });
     else if (old.equipped !== item.equipped)
       changes.push({ key: `inventory.equip.${item.uid}`, label: item.equipped ? `Equipped ${label}` : `Unequipped ${label}` });
     else if (old.attuned !== item.attuned)
@@ -115,7 +117,7 @@ export function describeChange(before: CharacterState, after: CharacterState, re
   }
   for (const item of before.inventory) {
     if (!afterItems.has(item.uid))
-      changes.push({ key: "inventory.remove", label: `${paid < 0 ? "Sold" : "Removed"} ${item.name || name(item.id)}` });
+      changes.push({ key: "inventory.remove", label: `${paid < 0 ? "Sold" : "Removed"} ${itemLabel(item)}` });
   }
   if (JSON.stringify(before.startingWealth) !== JSON.stringify(after.startingWealth)) {
     changes.push({

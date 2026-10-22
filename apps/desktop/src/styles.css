@@ -770,6 +770,12 @@ ul.plain {
 .inventory td.grow {
   width: 100%;
 }
+.inventory .base-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
 .qty {
   width: 4rem;
 }
