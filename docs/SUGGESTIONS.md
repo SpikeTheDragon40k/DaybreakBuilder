@@ -25,10 +25,13 @@ belongs to one device or is shared (see *Sharing*).
 
 ## GM tools
 
-- **Encounters:** pick monsters from the loaded Monster Manual (not just challenge ratings), save encounters to the
-  campaign, and start one in the initiative tracker.
-- **Initiative tracker:** party and monsters in turn order; HP, conditions with durations, concentration, legendary
-  and lair actions; monster stat blocks one click away; reads each character's live HP and conditions from Play mode.
+Done: the **initiative tracker** on the Party page (turn order, rounds, HP shared with Play mode, conditions with
+durations, concentration save DCs, legendary actions, stat blocks, monsters lettered A, B, C…).
+
+- **Encounters:** pick monsters from the loaded Monster Manual in the planner (not just challenge ratings), save
+  several encounters to the campaign, and start any of them in the tracker.
+- **Initiative tracker extras:** lair actions on initiative 20, a player view (turn order only) for a second screen,
+  monster tokens.
 - **Loot and treasure:** hand out items and coins straight into characters' inventories.
 - **Random tables and generators:** names, encounters, treasure, custom tables.
 
@@ -38,7 +41,7 @@ Done: portraits from the built-in gallery or an image file, cropped and zoomed i
 ring colour per character, shown in Play mode and on the Party page and downloadable as a PNG for virtual tabletops.
 Next steps:
 
-- **Tokens in the initiative tracker** (once it exists).
+- **Tokens for monsters** in the initiative tracker (characters already show theirs).
 - **NPC and monster portraits** for notes and encounters, and a bigger built-in gallery (species, classes, monsters).
 
 ## Sharing between GM and players

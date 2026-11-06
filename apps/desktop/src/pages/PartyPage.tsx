@@ -1,15 +1,16 @@
-import { buildSheet, formatModifier, loadCharacterJson, resolveCharacter, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
+import { buildSheet, formatModifier, loadCharacterJson, newPlayState, resolveCharacter, type CharacterState, type ContentRegistry, type PlayState } from "@daybreakbuilder/engine";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Portrait } from "../components/Portrait";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { EncounterCalculator } from "./EncounterCalculator";
+import { InitiativeTracker } from "./InitiativeTracker";
 import { characters, parties, type CharacterMeta } from "../platform";
 import { newId, useApp } from "../state/app";
 import { formatGp, memberFromSheet, newParty, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
 import { useUnits } from "../units";
 
 export function PartyPage() {
-  const { content, openCharacter, character } = useApp();
+  const { content, openCharacter, character, update } = useApp();
   const [list, setList] = useState<Party[] | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [roster, setRoster] = useState<CharacterMeta[]>([]);
@@ -37,7 +38,8 @@ export function PartyPage() {
     if (!party || !content) return [];
     const out: PartyMember[] = [];
     for (const id of party.memberIds) {
-      const state = states[id];
+      // The open character's latest edits may not be saved yet.
+      const state = character?.id === id ? character.state : states[id];
       if (!state) continue;
       try {
         out.push(memberFromSheet(id, state, buildSheet(resolveCharacter(content.registry, state))));
@@ -46,7 +48,23 @@ export function PartyPage() {
       }
     }
     return out;
-  }, [party, states, content]);
+  }, [party, states, content, character]);
+
+  // Player characters' hit points and conditions live in their Play state. The open character goes
+  // through the app (so its autosave and undo see the change); the others are saved directly.
+  const playOf = (id: string): PlayState | undefined => (character?.id === id ? character.state.play : states[id]?.play);
+  const updatePlay = (id: string, fn: (p: PlayState) => PlayState) => {
+    if (character?.id === id) {
+      update((d) => void (d.play = fn(d.play ?? newPlayState())));
+      return;
+    }
+    const state = states[id];
+    const meta = roster.find((m) => m.id === id);
+    if (!state || !meta) return;
+    const next = { ...state, play: fn(state.play ?? newPlayState()) };
+    setStates((s) => ({ ...s, [id]: next }));
+    void characters.save({ ...meta, updatedAt: new Date().toISOString() }, next);
+  };
 
   const save = (next: Party) => {
     const stamped = { ...next, updatedAt: new Date().toISOString() };
@@ -112,6 +130,8 @@ export function PartyPage() {
           onDelete={() => remove(party)}
           onOpen={(id) => states[id] && openCharacter(id, states[id])}
           registry={content?.registry}
+          playOf={playOf}
+          updatePlay={updatePlay}
         />
       )}
     </div>
@@ -127,6 +147,8 @@ function PartyDetail({
   onDelete,
   onOpen,
   registry,
+  playOf,
+  updatePlay,
 }: {
   party: Party;
   members: PartyMember[];
@@ -136,8 +158,11 @@ function PartyDetail({
   onDelete: () => void;
   onOpen: (id: string) => void;
   registry: ContentRegistry | undefined;
+  playOf: (id: string) => PlayState | undefined;
+  updatePlay: (id: string, fn: (p: PlayState) => PlayState) => void;
 }) {
   const units = useUnits();
+  const [view, setView] = useState<"overview" | "initiative">(() => (party.combat?.combatants.length ? "initiative" : "overview"));
   const [adding, setAdding] = useState("");
   const summary = useMemo(() => summarizeParty(members), [members]);
   const available = roster.filter((c) => !party.memberIds.includes(c.id));
@@ -181,7 +206,18 @@ function PartyDetail({
         </p>
       )}
 
-      {members.length === 0 ? (
+      <div className="theme-switch view-switch" role="group" aria-label="Party view">
+        <button aria-pressed={view === "overview"} onClick={() => setView("overview")}>
+          Overview
+        </button>
+        <button aria-pressed={view === "initiative"} onClick={() => setView("initiative")}>
+          Initiative{party.combat?.round ? ` · round ${party.combat.round}` : ""}
+        </button>
+      </div>
+
+      {view === "initiative" ? (
+        <InitiativeTracker party={party} members={members} registry={registry} playOf={playOf} updatePlay={updatePlay} onChange={onChange} />
+      ) : members.length === 0 ? (
         <p className="muted">Add characters from the Characters list to see the party overview.</p>
       ) : (
         <>

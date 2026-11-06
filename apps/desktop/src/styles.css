@@ -1890,3 +1890,130 @@ button.swatch.on {
 .crop-zoom input {
   flex: 1;
 }
+
+/* Initiative tracker */
+.view-switch {
+  margin: 0.6rem 0;
+}
+.initiative {
+  display: grid;
+  gap: 0.8rem;
+}
+.initiative-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.initiative-status {
+  font-size: 1.1rem;
+}
+.initiative-add label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+.initiative-monster {
+  align-items: flex-end;
+  margin-top: 0.5rem;
+}
+.initiative-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.combatant {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.45rem 0.6rem;
+}
+.combatant.character {
+  border-left-color: var(--ok);
+}
+.combatant.monster {
+  border-left-color: var(--error);
+}
+.combatant.active {
+  border-color: var(--accent);
+  border-left-width: 6px;
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.combatant.defeated {
+  opacity: 0.55;
+}
+.combatant-main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.init-input {
+  width: 3.6rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+.monster-badge {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--error);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.combatant-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  flex: 1;
+}
+.combatant-name input {
+  font-weight: 600;
+  border-color: transparent;
+  background: transparent;
+  padding-left: 0;
+}
+.combatant-name input:focus {
+  border-color: var(--border);
+}
+.combatant-hp {
+  min-width: 5.5rem;
+}
+.combatant-hp strong {
+  font-size: 1.2rem;
+}
+.combatant-hp.down strong {
+  color: var(--error);
+}
+.combatant-hp .temp {
+  color: var(--ok);
+  font-weight: 600;
+}
+.combatant-extra {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+.combatant-extra .chips {
+  margin: 0;
+}
+.legendary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.tiny-number {
+  width: 3rem;
+}

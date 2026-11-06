@@ -1,4 +1,4 @@
-import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Currency, type RulesEdition } from "@daybreakbuilder/engine";
+import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Combat, type Currency, type RulesEdition } from "@daybreakbuilder/engine";
 
 /** A group of saved characters a DM runs together. Members are character ids. */
 export interface Party {
@@ -8,6 +8,8 @@ export interface Party {
   notes: string;
   /** The encounter the DM is planning. Missing in parties saved before the calculator. */
   encounter?: PartyEncounter;
+  /** The encounter being run in the initiative tracker, if any. */
+  combat?: Combat;
   updatedAt: string;
 }
 
