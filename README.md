@@ -141,24 +141,41 @@ The app used to be called dndbuilder. Updating keeps your saved characters and s
 
 Portable mode is on whenever the exe's file name contains `portable`, or a file called `portable` or `portable.txt`
 sits next to it. If the folder isn't writable the app falls back to the normal locations (your Documents and AppData
-folders), like the installed version. Pull-request builds publish the same exe as the `DaybreakBuilder-Windows-portable`
-CI artifact.
+folders), like the installed version.
 
 ## Releasing
 
-Releases are built by GitHub Actions (`.github/workflows/release.yml`) for Linux (`.deb`, `.rpm`, `.AppImage`) and
-Windows (`.msi`, `-setup.exe`, and a portable `_portable.exe`), with a `SHA256SUMS.txt` and release notes generated from merged pull requests (grouped by
-label, see `.github/release.yml`).
+GitHub Actions has a single workflow, *Windows portable build* (`.github/workflows/windows-portable.yml`), and it only
+runs when started by hand: Actions → *Windows portable build* → *Run workflow*. It builds
+`DaybreakBuilder_X.Y.Z_x64_portable.exe` (version from `tauri.conf.json`) and keeps it, with its SHA-256, as a workflow
+artifact for 7 days. Tick *release* to also publish both files on the GitHub release `vX.Y.Z`; the release is created
+from the commit the workflow ran on if it doesn't exist yet, with notes generated from merged pull requests (grouped by
+label, see `.github/release.yml`). Nothing runs on pushes or pull requests, so run `npm run typecheck && npm test`
+before merging.
 
-* **One click:** Actions → *Release* → *Run workflow* on `main`, and enter the version (`0.2.0`, or `0.2.0-1` for a
-  pre-release). The workflow runs the tests, bumps every version file, commits `Release v0.2.0`, tags it, builds the
-  installers and publishes the release. If `main` is branch-protected, allow GitHub Actions to push to it, or use the
-  second option.
-* **From a tag:** `node scripts/version.mjs 0.2.0`, commit, then `git tag v0.2.0 && git push origin v0.2.0`. The
-  workflow checks that every version file matches the tag before building.
+To release:
 
-`node scripts/version.mjs` prints the current version and fails if any file is out of sync. If a build fails, the
-draft release is deleted; delete the tag (and revert the version commit) before retrying the same version.
+1. `node scripts/version.mjs 1.2.0` (sets every version file; `node scripts/version.mjs` alone prints the version and
+   fails if any file is out of sync), commit and push to `main`.
+2. Run *Windows portable build* on `main` with *release* ticked.
+3. Build the Linux AppImage locally and add it to the same release:
+
+   ```sh
+   npm ci
+   cd apps/desktop
+   npx tauri build --bundles appimage
+   gh release upload v1.2.0 src-tauri/target/release/bundle/appimage/*.AppImage
+   ```
+
+   On Arch Linux, install the build dependencies first:
+
+   ```sh
+   sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool rustup
+   rustup default stable
+   ```
+
+   If the AppImage step fails while stripping libraries (linuxdeploy's `strip` doesn't understand newer binaries),
+   build with `NO_STRIP=true npx tauri build --bundles appimage`.
 
 ## Roadmap
 

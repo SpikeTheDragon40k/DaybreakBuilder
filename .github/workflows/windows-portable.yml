@@ -1,0 +1,77 @@
+name: Windows portable build
+
+# Manual only: Actions → "Windows portable build" → Run workflow.
+#
+# Builds DaybreakBuilder_X.Y.Z_x64_portable.exe (X.Y.Z from tauri.conf.json): a single exe
+# that runs without installing anything and keeps its data next to itself. It is kept as a
+# workflow artifact for 7 days; tick "release" to also publish it, with its SHA-256, on the
+# GitHub release vX.Y.Z (created from the commit you ran on, if it doesn't exist yet).
+# Bump the version first with `node scripts/version.mjs X.Y.Z` and commit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Also publish the exe on the GitHub release vX.Y.Z (version from tauri.conf.json)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build portable exe
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri
+      - run: npm ci
+
+      # The bare release binary embeds the UI, so no installer is needed (Windows 10/11 ship
+      # the WebView2 runtime). "portable" in its file name turns on portable mode.
+      - name: Build
+        working-directory: apps/desktop
+        run: npx tauri build --no-bundle
+
+      - name: Name the portable exe
+        id: exe
+        shell: bash
+        run: |
+          version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
+          name="DaybreakBuilder_${version}_x64_portable.exe"
+          mkdir -p portable
+          cp apps/desktop/src-tauri/target/release/daybreakbuilder.exe "portable/$name"
+          (cd portable && sha256sum -- "$name" > "$name.sha256" && cat "$name.sha256")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: DaybreakBuilder-${{ steps.exe.outputs.version }}-Windows-portable
+          retention-days: 7
+          path: portable/*
+          if-no-files-found: error
+
+      - name: Publish on the GitHub release
+        if: inputs.release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.exe.outputs.version }}
+        run: |
+          node scripts/version.mjs --check "$TAG"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" portable/* --clobber
+          else
+            prerelease=""
+            case "$TAG" in *-*) prerelease="--prerelease" ;; esac
+            gh release create "$TAG" portable/* --target "$GITHUB_SHA" --title "DaybreakBuilder $TAG" --generate-notes $prerelease
+          fi
+          gh release view "$TAG" --json url --jq .url
