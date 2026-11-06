@@ -92,6 +92,13 @@ npm test
    passive Perception/Insight/Investigation, spell save DCs, senses and coin for every member, adds up the
    encounter XP budget (DMG 2014 thresholds), and shows who speaks which language, who is best at each skill,
    saving throw coverage and who needs light. Edits to a character show up in its parties automatically.
+   The **Initiative** view runs an encounter: add the party and monsters (picked from the loaded content, which
+   fills in AC, HP and initiative bonus and offers the stat block, or typed in), several of a kind labelled
+   *Goblin A, B, C…*; enter the initiative rolled at the table (or give monsters 10 + bonus); then *Start encounter*
+   and *Next turn* through the rounds. Track hit points, temporary HP, conditions with a number of rounds (counted
+   down at the start of that creature's turn), concentration (with the save DC when hit), legendary actions and
+   defeated monsters. Player characters' hit points and conditions are the same ones as in their Play mode, both
+   ways. The encounter is saved with the party.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
