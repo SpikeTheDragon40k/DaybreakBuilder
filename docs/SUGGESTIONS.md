@@ -32,6 +32,16 @@ belongs to one device or is shared (see *Sharing*).
 - **Loot and treasure:** hand out items and coins straight into characters' inventories.
 - **Random tables and generators:** names, encounters, treasure, custom tables.
 
+## Character portraits
+
+Today a portrait comes from the built-in gallery or an image file, and shows on the character list, the sheet and the
+PDF. Next steps:
+
+- **Show it everywhere a character appears:** Play mode header, Party page, initiative tracker.
+- **Custom portrait editor:** crop, zoom and position the image instead of using it as is.
+- **Tokens:** a round, bordered version for maps and the initiative tracker, with a colour per player.
+- **NPC and monster portraits** for notes and encounters, and a bigger built-in gallery (species, classes, monsters).
+
 ## Sharing between GM and players
 
 - **First step:** export and import a campaign (or parts of it) as a file, since the app is local-only.
