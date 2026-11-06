@@ -161,10 +161,21 @@ To release:
 3. Build the Linux AppImage locally and add it to the same release:
 
    ```sh
+   npm ci
    cd apps/desktop
    npx tauri build --bundles appimage
    gh release upload v1.2.0 src-tauri/target/release/bundle/appimage/*.AppImage
    ```
+
+   On Arch Linux, install the build dependencies first:
+
+   ```sh
+   sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool rustup
+   rustup default stable
+   ```
+
+   If the AppImage step fails while stripping libraries (linuxdeploy's `strip` doesn't understand newer binaries),
+   build with `NO_STRIP=true npx tauri build --bundles appimage`.
 
 ## Roadmap
 
