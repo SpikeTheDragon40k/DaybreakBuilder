@@ -127,6 +127,18 @@ describe("SRD content pack", () => {
     expect(sheet.speed.walk).toBe(40);
   });
 
+  it("shares the multiclass spell slot table whichever caster class comes first", () => {
+    for (const order of [["Wizard", "Cleric"], ["Cleric", "Wizard"]]) {
+      const s = newCharacter();
+      s.abilities = { strength: 10, dexterity: 14, constitution: 14, intelligence: 15, wisdom: 15, charisma: 10 };
+      s.levels = [classId(order[0]), classId(order[0]), classId(order[1]), classId(order[1])];
+      s.selections[selectionKey("ID_LEVEL_1", "Race")] = ["ID_RACE_HUMAN"];
+      const sheet = buildSheet(resolveCharacter(registry, s));
+      expect(sheet.multiclassSpellcasting, order.join("/")).toEqual({ casterLevel: 4, slots: [4, 3, 0, 0, 0, 0, 0, 0, 0] });
+      for (const row of sheet.spellcasting) expect(row.slots.slice(0, 3), `${order.join("/")}: ${row.name}`).toEqual([4, 3, 0]);
+    }
+  });
+
   it("offers wizard cantrips and spellbook spells from the SRD", () => {
     const s = newCharacter();
     s.levels = [classId("Wizard")];

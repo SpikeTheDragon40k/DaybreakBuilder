@@ -68,7 +68,10 @@ Adds the element `id` to the character as a child of the granting element, provi
 * `level` (default 1) ≤ the progression level of the granting element (see
   *Levels and progressions*);
 * the rule's `requirements` hold. These are evaluated **without** the elements this
-  same element granted, so a grant cannot keep itself alive;
+  same element granted through its other *conditional* grants (ones with `requirements`), so
+  conditional grants cannot keep each other alive. Its unconditional grants do count: a
+  multiclass element's `ID_INTERNAL_GRANT_MULTICLASS` satisfies its own class's
+  `requirements="ID_INTERNAL_GRANT_MULTICLASS"` spell slot grant;
 * the granted element's own `<requirements>` hold.
 
 `id` may list several ids separated by commas. `spellcasting` and `prepared`
