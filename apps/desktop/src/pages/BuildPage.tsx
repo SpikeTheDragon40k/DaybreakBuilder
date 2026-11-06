@@ -18,6 +18,8 @@ export function BuildPage() {
           name={character.state.name}
           size={72}
           onChange={(src) => update((d) => void (d.portrait = src))}
+          tokenColor={character.state.tokenColor}
+          onTokenColor={(color) => update((d) => void (d.tokenColor = color))}
         />
         <div className="build-title">
           <input

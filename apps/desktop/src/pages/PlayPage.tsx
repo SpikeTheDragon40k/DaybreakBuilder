@@ -25,6 +25,8 @@ import {
   type RulesEdition,
 } from "@daybreakbuilder/engine";
 import { useMemo, useState, type ReactNode } from "react";
+import { Portrait } from "../components/Portrait";
+import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { useCharacter } from "../state/app";
 import { useUnits } from "../units";
 
@@ -48,6 +50,7 @@ export function PlayPage() {
   return (
     <div className="play-page">
       <header className="play-header">
+        <Portrait src={character.state.portrait} name={sheet.name} size={64} ring={character.state.tokenColor ?? DEFAULT_TOKEN_COLOR} />
         <div>
           <h1>{sheet.name}</h1>
           <div className="muted">{[[sheet.race, sheet.subrace].filter(Boolean).join(" "), sheet.classSummary].filter(Boolean).join(" · ")}</div>

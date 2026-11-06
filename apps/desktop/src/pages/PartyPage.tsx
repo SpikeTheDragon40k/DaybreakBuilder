@@ -1,6 +1,7 @@
 import { buildSheet, formatModifier, loadCharacterJson, resolveCharacter, type CharacterState, type ContentRegistry } from "@daybreakbuilder/engine";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Portrait } from "../components/Portrait";
+import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { EncounterCalculator } from "./EncounterCalculator";
 import { characters, parties, type CharacterMeta } from "../platform";
 import { newId, useApp } from "../state/app";
@@ -221,7 +222,7 @@ function PartyDetail({
                   <tr key={m.id}>
                     <th scope="row">
                       <span className="party-member">
-                        <Portrait src={m.portrait} name={m.name} size={36} />
+                        <Portrait src={m.portrait} name={m.name} size={36} ring={m.tokenColor ?? DEFAULT_TOKEN_COLOR} />
                         <span>
                           <span className="card-title">{m.name}</span>
                           <span className="muted small block">

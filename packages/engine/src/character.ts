@@ -61,6 +61,8 @@ export interface CharacterState {
   experience: number;
   /** Portrait image as a data URL (PNG or JPEG), or "" for none. */
   portrait: string;
+  /** Ring colour of the character's token (CSS colour), when chosen. */
+  tokenColor?: string;
   details: CharacterDetails;
   abilityMethod: AbilityMethod;
   /** Base ability scores before racial bonuses, ASIs etc. */

@@ -34,12 +34,11 @@ belongs to one device or is shared (see *Sharing*).
 
 ## Character portraits
 
-Today a portrait comes from the built-in gallery or an image file, and shows on the character list, the sheet and the
-PDF. Next steps:
+Done: portraits from the built-in gallery or an image file, cropped and zoomed in an editor; a round token with a
+ring colour per character, shown in Play mode and on the Party page and downloadable as a PNG for virtual tabletops.
+Next steps:
 
-- **Show it everywhere a character appears:** Play mode header, Party page, initiative tracker.
-- **Custom portrait editor:** crop, zoom and position the image instead of using it as is.
-- **Tokens:** a round, bordered version for maps and the initiative tracker, with a colour per player.
+- **Tokens in the initiative tracker** (once it exists).
 - **NPC and monster portraits** for notes and encounters, and a bigger built-in gallery (species, classes, monsters).
 
 ## Sharing between GM and players

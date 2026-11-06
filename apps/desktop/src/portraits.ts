@@ -79,6 +79,20 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+function context(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+  const g = canvas.getContext("2d");
+  if (!g) throw new Error("Image processing is not available.");
+  g.imageSmoothingQuality = "high";
+  return g;
+}
+
+/** PNG when the canvas has transparency, JPEG otherwise (smaller). */
+function encode(canvas: HTMLCanvasElement, g: CanvasRenderingContext2D): string {
+  const { data } = g.getImageData(0, 0, canvas.width, canvas.height);
+  for (let i = 3; i < data.length; i += 4) if (data[i] < 255) return canvas.toDataURL("image/png");
+  return canvas.toDataURL("image/jpeg", 0.88);
+}
+
 /** Scale an image to fit PORTRAIT_SIZE; PNG when it has transparency, JPEG otherwise. */
 export async function toPortrait(src: string): Promise<string> {
   const img = await loadImage(src);
@@ -88,27 +102,109 @@ export async function toPortrait(src: string): Promise<string> {
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(w * scale));
   canvas.height = Math.max(1, Math.round(h * scale));
-  const g = canvas.getContext("2d");
-  if (!g) throw new Error("Image processing is not available.");
-  g.imageSmoothingQuality = "high";
+  const g = context(canvas);
   g.drawImage(img, 0, 0, canvas.width, canvas.height);
-  const { data } = g.getImageData(0, 0, canvas.width, canvas.height);
-  let transparent = false;
-  for (let i = 3; i < data.length; i += 4) {
-    if (data[i] < 255) {
-      transparent = true;
-      break;
-    }
+  return encode(canvas, g);
+}
+
+/**
+ * Which part of an image a square portrait shows. The image always covers the
+ * square: `zoom` 1 fits its shorter side, `x` and `y` pan through the part that
+ * doesn't fit, from -1 (right/bottom edge) to 1 (left/top edge).
+ */
+export interface Crop {
+  zoom: number;
+  x: number;
+  y: number;
+}
+
+export const MAX_ZOOM = 4;
+/** Like the portraits shown so far: centered, a little above the middle where faces usually are. */
+export const DEFAULT_CROP: Crop = { zoom: 1, x: 0, y: 0.6 };
+
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+export function clampCrop(c: Crop): Crop {
+  return { zoom: clamp(c.zoom, 1, MAX_ZOOM), x: clamp(c.x, -1, 1), y: clamp(c.y, -1, 1) };
+}
+
+/** Where to draw a w×h image in a square of `size` for a crop (shared by the editor preview and the output). */
+export function cropGeometry(w: number, h: number, size: number, crop: Crop): { left: number; top: number; width: number; height: number } {
+  const c = clampCrop(crop);
+  const scale = (size / Math.max(1, Math.min(w, h))) * c.zoom;
+  const width = w * scale;
+  const height = h * scale;
+  const slackX = (width - size) / 2;
+  const slackY = (height - size) / 2;
+  return { left: -slackX + c.x * slackX, top: -slackY + c.y * slackY, width, height };
+}
+
+/** Crop an image to a square PORTRAIT_SIZE portrait. */
+export async function cropPortrait(src: string, crop: Crop): Promise<string> {
+  const img = await loadImage(src);
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = PORTRAIT_SIZE;
+  const g = context(canvas);
+  const r = cropGeometry(img.naturalWidth || PORTRAIT_SIZE, img.naturalHeight || PORTRAIT_SIZE, PORTRAIT_SIZE, crop);
+  g.drawImage(img, r.left, r.top, r.width, r.height);
+  return encode(canvas, g);
+}
+
+/** Token ring colours offered in the picker (any colour can be typed in too). */
+export const TOKEN_COLORS = ["#8b1e1e", "#c9962c", "#2d6a3e", "#2a5d8f", "#6a3d9a", "#b8458a", "#3f3f46", "#e8e2d6"];
+export const DEFAULT_TOKEN_COLOR = TOKEN_COLORS[0];
+
+/**
+ * A round token for virtual tabletops: the portrait in a circle with a coloured
+ * ring, transparent outside. PNG bytes, TOKEN_SIZE square.
+ */
+export const TOKEN_SIZE = 512;
+export async function tokenPng(portrait: string, initial: string, color: string): Promise<Uint8Array> {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = TOKEN_SIZE;
+  const g = context(canvas);
+  const c = TOKEN_SIZE / 2;
+  const ring = TOKEN_SIZE * 0.06;
+  g.beginPath();
+  g.arc(c, c, c - 2, 0, Math.PI * 2);
+  g.fillStyle = color;
+  g.fill();
+  g.save();
+  g.beginPath();
+  g.arc(c, c, c - ring, 0, Math.PI * 2);
+  g.clip();
+  if (portrait) {
+    const img = await loadImage(portrait);
+    const inner = TOKEN_SIZE - 2 * ring;
+    const r = cropGeometry(img.naturalWidth || inner, img.naturalHeight || inner, inner, DEFAULT_CROP);
+    g.drawImage(img, ring + r.left, ring + r.top, r.width, r.height);
+  } else {
+    g.fillStyle = "#26252c";
+    g.fillRect(0, 0, TOKEN_SIZE, TOKEN_SIZE);
+    g.fillStyle = "#f4ead8";
+    g.font = `bold ${Math.round(TOKEN_SIZE * 0.42)}px sans-serif`;
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.fillText(initial, c, c + TOKEN_SIZE * 0.02);
   }
-  return transparent ? canvas.toDataURL("image/png") : canvas.toDataURL("image/jpeg", 0.88);
+  g.restore();
+  // A thin dark edge keeps light rings visible on light maps.
+  g.beginPath();
+  g.arc(c, c, c - 2, 0, Math.PI * 2);
+  g.lineWidth = 3;
+  g.strokeStyle = "rgba(0, 0, 0, 0.6)";
+  g.stroke();
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) throw new Error("The token could not be created.");
+  return new Uint8Array(await blob.arrayBuffer());
 }
 
 export function galleryPortrait(p: GalleryPortrait): Promise<string> {
   return toPortrait(svgDataUrl(p.svg));
 }
 
-/** Let the user pick an image file and turn it into a portrait (null if cancelled). */
-export function pickPortraitFile(): Promise<string | null> {
+/** Let the user pick an image file; its full-size contents as a data URL, to crop (null if cancelled). */
+export function pickImageFile(): Promise<string | null> {
   return new Promise((resolve, reject) => {
     const input = document.createElement("input");
     input.type = "file";
@@ -116,10 +212,10 @@ export function pickPortraitFile(): Promise<string | null> {
     input.onchange = () => {
       const file = input.files?.[0];
       if (!file) return resolve(null);
-      const url = URL.createObjectURL(file);
-      toPortrait(url)
-        .then(resolve, reject)
-        .finally(() => URL.revokeObjectURL(url));
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error("That file could not be read."));
+      reader.readAsDataURL(file);
     };
     input.oncancel = () => resolve(null);
     input.click();

@@ -42,6 +42,7 @@ export interface PartyMember {
   name: string;
   playerName: string;
   portrait: string;
+  tokenColor?: string;
   summary: string;
   level: number;
   armorClass: number;
@@ -68,6 +69,7 @@ export function memberFromSheet(id: string, state: CharacterState, sheet: Charac
     name: sheet.name || "Unnamed",
     playerName: state.playerName,
     portrait: state.portrait,
+    tokenColor: state.tokenColor,
     summary: [[sheet.race, sheet.subrace].filter(Boolean).join(" "), sheet.classSummary].filter(Boolean).join(" · "),
     level: sheet.level,
     armorClass: sheet.armorClass,
