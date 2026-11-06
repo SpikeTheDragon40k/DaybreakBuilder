@@ -6,13 +6,18 @@ name: Windows portable build
 # that runs without installing anything and keeps its data next to itself. It is kept as a
 # workflow artifact for 7 days; tick "release" to also publish it, with its SHA-256, on the
 # GitHub release vX.Y.Z (created from the commit you ran on, if it doesn't exist yet).
-# Bump the version first with `node scripts/version.mjs X.Y.Z` and commit.
+# Bump the version first with `node scripts/version.mjs X.Y.Z` and commit: if vX.Y.Z already
+# has a portable exe, the run stops before building unless "replace" is ticked too.
 
 on:
   workflow_dispatch:
     inputs:
       release:
         description: "Also publish the exe on the GitHub release vX.Y.Z (version from tauri.conf.json)"
+        type: boolean
+        default: false
+      replace:
+        description: "If that release already has the portable exe, overwrite it (otherwise the run stops)"
         type: boolean
         default: false
 
@@ -33,6 +38,26 @@ jobs:
       - uses: swatinem/rust-cache@v2
         with:
           workspaces: apps/desktop/src-tauri
+      # Fail in seconds, not after the build, when the release already has this exe.
+      - name: Check the release
+        if: inputs.release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPLACE: ${{ inputs.replace }}
+        run: |
+          version=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
+          tag="v$version"
+          node scripts/version.mjs --check "$tag"
+          name="DaybreakBuilder_${version}_x64_portable.exe"
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" --jq '.assets[].name' 2>/dev/null | grep -qxF "$name"; then
+            if [ "$REPLACE" = "true" ]; then
+              echo "::warning::$tag already has $name; it will be replaced."
+            else
+              echo "::error::$tag already has $name. Bump the version (node scripts/version.mjs X.Y.Z) or run again with 'replace' ticked."
+              exit 1
+            fi
+          fi
       - run: npm ci
 
       # The bare release binary embeds the UI, so no installer is needed (Windows 10/11 ship
@@ -65,10 +90,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: v${{ steps.exe.outputs.version }}
+          REPLACE: ${{ inputs.replace }}
         run: |
-          node scripts/version.mjs --check "$TAG"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" portable/* --clobber
+            clobber=""
+            [ "$REPLACE" = "true" ] && clobber="--clobber"
+            # Without --clobber, gh refuses to overwrite a file the release already has.
+            gh release upload "$TAG" portable/* $clobber
           else
             prerelease=""
             case "$TAG" in *-*) prerelease="--prerelease" ;; esac

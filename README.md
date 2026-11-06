@@ -157,7 +157,8 @@ runs when started by hand: Actions → *Windows portable build* → *Run workflo
 `DaybreakBuilder_X.Y.Z_x64_portable.exe` (version from `tauri.conf.json`) and keeps it, with its SHA-256, as a workflow
 artifact for 7 days. Tick *release* to also publish both files on the GitHub release `vX.Y.Z`; the release is created
 from the commit the workflow ran on if it doesn't exist yet, with notes generated from merged pull requests (grouped by
-label, see `.github/release.yml`). Nothing runs on pushes or pull requests, so run `npm run typecheck && npm test`
+label, see `.github/release.yml`). If `vX.Y.Z` already has the portable exe, the run stops before building, so a
+forgotten version bump can't overwrite a published release; tick *replace* as well to overwrite it on purpose. Nothing runs on pushes or pull requests, so run `npm run typecheck && npm test`
 before merging.
 
 To release:
