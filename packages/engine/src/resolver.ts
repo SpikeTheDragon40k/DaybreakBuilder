@@ -103,7 +103,7 @@ const MAX_DEPTH = 48;
 interface PassContext {
   prevIds: Map<string, number>;
   prevStats: StatValues | null;
-  /** Ids granted directly by each path in the previous pass (for self-exclusion). */
+  /** Ids each path granted conditionally in the previous pass (for self-exclusion). */
   prevGrantedBy: Map<string, string[]>;
 }
 
@@ -146,10 +146,18 @@ function idSignature(ids: Map<string, number>): string {
     .join(";");
 }
 
+/**
+ * Ids each element granted through a grant that has requirements. Only those
+ * can keep each other alive or flip each other off between passes, so only
+ * those are left out when the same element's grant requirements are checked.
+ * An unconditional grant always happens: a multiclass element's
+ * ID_INTERNAL_GRANT_MULTICLASS must still count for its own class's
+ * "requirements=ID_INTERNAL_GRANT_MULTICLASS" spell slot grant.
+ */
 function grantedByMap(nodes: ResolvedNode[]): Map<string, string[]> {
   const m = new Map<string, string[]>();
   for (const n of nodes) {
-    if (n.via.kind === "grant" && n.parent) {
+    if (n.via.kind === "grant" && n.via.rule.requirements && n.parent) {
       let list = m.get(n.parent.path);
       if (!list) m.set(n.parent.path, (list = []));
       list.push(n.element.id);
