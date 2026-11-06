@@ -1,4 +1,4 @@
-import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, itemName, type StatPart } from "@daybreakbuilder/engine";
+import { attackDetails, currencyValue, formatCurrency, formatModifier, formatPrice, itemName, logPlay, newPlayState, type StatPart } from "@daybreakbuilder/engine";
 import { useState, type ReactNode } from "react";
 import { getPlatform, settings } from "../platform";
 import type { PaperSize, PdfStyle } from "../pdf/characterSheetPdf";
@@ -10,7 +10,7 @@ import { useUnits } from "../units";
 const tip = (parts: StatPart[]) => parts.map((p) => `${p.source}: ${formatModifier(p.value)}`).join("\n");
 
 export function SheetPage() {
-  const { sheet, character, content } = useCharacter();
+  const { sheet, character, content, update, setPage } = useCharacter();
   const [paper, setPaper] = useState<PaperSize>(() => settings.get<PaperSize>("paper", "letter"));
   const [pdfStyle, setPdfStyle] = useState<PdfStyle>(() => {
     const v = settings.get<PdfStyle>("pdfStyle", "classic");
@@ -43,7 +43,17 @@ export function SheetPage() {
   return (
     <div className="sheet-page">
       <div className="sheet-actions no-print row">
-        <button className="primary" disabled={exporting} onClick={exportPdf}>
+        <button
+          className="primary play-start"
+          title="Track hit points, spell slots, feature uses and conditions during the game"
+          onClick={() => {
+            update((d) => void (d.play = logPlay(d.play ?? newPlayState(), "Play session started.")));
+            setPage("play");
+          }}
+        >
+          ▶ Start Play Session
+        </button>
+        <button disabled={exporting} onClick={exportPdf}>
           {exporting ? "Exporting…" : "Export PDF"}
         </button>
         <select value={paper} onChange={(e) => setPaper(e.target.value as PaperSize)} aria-label="Paper size">
