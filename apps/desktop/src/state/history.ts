@@ -46,6 +46,7 @@ export function describeChange(before: CharacterState, after: CharacterState, re
   if (before.experience !== after.experience) changes.push({ key: "experience", label: `Set XP to ${after.experience}` });
   if (before.portrait !== after.portrait)
     changes.push({ key: "portrait", label: after.portrait ? "Changed portrait" : "Removed portrait" });
+  if (before.tokenColor !== after.tokenColor) changes.push({ key: "tokenColor", label: "Changed token colour" });
   for (const k of Object.keys(after.details) as (keyof CharacterState["details"])[]) {
     if (before.details[k] !== after.details[k]) changes.push({ key: `details.${k}`, label: `Edited ${DETAIL_LABELS[k] ?? k}` });
   }

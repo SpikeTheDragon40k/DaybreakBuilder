@@ -1801,3 +1801,92 @@ button.pip.full {
   padding: 0.2rem 0;
   border-bottom: 1px solid var(--border);
 }
+
+/* Tokens and the portrait crop editor */
+.portrait.token {
+  border-radius: 50%;
+  border-style: solid;
+}
+.portrait.token img {
+  object-position: 50% 30%;
+}
+.token-section {
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+  margin-top: 0.4rem;
+  width: 100%;
+}
+.token-section h3 {
+  margin: 0 0 0.4rem;
+}
+.token-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.token-colors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+button.swatch {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+}
+button.swatch.on {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+.token-colors input[type="color"] {
+  width: 1.8rem;
+  height: 1.6rem;
+  padding: 0;
+  border: none;
+  background: none;
+}
+.portrait-cropper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+}
+.crop-view {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.crop-view:active {
+  cursor: grabbing;
+}
+.crop-view img {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+.crop-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px dashed;
+  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+.crop-zoom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 280px;
+}
+.crop-zoom input {
+  flex: 1;
+}
