@@ -79,7 +79,14 @@ npm test
 5. **Spells**: prepare spells for each spellcasting class; slots, save DC and attack bonus are calculated for you.
 6. **Sheet**: the finished character. *Export PDF* writes a multi-page character sheet (US Letter or A4) with
    spellcasting, companion and background pages.
-7. **Party** (for DMs): group saved characters into parties. The party view lines up AC, HP, initiative, speed,
+7. **Play**: press *Start Play Session* on the sheet to use the character at the table. Track hit points (damage
+   comes off temporary HP first, death saves at 0), spell slots and limited-use features (click a pip to spend or get
+   one back), conditions, Exhaustion (its 2024 penalties applied to initiative, speed and attacks) and Heroic
+   Inspiration. *Short Rest* spends hit dice and restores Short Rest uses and Pact Magic slots; *Long Rest* restores
+   everything. Dice are rolled for real: pick a weapon, enter the d20 you rolled (and the target's AC if you know it),
+   then the damage dice; the app adds the bonuses and handles critical hits. Everything goes into a session log, is
+   saved with the character and can be undone.
+8. **Party** (for DMs): group saved characters into parties. The party view lines up AC, HP, initiative, speed,
    passive Perception/Insight/Investigation, spell save DCs, senses and coin for every member, adds up the
    encounter XP budget (DMG 2014 thresholds), and shows who speaks which language, who is best at each skill,
    saving throw coverage and who needs light. Edits to a character show up in its parties automatically.
@@ -179,7 +186,7 @@ To release:
 
 ## Roadmap
 
-* Attacks section (weapon attack bonus and damage)
+* Campaigns, notes and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder

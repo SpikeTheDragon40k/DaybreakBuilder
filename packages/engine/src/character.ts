@@ -1,6 +1,7 @@
 import type { StartingWealthTaken } from "./currency.js";
 import type { RulesEdition } from "./editions.js";
 import type { Ability } from "./model.js";
+import { loadPlayState, type PlayState } from "./play.js";
 
 export type EquipSlot = "armor" | "main" | "offhand" | "worn";
 
@@ -91,6 +92,8 @@ export interface CharacterState {
   rules: RulesEdition;
   /** Prepared spell ids per caster name (for casters that prepare spells). */
   preparedSpells: Record<string, string[]>;
+  /** Live state at the table (Play mode); absent until the first play session. */
+  play?: PlayState;
 }
 
 export function newCharacter(): CharacterState {
@@ -190,6 +193,7 @@ export function loadCharacterJson(data: unknown): CharacterState {
     // Characters saved before the switch existed were built with every source shown.
     rules: d.rules === "2024" ? "2024" : "2014",
     preparedSpells: d.preparedSpells ?? {},
+    play: d.play ? loadPlayState(d.play) : undefined,
     portrait: typeof d.portrait === "string" ? d.portrait : "",
     version: 1,
   };

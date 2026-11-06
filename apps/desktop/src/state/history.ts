@@ -143,6 +143,12 @@ export function describeChange(before: CharacterState, after: CharacterState, re
     else if (removed.length) changes.push({ key: `prepared.${caster}`, label: `Unprepared ${removed.map(name).join(", ")}` });
   }
 
+  if (JSON.stringify(before.play) !== JSON.stringify(after.play)) {
+    // Play actions log what they did; that line names the undo step ("Took 5 damage.").
+    const logged = after.play && after.play.log.length && after.play.log.at(-1) !== before.play?.log.at(-1) ? after.play.log.at(-1)!.text : "Play session";
+    changes.push({ key: "play", label: logged.replace(/\.$/, "") });
+  }
+
   if (changes.length === 0) return null;
   if (changes.length === 1) return changes[0];
   // Several fields at once (an import, a level change that clears choices): name the first and count the rest.
