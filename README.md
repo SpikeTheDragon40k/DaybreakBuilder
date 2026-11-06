@@ -76,7 +76,7 @@ npm test
    for an image, drag and zoom to choose the square to keep (*Adjust crop…* changes it later). The portrait is saved
    inside the character and shows on the character list, the sheet and the PDF; portraits in imported Aurora files
    come along too. The same dialog sets the character's **token**: a round portrait with a ring colour, shown in Play
-   mode and on the Party page, and *Download token (PNG)* saves a 512 px token for virtual tabletops.
+   mode and on a campaign's Party tab, and *Download token (PNG)* saves a 512 px token for virtual tabletops.
 4. **Equipment**: add items and equip armor, shields and weapons. AC updates automatically.
 5. **Spells**: prepare spells for each spellcasting class; slots, save DC and attack bonus are calculated for you.
 6. **Sheet**: the finished character. *Export PDF* writes a multi-page character sheet (US Letter or A4) with
@@ -88,17 +88,33 @@ npm test
    everything. Dice are rolled for real: pick a weapon, enter the d20 you rolled (and the target's AC if you know it),
    then the damage dice; the app adds the bonuses and handles critical hits. Everything goes into a session log, is
    saved with the character and can be undone.
-8. **Party** (for DMs): group saved characters into parties. The party view lines up AC, HP, initiative, speed,
-   passive Perception/Insight/Investigation, spell save DCs, senses and coin for every member, adds up the
-   encounter XP budget (DMG 2014 thresholds), and shows who speaks which language, who is best at each skill,
-   saving throw coverage and who needs light. Edits to a character show up in its parties automatically.
-   The **Initiative** view runs an encounter: add the party and monsters (picked from the loaded content, which
-   fills in AC, HP and initiative bonus and offers the stat block, or typed in), several of a kind labelled
-   *Goblin A, B, C…*; enter the initiative rolled at the table (or give monsters 10 + bonus); then *Start encounter*
-   and *Next turn* through the rounds. Track hit points, temporary HP, conditions with a number of rounds (counted
-   down at the start of that creature's turn), concentration (with the save DC when hit), legendary actions and
-   defeated monsters. Player characters' hit points and conditions are the same ones as in their Play mode, both
-   ways. The encounter is saved with the party.
+8. **Campaigns** (for GMs): a campaign keeps the party, notes, a session log and quests together.
+   * **Notes** are Markdown with live formatting: headings, bold, lists and checkboxes render as you type, and a line
+     shows its raw Markdown only while you edit it. Type `[[` to link another note, a party character or anything in
+     the loaded content: `[[Fireball]]` shows the spell when you hover it and opens it when clicked, and a link to a
+     note that doesn't exist yet creates it. Each note lists the notes that link to it; renaming a note updates every
+     link to it. Notes have a type (NPC, Location, Item, Faction…) and tags, and the search box finds words in titles,
+     tags and text, with type and tag filters. The compendium has its own search.
+   * **Sessions** record the date, in-game date, who played, XP and loot, with the recap as the note text.
+   * **Quests** are open, done or failed.
+   * **Party**: the party view lines up AC, HP, initiative, speed, passive Perception/Insight/Investigation, spell
+     save DCs, senses and coin for every member, adds up the encounter XP budget (DMG 2014 thresholds), and shows who
+     speaks which language, who is best at each skill, saving throw coverage and who needs light. Edits to a
+     character show up automatically. The **Initiative** view runs an encounter: add the party and monsters (picked
+     from the loaded content, which fills in AC, HP and initiative bonus and offers the stat block, or typed in),
+     several of a kind labelled *Goblin A, B, C…*; enter the initiative rolled at the table (or give monsters
+     10 + bonus); then *Start encounter* and *Next turn* through the rounds. Track hit points, temporary HP,
+     conditions with a number of rounds (counted down at the start of that creature's turn), concentration (with the
+     save DC when hit), legendary actions and defeated monsters. Player characters' hit points and conditions are the
+     same ones as in their Play mode, both ways.
+
+   In the desktop app each campaign is a **folder of Markdown files** (in `Documents/DaybreakBuilder/Campaigns`, or
+   in the portable data folder): `Notes/`, `Sessions/` and `Quests/` hold one `.md` file per note, with the type,
+   tags and session or quest fields as YAML front matter, and `campaign.json` holds the party and the encounter.
+   The folder works as an Obsidian vault, and *Open folder…* uses an existing one (an Obsidian vault, a folder synced
+   with Dropbox or Syncthing) as a campaign. Changes made in other programs show up when you switch back to the app.
+   Deleted notes go to the campaign's `.trash` folder. In the browser version campaigns are kept in browser storage.
+   Parties made with earlier versions become campaigns automatically.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
@@ -196,7 +212,7 @@ To release:
 
 ## Roadmap
 
-* Campaigns, notes and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
+* Campaign export and import, saved encounters and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder

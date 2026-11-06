@@ -3,6 +3,8 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use tauri::Manager;
 
+mod campaigns;
+
 #[derive(Serialize)]
 struct StoredFile {
     path: String,
@@ -103,6 +105,10 @@ fn read_custom_content(app: tauri::AppHandle) -> Result<CustomContent, String> {
 fn open_custom_content_folder(app: tauri::AppHandle) -> Result<(), String> {
     let dir = custom_content_dir(&app)?;
     fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    open_in_file_manager(&dir)
+}
+
+fn open_in_file_manager(dir: &Path) -> Result<(), String> {
     #[cfg(target_os = "windows")]
     let program = "explorer";
     #[cfg(target_os = "macos")]
@@ -110,7 +116,7 @@ fn open_custom_content_folder(app: tauri::AppHandle) -> Result<(), String> {
     #[cfg(all(unix, not(target_os = "macos")))]
     let program = "xdg-open";
     std::process::Command::new(program)
-        .arg(&dir)
+        .arg(dir)
         .spawn()
         .map(|_| ())
         .map_err(|e| e.to_string())
@@ -134,6 +140,62 @@ fn write_binary_file(path: String, data: Vec<u8>) -> Result<(), String> {
     fs::write(&path, data).map_err(|e| format!("{}: {}", path, e))
 }
 
+/// Where new campaigns go: next to the app's other data (the portable folder, or Documents/DaybreakBuilder).
+fn campaigns_base(app: &tauri::AppHandle) -> Result<PathBuf, String> {
+    Ok(custom_content_dir(app)?
+        .parent()
+        .map(Path::to_path_buf)
+        .ok_or("No data folder")?
+        .join("Campaigns"))
+}
+
+#[tauri::command]
+fn campaigns_dir(app: tauri::AppHandle) -> Result<String, String> {
+    Ok(campaigns_base(&app)?.to_string_lossy().into_owned())
+}
+
+/// Make a new campaign folder; returns its path.
+#[tauri::command]
+fn campaign_create(app: tauri::AppHandle, name: String) -> Result<String, String> {
+    let dir = campaigns::new_campaign_dir(&campaigns_base(&app)?, &name)?;
+    Ok(dir.to_string_lossy().into_owned())
+}
+
+#[tauri::command]
+fn campaign_read(root: String) -> Result<Vec<StoredFile>, String> {
+    Ok(campaigns::read_campaign(Path::new(&root))?
+        .into_iter()
+        .map(|f| StoredFile {
+            path: f.path,
+            content: f.content,
+        })
+        .collect())
+}
+
+#[tauri::command]
+fn campaign_write(root: String, path: String, content: String) -> Result<(), String> {
+    campaigns::write_file(Path::new(&root), &path, &content)
+}
+
+#[tauri::command]
+fn campaign_rename(root: String, from: String, to: String) -> Result<(), String> {
+    campaigns::rename_file(Path::new(&root), &from, &to)
+}
+
+#[tauri::command]
+fn campaign_trash(root: String, path: String) -> Result<(), String> {
+    campaigns::trash_file(Path::new(&root), &path)
+}
+
+#[tauri::command]
+fn reveal_folder(path: String) -> Result<(), String> {
+    let dir = PathBuf::from(&path);
+    if !dir.is_dir() {
+        return Err(format!("Folder not found: {}", path));
+    }
+    open_in_file_manager(&dir)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -144,7 +206,14 @@ pub fn run() {
             open_custom_content_folder,
             read_text_file,
             write_text_file,
-            write_binary_file
+            write_binary_file,
+            campaigns_dir,
+            campaign_create,
+            campaign_read,
+            campaign_write,
+            campaign_rename,
+            campaign_trash,
+            reveal_folder
         ])
         // The main window is created here (`"create": false` in tauri.conf.json) so that in
         // portable mode the webview profile, which holds the saved characters and settings,
