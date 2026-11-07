@@ -12,6 +12,7 @@ roadmap in the README when work on it starts, and into *Done* when it ships.
 | 1.3.0 | **Initiative tracker** | On a campaign's Party tab: turn order and rounds, initiative typed in from the table (or 10 + bonus for monsters), monsters from the loaded content with their stat blocks, several of a kind lettered *Goblin A, B, C…*, HP and temporary HP, conditions with durations, concentration save DCs, legendary actions. Player characters' HP and conditions are shared with their Play mode. |
 | 1.3.0 | **Campaigns and notes** | A campaign holds the party (overview, encounter calculator, initiative tracker) plus Notes, Sessions and Quests. Notes are Markdown with live formatting; `[[links]]` go to notes, characters and compendium entries, with hover cards, autocomplete and backlinks, and are updated when a note is renamed. Note types and tags, full-text search of the notes. Sessions record dates, in-game date, who played, XP and loot; quests are open, done or failed. On desktop a campaign is a folder of Markdown files that also works as an Obsidian vault. GM-only. |
 | 1.3.5 | **Navigation** | The top bar holds the sections (Characters, Campaigns, Compendium, Content) and a Settings menu (units, theme); the open character gets its own bar with its pages, Undo, Redo, History and Close. Fits down to the 900 px minimum window width. |
+| next | **Notes extras and random tables** | Images in notes (paste, drop or insert; `![[map.png]]`), note templates (Obsidian's Templates folder, starter set), a graph of the links between notes, random tables written as notes (with dice and nested tables) and generators for NPCs, names, taverns, shops, encounters from the loaded monsters and coin treasure. |
 
 Also in the app before this backlog: the rules engine that computes every character's real numbers (AC, HP, saves,
 passives, spell DCs, attacks, feature uses), creature stat blocks from loaded content, the party overview, the
@@ -21,7 +22,6 @@ encounter difficulty calculator, metric units and a dark theme.
 
 - **Export and import** a campaign as one file (zip), for backups, sharing and the browser version. Next up.
 - **Apply session XP and loot** to the characters (level-up prompt, items into inventories).
-- Images in notes (`![[map.png]]`), note templates, a graph of the links.
 - A player-facing side (shared notes, player journals): out of scope for now, the campaign tools are GM-only.
 
 ## GM tools
@@ -31,7 +31,8 @@ encounter difficulty calculator, metric units and a dark theme.
 - **Initiative tracker extras:** lair actions on initiative 20, a player view (turn order only) for a second screen,
   monster tokens.
 - **Loot and treasure:** hand out items and coins straight into characters' inventories.
-- **Random tables and generators:** names, encounters, treasure, custom tables.
+- **More generators:** treasure hoards and magic items, plot hooks, dungeon rooms; a shared library of tables between
+  campaigns.
 
 ## Portraits
 

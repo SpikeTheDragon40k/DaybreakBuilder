@@ -1,12 +1,20 @@
 import {
   allTags,
   backlinks,
+  isImagePath,
+  isTemplate,
   newNote,
+  noteFromTemplate,
+  resolveAsset,
+  starterTemplates,
+  templateForType,
+  TEMPLATES_FOLDER,
   nextSessionNumber,
   NOTE_TYPE_LABELS,
   plainLinks,
   NOTE_TYPES,
   QUEST_STATUSES,
+  rollNoteTable,
   resolveNote,
   searchNotes,
   type ContentRegistry,
@@ -25,12 +33,16 @@ import { isTauri, parties, settings } from "../platform";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { newId, useApp } from "../state/app";
 import { campaignParty, getCampaignStore, moveOldParties, withParty, type CampaignRef, type CampaignStore } from "../state/campaign";
-import type { PartyMember } from "../state/party";
+import type { EncounterLine, PartyMember } from "../state/party";
 import { useCampaign, type OpenCampaign } from "../state/useCampaign";
+import { useCampaignImages, type CampaignImages } from "../state/useCampaignImages";
+import { NoteGraph } from "../components/NoteGraph";
+import { CampaignTables } from "./CampaignTables";
+import { newEncounter } from "../state/party";
 import { useUnits } from "../units";
 import { CampaignParty, usePartyMembers } from "./CampaignParty";
 
-type Tab = "notes" | "sessions" | "quests" | "party";
+type Tab = "notes" | "sessions" | "quests" | "tables" | "graph" | "party";
 
 const OPEN_KEY = "openCampaign";
 
@@ -159,7 +171,7 @@ export function CampaignsPage() {
 
 // ---------------------------------------------------------------------------
 
-type Target = { kind: "note"; note: Note } | { kind: "character"; member: PartyMember } | { kind: "compendium"; element: ElementDef } | { kind: "missing" };
+type Target = { kind: "image"; path: string; src: string | null } | { kind: "note"; note: Note } | { kind: "character"; member: PartyMember } | { kind: "compendium"; element: ElementDef } | { kind: "missing" };
 
 /** Element types tried first when a link name matches several elements. */
 const TYPE_ORDER = ["Spell", "Companion", "Magic Item", "Item", "Weapon", "Armor", "Feat", "Race", "Sub Race", "Class", "Archetype", "Background", "Condition", "Information"];
@@ -193,10 +205,11 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
   const registry = content?.registry;
   const units = useUnits();
   const { open, error } = useCampaign(store, campaign);
+  const images = useCampaignImages(store, campaign);
   const party = useMemo(() => (open ? campaignParty(campaign.id, open.meta) : null), [open?.meta, campaign.id]);
   const { members, states } = usePartyMembers(party);
   const [tab, setTab] = useState<Tab>("notes");
-  const [selected, setSelected] = useState<Record<Tab, string | null>>({ notes: null, sessions: null, quests: null, party: null });
+  const [selected, setSelected] = useState<Record<Tab, string | null>>({ notes: null, sessions: null, quests: null, tables: null, graph: null, party: null });
   const [justCreated, setJustCreated] = useState<string | null>(null);
   const [popup, setPopup] = useState<Target | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -204,9 +217,16 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
 
   if (!open) return error ? <div className="callout error">Couldn't open the campaign: {error}</div> : <p className="muted">Loading campaign…</p>;
   const notes = open.notes;
+  // Templates are notes too, but links and lists skip them ([[NPC]] shouldn't open the NPC template).
+  const linkable = notes.filter((n) => !isTemplate(n));
+  const current = notes.find((n) => n.path === selected[tab]) ?? null;
+
+  const imagePath = (target: string) => (isImagePath(target) ? resolveAsset(target, images.paths, current?.path) : undefined);
 
   const resolve = (target: string): Target => {
-    const note = resolveNote(target, notes);
+    const asset = imagePath(target);
+    if (asset) return { kind: "image", path: asset, src: images.url(asset) };
+    const note = resolveNote(target, linkable);
     if (note) return { kind: "note", note };
     const t = target.trim().toLowerCase();
     const member = members.find((m) => m.name.toLowerCase() === t);
@@ -217,7 +237,7 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
   };
 
   const show = (note: Note, inTab?: Tab) => {
-    const where = inTab ?? (tab === "notes" ? "notes" : tabFor(note.type));
+    const where = inTab ?? (tab === "notes" || isTemplate(note) ? "notes" : tabFor(note.type));
     setTab(where);
     setSelected((s) => ({ ...s, [where]: note.path }));
   };
@@ -231,7 +251,10 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
   const openLink = (target: string) => {
     const r = resolve(target);
     if (r.kind === "note") show(r.note);
-    else if (r.kind === "missing") void create(newNote("general", target, notes), tab === "party" ? "notes" : undefined);
+    else if (r.kind === "missing") {
+      if (isImagePath(target)) setMessage(`No image called ${target} in this campaign.`);
+      else void create(fromTemplate("general", target), tab === "party" || tab === "graph" || tab === "tables" ? "notes" : undefined);
+    }
     else setPopup(r);
   };
 
@@ -248,7 +271,16 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
       s.textContent = sub;
       el.append(h, s);
     };
-    if (r.kind === "note") {
+    if (r.kind === "image") {
+      head(r.path.split("/").pop() ?? r.path, r.path);
+      if (r.src) {
+        const img = document.createElement("img");
+        img.src = r.src;
+        img.alt = "";
+        img.className = "link-card-image";
+        el.append(img);
+      }
+    } else if (r.kind === "note") {
       head(r.note.title, [typeLabel(r.note.type), ...r.note.tags.map((t) => `#${t}`)].join(" · "));
       const p = document.createElement("p");
       const text = r.note.body.replace(/[#>*_`~]|\[\[|\]\]/g, "").trim();
@@ -285,7 +317,7 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
       return n.includes(q) ? 1 : 0;
     };
     const out: (LinkSuggestion & { s: number; order: number })[] = [];
-    for (const n of notes) {
+    for (const n of linkable) {
       const s = score(n.title);
       if (s) out.push({ label: n.title, detail: typeLabel(n.type), kind: "note", s, order: 0 });
     }
@@ -310,14 +342,42 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
   };
 
   const linkKind = (target: string): LinkKind => resolve(target).kind;
-  const linkVersion = `${notes.map((n) => n.title).join("\u0000")}|${members.map((m) => m.name).join("\u0000")}|${index.size}`;
-  const editorLinks = { linkKind, onOpenLink: openLink, hoverCard, suggest, linkVersion };
+  const linkVersion = `${linkable.map((n) => n.title).join("\u0000")}|${members.map((m) => m.name).join("\u0000")}|${index.size}|${images.version}|${images.paths.length}`;
+  const image = (target: string) => {
+    if (!isImagePath(target)) return null;
+    const path = imagePath(target);
+    return path ? { src: images.url(path) } : null;
+  };
+  const editorLinks: EditorLinks = {
+    linkKind,
+    onOpenLink: openLink,
+    hoverCard,
+    suggest,
+    linkVersion,
+    image,
+    onAddImage: images.add,
+    onError: (m: string) => setMessage(m),
+  };
 
-  const current = notes.find((n) => n.path === selected[tab]) ?? null;
+  /** A new note of a type, from the campaign's template for that type when it has one. */
+  function fromTemplate(type: string, title: string, fields: Parameters<typeof newNote>[3] = {}): Note {
+    const tpl = templateForType(type, notes);
+    if (!tpl) return newNote(type, title, notes, fields);
+    const n = noteFromTemplate(tpl, title, notes);
+    return { ...n, session: { ...n.session, ...fields.session, present: fields.session?.present ?? n.session.present } };
+  }
+
+  const planEncounter = (lines: EncounterLine[]) => {
+    open.updateMeta((m) => {
+      const enc = m.party.encounter ?? newEncounter();
+      return { ...m, party: { ...m.party, encounter: { ...enc, monsters: [...enc.monsters, ...lines] } } };
+    });
+    setMessage("Added to the encounter planner on the Party tab.");
+  };
 
   const newSession = () =>
     void create(
-      newNote("session", `Session ${nextSessionNumber(notes)}`, notes, {
+      fromTemplate("session", `Session ${nextSessionNumber(notes)}`, {
         session: { number: nextSessionNumber(notes), date: today(), present: members.map((m) => m.name) },
       }),
       "sessions",
@@ -328,8 +388,9 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
       key={current.path}
       campaign={open}
       note={current}
-      notes={notes}
+      notes={linkable}
       members={members}
+      images={images}
       selectTitle={justCreated === current.path}
       onRenamed={(n, changed) => {
         setSelected((s) => ({ ...s, [tab]: n.path }));
@@ -373,9 +434,11 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
       <nav className="subtabs campaign-tabs" aria-label="Campaign">
         {(
           [
-            ["notes", `Notes (${notes.length})`],
-            ["sessions", `Sessions (${notes.filter((n) => n.type === "session").length})`],
-            ["quests", `Quests (${notes.filter((n) => n.type === "quest" && n.status === "open").length} open)`],
+            ["notes", `Notes (${linkable.length})`],
+            ["sessions", `Sessions (${linkable.filter((n) => n.type === "session").length})`],
+            ["quests", `Quests (${linkable.filter((n) => n.type === "quest" && n.status === "open").length} open)`],
+            ["tables", "Tables"],
+            ["graph", "Graph"],
             ["party", `Party (${open.meta.party.memberIds.length})`],
           ] as [Tab, string][]
         ).map(([t, label]) => (
@@ -387,12 +450,42 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
 
       {tab === "party" && party ? (
         <CampaignParty party={party} onChange={(p) => open.updateMeta((m) => withParty(m, p))} />
+      ) : tab === "graph" ? (
+        <NoteGraph
+          notes={linkable}
+          onOpen={(path) => {
+            const n = notes.find((x) => x.path === path);
+            if (n) show(n, "notes");
+          }}
+        />
+      ) : tab === "tables" ? (
+        <CampaignTables
+          notes={linkable}
+          levels={members.map((m) => m.level)}
+          rules={open.meta.party.encounter?.rules ?? "2024"}
+          registry={registry}
+          onCreate={(n) => void create(n, "notes")}
+          onOpen={(n) => show(n, "notes")}
+          onPlan={planEncounter}
+        />
       ) : (
         <div className="notes-layout">
           <aside className="panel notes-sidebar">
-            {tab === "notes" && <NotesList notes={notes} selected={selected.notes} onSelect={(n) => show(n, "notes")} onNew={(type) => void create(newNote(type, type === "general" ? "Untitled" : `New ${typeLabel(type)}`, notes), "notes")} />}
+            {tab === "notes" && (
+              <NotesList
+                notes={notes}
+                selected={selected.notes}
+                onSelect={(n) => show(n, "notes")}
+                onNew={(type) => void create(fromTemplate(type, type === "general" ? "Untitled" : `New ${typeLabel(type)}`), "notes")}
+                onNewTemplate={() => void create({ ...newNote("general", "New template", notes), path: `${TEMPLATES_FOLDER}/${uniqueTemplateTitle(notes)}.md`, title: uniqueTemplateTitle(notes) }, "notes")}
+                onStarters={async () => {
+                  for (const t of starterTemplates(notes)) await open.createNote(t);
+                  setMessage("Added starter templates. New notes of those types start from them; edit them to make them yours.");
+                }}
+              />
+            )}
             {tab === "sessions" && <SessionsList notes={notes} selected={selected.sessions} onSelect={(n) => show(n, "sessions")} onNew={newSession} />}
-            {tab === "quests" && <QuestsList notes={notes} selected={selected.quests} onSelect={(n) => show(n, "quests")} onNew={() => void create(newNote("quest", "New quest", notes), "quests")} />}
+            {tab === "quests" && <QuestsList notes={notes} selected={selected.quests} onSelect={(n) => show(n, "quests")} onNew={() => void create(fromTemplate("quest", "New quest"), "quests")} />}
           </aside>
           <section className="notes-main">
             {editor ?? (
@@ -401,13 +494,18 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
                   ? "Log each session: date, in-game date, who played, XP and loot, with the recap as the note."
                   : tab === "quests"
                     ? "Track quests as open, done or failed. Link the NPC who gave the quest and the places it leads to with [[links]]."
-                    : "Write notes in Markdown. Type [[ to link another note, a party character, or anything in the compendium: [[Fireball]] shows the spell when you hover it."}
+                    : "Write notes in Markdown. Type [[ to link another note, a party character, or anything in the compendium: [[Fireball]] shows the spell when you hover it. Paste or drop an image to add it."}
               </div>
             )}
           </section>
         </div>
       )}
 
+      {popup && popup.kind === "image" && (
+        <Modal title={popup.path.split("/").pop() ?? popup.path} onClose={() => setPopup(null)}>
+          {popup.src ? <img className="image-preview" src={popup.src} alt="" /> : <p className="muted">Loading…</p>}
+        </Modal>
+      )}
       {popup && popup.kind === "compendium" && registry && (
         <Modal title={popup.element.name} onClose={() => setPopup(null)}>
           <ElementDetail element={popup.element} registry={registry} />
@@ -479,7 +577,24 @@ function Highlight({ text, ranges }: { text: string; ranges: [number, number][] 
   return <>{out}</>;
 }
 
-function NotesList({ notes, selected, onSelect, onNew }: { notes: Note[]; selected: string | null; onSelect: (n: Note) => void; onNew: (type: string) => void }) {
+function NotesList({
+  notes: all,
+  selected,
+  onSelect,
+  onNew,
+  onNewTemplate,
+  onStarters,
+}: {
+  notes: Note[];
+  selected: string | null;
+  onSelect: (n: Note) => void;
+  onNew: (type: string) => void;
+  onNewTemplate: () => void;
+  onStarters: () => Promise<void>;
+}) {
+  const notes = useMemo(() => all.filter((n) => !isTemplate(n)), [all]);
+  const templates = all.filter(isTemplate).sort((a, b) => a.title.localeCompare(b.title));
+  const missingStarters = starterTemplates(all).length;
   const [query, setQuery] = useState("");
   const [type, setType] = useState("");
   const [tag, setTag] = useState("");
@@ -546,8 +661,49 @@ function NotesList({ notes, selected, onSelect, onNew }: { notes: Note[]; select
           ))}
         </ul>
       )}
+      <details className="templates-section" open={templates.some((t) => t.path === selected) || undefined}>
+        <summary>
+          Templates <span className="muted small">{templates.length}</span>
+        </summary>
+        <p className="muted small">
+          A new note of a type starts from the template with the same name (<em>NPC</em>, <em>Session</em>…). Use {"{{title}}"}, {"{{date}}"} and {"{{time}}"} in a
+          template. They live in the {TEMPLATES_FOLDER} folder, like in Obsidian.
+        </p>
+        {templates.length > 0 && (
+          <ul className="plain note-list" aria-label="Templates">
+            {templates.map((t) => (
+              <li key={t.path}>
+                <button className={`note-link ${t.path === selected ? "active" : ""}`} onClick={() => onSelect(t)}>
+                  <span className="note-link-title">
+                    <span>{t.title}</span>
+                    <span className="note-type">{typeLabel(t.type)}</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="row wrap">
+          <button className="small" onClick={onNewTemplate}>
+            New template
+          </button>
+          {missingStarters > 0 && (
+            <button className="small ghost" onClick={() => void onStarters()}>
+              Add starter templates
+            </button>
+          )}
+        </div>
+      </details>
     </>
   );
+}
+
+function uniqueTemplateTitle(notes: Note[]): string {
+  const taken = new Set(notes.filter(isTemplate).map((n) => n.title.toLowerCase()));
+  for (let i = 1; ; i++) {
+    const t = i === 1 ? "New template" : `New template ${i}`;
+    if (!taken.has(t.toLowerCase())) return t;
+  }
 }
 
 function SessionsList({ notes, selected, onSelect, onNew }: { notes: Note[]; selected: string | null; onSelect: (n: Note) => void; onNew: () => void }) {
@@ -622,6 +778,9 @@ interface EditorLinks {
   hoverCard: (target: string) => HTMLElement | null;
   suggest: (query: string) => LinkSuggestion[];
   linkVersion: unknown;
+  image: (target: string) => { src: string | null } | null;
+  onAddImage: (file: File) => Promise<string>;
+  onError: (message: string) => void;
 }
 
 function NoteEditor({
@@ -629,6 +788,7 @@ function NoteEditor({
   note,
   notes,
   members,
+  images,
   selectTitle,
   onRenamed,
   onDeleted,
@@ -639,6 +799,7 @@ function NoteEditor({
   note: Note;
   notes: Note[];
   members: PartyMember[];
+  images: CampaignImages;
   selectTitle: boolean;
   onRenamed: (n: Note, changed: number) => void;
   onDeleted: () => void;
@@ -647,7 +808,24 @@ function NoteEditor({
 }) {
   const [title, setTitle] = useState(note.title);
   const [tags, setTags] = useState(note.tags.join(", "));
+  const [roll, setRoll] = useState<string | null>(null);
+  const [imageKey, setImageKey] = useState(0);
   const titleRef = useRef<HTMLInputElement>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const template = isTemplate(note);
+
+  const insertImages = async (files: FileList | null) => {
+    for (const f of [...(files ?? [])]) {
+      try {
+        const path = await images.add(f);
+        const name = path.split("/").pop() ?? path;
+        update((n) => ({ ...n, body: `${n.body}${n.body && !n.body.endsWith("\n") ? "\n" : ""}![[${name}]]\n` }));
+      } catch (e) {
+        links.onError((e as Error).message);
+      }
+    }
+    setImageKey((k) => k + 1);
+  };
   const update = (fn: (n: Note) => Note) => campaign.updateNote(note.path, fn);
   const linked = useMemo(() => backlinks(notes, note), [notes, note]);
 
@@ -710,10 +888,35 @@ function NoteEditor({
             </option>
           ))}
         </select>
+        {note.type === "table" && !template && (
+          <button
+            className="small"
+            onClick={() => {
+              const r = rollNoteTable(note, notes, Math.random);
+              setRoll(r ? `d${r.die}: ${r.roll} → ${r.text}` : "No table or list to roll on yet.");
+            }}
+          >
+            Roll
+          </button>
+        )}
+        <button className="small ghost" onClick={() => fileInput.current?.click()} title="Add an image file to this note (you can also paste or drop one)">
+          Insert image…
+        </button>
+        <input key={imageKey} ref={fileInput} type="file" accept="image/*" multiple hidden onChange={(e) => void insertImages(e.target.files)} />
         <button className="small ghost danger" onClick={() => void remove()}>
           Delete
         </button>
       </div>
+      {template && (
+        <p className="callout small template-hint">
+          This is a template. New {typeLabel(note.type)} notes start from it when its name matches the type. {"{{title}}"}, {"{{date}}"} and {"{{time}}"} are filled in.
+        </p>
+      )}
+      {roll && (
+        <p className="roll-result" role="status">
+          {roll}
+        </p>
+      )}
       <div className="note-props">
         <label>
           Tags

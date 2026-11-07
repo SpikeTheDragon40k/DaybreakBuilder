@@ -91,7 +91,15 @@ export interface CampaignStore {
   /** Desktop: into the campaign's `.trash` folder. Browser: delete. */
   trash(ref: CampaignRef, path: string): Promise<void>;
   reveal?(ref: CampaignRef): Promise<void>;
+  /** Images in the campaign (paths inside it). */
+  listImages(ref: CampaignRef): Promise<string[]>;
+  readImage(ref: CampaignRef, path: string): Promise<Blob>;
+  /** Save a new image; fails if the path is taken. */
+  writeImage(ref: CampaignRef, path: string, data: Uint8Array): Promise<void>;
 }
+
+const MIME: Record<string, string> = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", avif: "image/avif", bmp: "image/bmp" };
+export const imageMime = (path: string) => MIME[path.split(".").pop()?.toLowerCase() ?? ""] ?? "application/octet-stream";
 
 const FOLDERS_KEY = "campaignFolders";
 
@@ -135,6 +143,12 @@ async function diskStore(): Promise<CampaignStore> {
     move: (ref, from, to) => invoke("campaign_rename", { root: ref.id, from, to }),
     trash: (ref, path) => invoke("campaign_trash", { root: ref.id, path }),
     reveal: (ref) => invoke("reveal_folder", { path: ref.id }),
+    listImages: (ref) => invoke<string[]>("campaign_images", { root: ref.id }),
+    async readImage(ref, path) {
+      const bytes = await invoke<ArrayBuffer>("campaign_read_image", { root: ref.id, path });
+      return new Blob([bytes], { type: imageMime(path) });
+    },
+    writeImage: (ref, path, data) => invoke("campaign_write_image", { root: ref.id, path, data: Array.from(data) }),
   };
   return store;
 }
@@ -142,6 +156,7 @@ async function diskStore(): Promise<CampaignStore> {
 interface BrowserCampaign {
   ref: CampaignRef;
   files: Record<string, string>;
+  images?: Record<string, Blob>;
 }
 
 /** Browser (no file system): each campaign is one IndexedDB record holding its files. */
@@ -186,6 +201,21 @@ export function browserStore(newId: () => string): CampaignStore {
       });
     },
     trash: (ref, path) => change(ref, (f) => void delete f[path]),
+    async listImages(ref) {
+      return Object.keys((await get(ref)).images ?? {}).sort();
+    },
+    async readImage(ref, path) {
+      const blob = (await get(ref)).images?.[path];
+      if (!blob) throw new Error(`${path} not found`);
+      return blob;
+    },
+    async writeImage(ref, path, data) {
+      const c = await get(ref);
+      const images = { ...(c.images ?? {}) };
+      if (path in images) throw new Error(`${path} already exists`);
+      images[path] = new Blob([data as BlobPart], { type: imageMime(path) });
+      await idbPut("campaigns", ref.id, { ...c, images });
+    },
   };
   return store;
 }
