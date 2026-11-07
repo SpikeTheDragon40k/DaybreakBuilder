@@ -2,8 +2,8 @@
 
 // Kept from before the rename to DaybreakBuilder so existing saved data stays readable.
 const DB_NAME = "dndbuilder";
-const DB_VERSION = 2;
-export const STORES = ["packs", "packFiles", "characters", "parties"] as const;
+const DB_VERSION = 3;
+export const STORES = ["packs", "packFiles", "characters", "parties", "campaigns"] as const;
 export type StoreName = (typeof STORES)[number];
 
 let dbPromise: Promise<IDBDatabase> | null = null;

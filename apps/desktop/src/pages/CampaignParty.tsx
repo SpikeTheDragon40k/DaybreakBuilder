@@ -4,24 +4,20 @@ import { Portrait } from "../components/Portrait";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { EncounterCalculator } from "./EncounterCalculator";
 import { InitiativeTracker } from "./InitiativeTracker";
-import { characters, parties, type CharacterMeta } from "../platform";
-import { newId, useApp } from "../state/app";
-import { formatGp, memberFromSheet, newParty, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
+import { characters, type CharacterMeta } from "../platform";
+import { useApp } from "../state/app";
+import { formatGp, memberFromSheet, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
 import { useUnits } from "../units";
 
-export function PartyPage() {
-  const { content, openCharacter, character, update } = useApp();
-  const [list, setList] = useState<Party[] | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+/**
+ * The saved characters and the party's members as the party overview shows them. Player characters'
+ * hit points and conditions live in their Play state: the open character goes through the app (so its
+ * autosave and undo see the change); the others are saved directly.
+ */
+export function usePartyMembers(party: Party | null) {
+  const { content, character, update } = useApp();
   const [roster, setRoster] = useState<CharacterMeta[]>([]);
   const [states, setStates] = useState<Record<string, CharacterState>>({});
-
-  useEffect(() => {
-    void parties.list().then((l) => {
-      setList(l);
-      setSelectedId((cur) => cur ?? l[0]?.id ?? null);
-    });
-  }, []);
 
   // Saved characters, reloaded when the open one changes so edits show up.
   useEffect(() => {
@@ -31,8 +27,6 @@ export function PartyPage() {
       setStates(Object.fromEntries(loaded.filter(([, s]) => s).map(([id, s]) => [id, loadCharacterJson(s)])));
     });
   }, [character]);
-
-  const party = list?.find((p) => p.id === selectedId) ?? null;
 
   const members = useMemo(() => {
     if (!party || !content) return [];
@@ -50,8 +44,6 @@ export function PartyPage() {
     return out;
   }, [party, states, content, character]);
 
-  // Player characters' hit points and conditions live in their Play state. The open character goes
-  // through the app (so its autosave and undo see the change); the others are saved directly.
   const playOf = (id: string): PlayState | undefined => (character?.id === id ? character.state.play : states[id]?.play);
   const updatePlay = (id: string, fn: (p: PlayState) => PlayState) => {
     if (character?.id === id) {
@@ -66,75 +58,25 @@ export function PartyPage() {
     void characters.save({ ...meta, updatedAt: new Date().toISOString() }, next);
   };
 
-  const save = (next: Party) => {
-    const stamped = { ...next, updatedAt: new Date().toISOString() };
-    setList((l) => (l ?? []).map((p) => (p.id === stamped.id ? stamped : p)));
-    void parties.save(stamped);
-  };
+  return { roster, states, members, playOf, updatePlay };
+}
 
-  const create = () => {
-    const p = newParty(newId(), `Party ${(list?.length ?? 0) + 1}`);
-    setList((l) => [...(l ?? []), p]);
-    setSelectedId(p.id);
-    void parties.save(p);
-  };
-
-  const remove = (p: Party) => {
-    if (!confirm(`Delete the party “${p.name}”? The characters are kept.`)) return;
-    const rest = (list ?? []).filter((x) => x.id !== p.id);
-    setList(rest);
-    setSelectedId(rest[0]?.id ?? null);
-    void parties.remove(p.id);
-  };
-
-  if (list === null) return <p className="muted">Loading…</p>;
-
+/** A campaign's party: overview, encounter planner and initiative tracker. */
+export function CampaignParty({ party, onChange }: { party: Party; onChange: (p: Party) => void }) {
+  const { content, openCharacter } = useApp();
+  const { roster, states, members, playOf, updatePlay } = usePartyMembers(party);
   return (
-    <div className="party-page">
-      <aside className="party-list panel">
-        <div className="panel-header">
-          <h2>Parties</h2>
-          <button className="small primary" onClick={create}>
-            New party
-          </button>
-        </div>
-        {list.length === 0 ? (
-          <p className="muted small">No parties yet.</p>
-        ) : (
-          <ul className="plain">
-            {list.map((p) => (
-              <li key={p.id}>
-                <button className={`party-link ${p.id === selectedId ? "active" : ""}`} onClick={() => setSelectedId(p.id)}>
-                  <span>{p.name || "Unnamed party"}</span>
-                  <span className="muted small">{p.memberIds.filter((id) => states[id]).length}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </aside>
-
-      {!party ? (
-        <div className="callout">
-          Create a party to keep your players' characters side by side: armor class, hit points, passive senses, spell DCs, languages and
-          an encounter difficulty calculator.
-        </div>
-      ) : (
-        <PartyDetail
-          key={party.id}
-          party={party}
-          members={members}
-          roster={roster}
-          missing={party.memberIds.filter((id) => !states[id]).length}
-          onChange={save}
-          onDelete={() => remove(party)}
-          onOpen={(id) => states[id] && openCharacter(id, states[id])}
-          registry={content?.registry}
-          playOf={playOf}
-          updatePlay={updatePlay}
-        />
-      )}
-    </div>
+    <PartyDetail
+      party={party}
+      members={members}
+      roster={roster}
+      missing={party.memberIds.filter((id) => !states[id]).length}
+      onChange={onChange}
+      onOpen={(id) => states[id] && openCharacter(id, states[id])}
+      registry={content?.registry}
+      playOf={playOf}
+      updatePlay={updatePlay}
+    />
   );
 }
 
@@ -144,7 +86,6 @@ function PartyDetail({
   roster,
   missing,
   onChange,
-  onDelete,
   onOpen,
   registry,
   playOf,
@@ -155,7 +96,6 @@ function PartyDetail({
   roster: CharacterMeta[];
   missing: number;
   onChange: (p: Party) => void;
-  onDelete: () => void;
   onOpen: (id: string) => void;
   registry: ContentRegistry | undefined;
   playOf: (id: string) => PlayState | undefined;
@@ -176,12 +116,6 @@ function PartyDetail({
   return (
     <div className="party-detail">
       <div className="row wrap">
-        <input
-          className="party-name grow"
-          value={party.name}
-          aria-label="Party name"
-          onChange={(e) => onChange({ ...party, name: e.target.value })}
-        />
         <select value={adding} onChange={(e) => setAdding(e.target.value)} aria-label="Character to add" disabled={!available.length}>
           <option value="">{available.length ? "Add a character…" : "No more saved characters"}</option>
           {available.map((c) => (
@@ -192,9 +126,6 @@ function PartyDetail({
         </select>
         <button className="primary" disabled={!adding} onClick={add}>
           Add
-        </button>
-        <button className="ghost danger" onClick={onDelete}>
-          Delete party
         </button>
       </div>
       {missing > 0 && (
@@ -354,9 +285,6 @@ function PartyDetail({
         </>
       )}
 
-      <Box title="DM notes">
-        <textarea rows={4} value={party.notes} placeholder="Session notes, hooks, loot to hand out…" onChange={(e) => onChange({ ...party, notes: e.target.value })} />
-      </Box>
     </div>
   );
 }
