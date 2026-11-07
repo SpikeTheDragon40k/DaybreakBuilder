@@ -192,7 +192,7 @@ before merging.
 
 To release:
 
-1. `node scripts/version.mjs 1.3.0` (sets every version file; `node scripts/version.mjs` alone prints the version and
+1. `node scripts/version.mjs 1.3.5` (sets every version file; `node scripts/version.mjs` alone prints the version and
    fails if any file is out of sync), commit and push to `main`.
 2. Run *Windows portable build* on `main` with *release* ticked.
 3. Build the Linux AppImage locally and add it to the same release:
@@ -201,7 +201,7 @@ To release:
    npm ci
    cd apps/desktop
    npx tauri build --bundles appimage
-   gh release upload v1.3.0 src-tauri/target/release/bundle/appimage/*.AppImage
+   gh release upload v1.3.5 src-tauri/target/release/bundle/appimage/*.AppImage
    ```
 
    On Arch Linux, install the build dependencies first:
