@@ -351,7 +351,9 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
           onChange={(e) => open.updateMeta((m) => ({ ...m, name: e.target.value }))}
           onBlur={onRenamed}
         />
-        <span className="muted small">{open.saving ? "saving…" : "saved"}</span>
+        <span className="muted small save-state" role="status">
+          {open.saving ? "Saving…" : "Saved"}
+        </span>
         {store.reveal && (
           <button className="small" onClick={() => void store.reveal?.(campaign)} title={campaign.id}>
             Show folder
@@ -368,7 +370,7 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
         </p>
       )}
 
-      <div className="theme-switch view-switch" role="tablist" aria-label="Campaign">
+      <nav className="subtabs campaign-tabs" aria-label="Campaign">
         {(
           [
             ["notes", `Notes (${notes.length})`],
@@ -377,11 +379,11 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
             ["party", `Party (${open.meta.party.memberIds.length})`],
           ] as [Tab, string][]
         ).map(([t, label]) => (
-          <button key={t} role="tab" aria-selected={tab === t} aria-pressed={tab === t} onClick={() => setTab(t)}>
+          <button key={t} className={`subtab ${tab === t ? "active" : ""}`} aria-current={tab === t ? "page" : undefined} onClick={() => setTab(t)}>
             {label}
           </button>
         ))}
-      </div>
+      </nav>
 
       {tab === "party" && party ? (
         <CampaignParty party={party} onChange={(p) => open.updateMeta((m) => withParty(m, p))} />

@@ -215,34 +215,123 @@ ul.plain {
 
 /* Layout */
 .app {
+  --appbar-h: 3.2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+/* App bar: the sections, then (when a character is open) that character's pages. */
+.app.has-character {
+  --appbar-h: 6rem;
+}
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
 }
 .topbar {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.4rem 0.8rem;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 0.45rem 0.8rem;
+  min-height: 3.2rem;
 }
 .brand {
   font-weight: 700;
   color: var(--accent);
   margin-right: 1rem;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .tab {
   background: transparent;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 .tab.active {
   background: var(--accent-soft);
   border-color: var(--accent);
+}
+.character-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.8rem;
+  min-height: 2.8rem;
+  border-top: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.character-bar-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: clamp(12rem, 28vw, 26rem);
+  flex-shrink: 1;
+}
+.character-bar-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.save-state {
+  white-space: nowrap;
+}
+.subtabs {
+  display: flex;
+  align-self: stretch;
+  gap: 0.1rem;
+}
+.subtab {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  padding: 0.3rem 0.7rem 0.15rem;
+  white-space: nowrap;
+  color: var(--muted);
+}
+.subtab:hover:not(:disabled) {
+  color: var(--text);
+  border-bottom-color: var(--border);
+}
+.subtab.active {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+.character-bar button.ghost,
+.history-controls button {
+  white-space: nowrap;
+}
+.settings-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.8rem;
+  width: max-content;
+}
+.setting {
+  display: grid;
+  gap: 0.3rem;
+}
+.setting-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.settings-panel .theme-switch {
+  margin-left: 0;
+}
+.settings-panel .theme-switch button {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+}
+.settings-menu .popover-panel {
+  width: auto;
 }
 .main {
   padding: 1rem;
@@ -1044,7 +1133,7 @@ ul.plain {
 }
 .panel.sticky {
   position: sticky;
-  top: 4rem;
+  top: calc(var(--appbar-h) + 0.6rem);
   max-height: calc(100vh - 5rem);
   overflow: auto;
 }
@@ -1111,34 +1200,46 @@ ul.plain {
   gap: 0.15rem;
   margin-right: 0.5rem;
 }
-.history-menu {
+.popover {
   position: relative;
 }
-.history-menu summary {
+.popover-button {
   list-style: none;
   cursor: pointer;
-  padding: 0.15rem 0.5rem;
+  padding: 0.25rem 0.6rem;
   font-size: 0.85rem;
   border: 1px solid transparent;
   border-radius: var(--radius);
+  white-space: nowrap;
+  user-select: none;
 }
-.history-menu summary::-webkit-details-marker {
+.popover-button::-webkit-details-marker {
   display: none;
 }
-.history-menu summary:hover,
-.history-menu[open] summary {
+.popover-button:hover,
+.popover[open] > .popover-button {
   border-color: var(--border);
+  background: var(--panel-2);
 }
-.history-popover {
+.popover-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.popover-panel {
   position: absolute;
-  right: 0;
   top: calc(100% + 4px);
   width: min(22rem, calc(100vw - 2rem));
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--modal-shadow);
-  z-index: 20;
+  z-index: 30;
+}
+.popover-right {
+  right: 0;
+}
+.popover-left {
+  left: 0;
 }
 .history-list {
   max-height: 55vh;
@@ -2036,6 +2137,10 @@ button.swatch.on {
 .campaign-header {
   margin-bottom: 0.2rem;
 }
+.campaign-tabs {
+  border-bottom: 1px solid var(--border);
+  margin: 0.4rem 0 0.9rem;
+}
 .notes-layout {
   display: grid;
   grid-template-columns: 270px minmax(0, 1fr);
@@ -2046,8 +2151,8 @@ button.swatch.on {
   display: grid;
   gap: 0.5rem;
   position: sticky;
-  top: 0.5rem;
-  max-height: calc(100vh - 7rem);
+  top: calc(var(--appbar-h) + 0.6rem);
+  max-height: calc(100vh - var(--appbar-h) - 1.6rem);
   overflow-y: auto;
 }
 .notes-search {

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { HistoryControls } from "./components/HistoryControls";
+import { Popover } from "./components/Popover";
+import { Portrait } from "./components/Portrait";
+import { DEFAULT_TOKEN_COLOR } from "./portraits";
 import { useApp, type Page } from "./state/app";
 import { setTheme, storedTheme, type Theme } from "./theme";
 import { setUnits, useUnits } from "./units";
@@ -13,50 +16,74 @@ import { PlayPage } from "./pages/PlayPage";
 import { SheetPage } from "./pages/SheetPage";
 import { SpellsPage } from "./pages/SpellsPage";
 
-const TABS: { page: Page; label: string; needsCharacter: boolean }[] = [
-  { page: "characters", label: "Characters", needsCharacter: false },
-  { page: "build", label: "Build", needsCharacter: true },
-  { page: "equipment", label: "Equipment", needsCharacter: true },
-  { page: "spells", label: "Spells", needsCharacter: true },
-  { page: "sheet", label: "Sheet", needsCharacter: true },
-  { page: "play", label: "Play", needsCharacter: true },
-  { page: "campaigns", label: "Campaigns", needsCharacter: false },
-  { page: "compendium", label: "Compendium", needsCharacter: false },
-  { page: "content", label: "Content", needsCharacter: false },
+/** The app's sections. Character pages belong to Characters. */
+const SECTIONS: { page: Page; label: string }[] = [
+  { page: "characters", label: "Characters" },
+  { page: "campaigns", label: "Campaigns" },
+  { page: "compendium", label: "Compendium" },
+  { page: "content", label: "Content" },
 ];
+
+/** Pages for the open character, in the order you usually go through them. */
+const CHARACTER_TABS: { page: Page; label: string }[] = [
+  { page: "build", label: "Build" },
+  { page: "equipment", label: "Equipment" },
+  { page: "spells", label: "Spells" },
+  { page: "sheet", label: "Sheet" },
+  { page: "play", label: "Play" },
+];
+
+const isCharacterPage = (p: Page) => CHARACTER_TABS.some((t) => t.page === p);
 
 export function App() {
   const { page, setPage, character, resolved, content, contentError, saving, closeCharacter } = useApp();
   const ready = !!(character && resolved && content);
-  const current = TABS.find((t) => t.page === page)?.needsCharacter && !ready ? "characters" : page;
+  const current = isCharacterPage(page) && !ready ? "characters" : page;
+  const section = isCharacterPage(current) ? "characters" : current;
 
   return (
-    <div className="app">
-      <nav className="topbar no-print">
-        <span className="brand">DaybreakBuilder</span>
-        {TABS.map((t) => (
-          <button
-            key={t.page}
-            className={`tab ${current === t.page ? "active" : ""}`}
-            disabled={t.needsCharacter && !ready}
-            onClick={() => setPage(t.page)}
-          >
-            {t.label}
-          </button>
-        ))}
-        <span className="spacer" />
-        {ready && <HistoryControls />}
-        <UnitSwitch />
-        <ThemeSwitch />
-        {character && (
-          <span className="muted small">
-            {character.state.name} · {saving ? "saving…" : "saved"}
-            <button className="ghost small" onClick={closeCharacter}>
-              Close
+    <div className={`app ${character ? "has-character" : ""}`}>
+      <header className="appbar no-print">
+        <nav className="topbar" aria-label="Main">
+          <span className="brand">DaybreakBuilder</span>
+          {SECTIONS.map((t) => (
+            <button key={t.page} className={`tab ${section === t.page ? "active" : ""}`} aria-current={section === t.page ? "page" : undefined} onClick={() => setPage(t.page)}>
+              {t.label}
             </button>
-          </span>
+          ))}
+          <span className="spacer" />
+          <SettingsMenu />
+        </nav>
+        {character && (
+          <div className="character-bar">
+            <span className="character-bar-who" title={character.state.name || "Unnamed character"}>
+              <Portrait src={character.state.portrait} name={character.state.name} size={28} ring={character.state.tokenColor ?? DEFAULT_TOKEN_COLOR} />
+              <span className="character-bar-name">{character.state.name || "Unnamed character"}</span>
+              <span className="muted small save-state" role="status">
+                {saving ? "Saving…" : "Saved"}
+              </span>
+            </span>
+            <nav className="subtabs" aria-label="Character">
+              {CHARACTER_TABS.map((t) => (
+                <button
+                  key={t.page}
+                  className={`subtab ${current === t.page ? "active" : ""}`}
+                  aria-current={current === t.page ? "page" : undefined}
+                  disabled={!ready}
+                  onClick={() => setPage(t.page)}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+            <span className="spacer" />
+            {ready && <HistoryControls />}
+            <button className="ghost small" onClick={closeCharacter} title="Close this character (it is already saved)">
+              <span aria-hidden>✕</span> Close
+            </button>
+          </div>
         )}
-      </nav>
+      </header>
       <main className="main">
         {contentError && <div className="callout error">Failed to load content: {contentError}</div>}
         {!content && !contentError && <p className="muted">Loading content…</p>}
@@ -74,8 +101,32 @@ export function App() {
   );
 }
 
+/** Units and theme: set once, so they live in a menu instead of the bar. */
+function SettingsMenu() {
+  return (
+    <Popover className="settings-menu" title="Settings" label={<><span aria-hidden>⚙</span> Settings</>}>
+      {() => (
+        <div className="settings-panel">
+          <div className="setting">
+            <span className="setting-label" id="units-label">
+              Units
+            </span>
+            <UnitSwitch />
+          </div>
+          <div className="setting">
+            <span className="setting-label" id="theme-label">
+              Theme
+            </span>
+            <ThemeSwitch />
+          </div>
+        </div>
+      )}
+    </Popover>
+  );
+}
+
 const THEMES: { theme: Theme; label: string }[] = [
-  { theme: "system", label: "Auto" },
+  { theme: "system", label: "System" },
   { theme: "light", label: "Light" },
   { theme: "dark", label: "Dark" },
 ];
@@ -83,12 +134,12 @@ const THEMES: { theme: Theme; label: string }[] = [
 function UnitSwitch() {
   const { system } = useUnits();
   return (
-    <span className="theme-switch" role="group" aria-label="Units">
-      <button aria-pressed={system === "imperial"} title="Feet and pounds" onClick={() => setUnits("imperial")}>
-        ft
+    <span className="theme-switch" role="group" aria-labelledby="units-label">
+      <button aria-pressed={system === "imperial"} onClick={() => setUnits("imperial")}>
+        Feet, pounds
       </button>
-      <button aria-pressed={system === "metric"} title="Meters and kilograms (5 ft = 1.5 m)" onClick={() => setUnits("metric")}>
-        m
+      <button aria-pressed={system === "metric"} title="5 ft = 1.5 m, 1 lb = 0.5 kg" onClick={() => setUnits("metric")}>
+        Meters, kilograms
       </button>
     </span>
   );
@@ -97,7 +148,7 @@ function UnitSwitch() {
 function ThemeSwitch() {
   const [theme, setThemeState] = useState<Theme>(storedTheme);
   return (
-    <span className="theme-switch" role="group" aria-label="Theme">
+    <span className="theme-switch" role="group" aria-labelledby="theme-label">
       {THEMES.map((t) => (
         <button
           key={t.theme}
