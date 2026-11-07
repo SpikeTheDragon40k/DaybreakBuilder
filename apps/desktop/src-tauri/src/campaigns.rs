@@ -75,6 +75,73 @@ pub fn read_campaign(root: &Path) -> Result<Vec<CampaignFile>, String> {
     Ok(out)
 }
 
+pub const IMAGE_EXTENSIONS: [&str; 7] = ["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp"];
+
+/// Biggest image read or written.
+const MAX_IMAGE: u64 = 25 * 1024 * 1024;
+
+fn is_image(path: &Path) -> bool {
+    path.extension()
+        .map(|e| IMAGE_EXTENSIONS.iter().any(|x| e.eq_ignore_ascii_case(x)))
+        .unwrap_or(false)
+}
+
+fn collect_images(root: &Path, dir: &Path, out: &mut Vec<String>) -> std::io::Result<()> {
+    for entry in fs::read_dir(dir)?.filter_map(Result::ok) {
+        if entry.file_name().to_string_lossy().starts_with('.') {
+            continue;
+        }
+        let path = entry.path();
+        let Ok(kind) = entry.file_type() else { continue };
+        if kind.is_dir() {
+            collect_images(root, &path, out)?;
+        } else if kind.is_file() && is_image(&path) {
+            let rel = path.strip_prefix(root).unwrap_or(&path);
+            out.push(rel.to_string_lossy().replace('\\', "/"));
+        }
+    }
+    Ok(())
+}
+
+/// Paths of the images in a campaign folder (outside hidden folders).
+pub fn list_images(root: &Path) -> Result<Vec<String>, String> {
+    let mut out = Vec::new();
+    collect_images(root, root, &mut out).map_err(|e| e.to_string())?;
+    out.sort();
+    Ok(out)
+}
+
+/// Read an image inside the campaign.
+pub fn read_image(root: &Path, rel: &str) -> Result<Vec<u8>, String> {
+    let path = safe_join(root, rel)?;
+    if !is_image(&path) {
+        return Err(format!("Not an image: {}", rel));
+    }
+    let size = fs::metadata(&path).map_err(|e| format!("{}: {}", rel, e))?.len();
+    if size > MAX_IMAGE {
+        return Err(format!("{} is too big", rel));
+    }
+    fs::read(&path).map_err(|e| format!("{}: {}", rel, e))
+}
+
+/// Save an image inside the campaign. Never overwrites an existing file.
+pub fn write_image(root: &Path, rel: &str, data: &[u8]) -> Result<(), String> {
+    let path = safe_join(root, rel)?;
+    if !is_image(&path) {
+        return Err(format!("Not an image: {}", rel));
+    }
+    if data.len() as u64 > MAX_IMAGE {
+        return Err("The image is bigger than 25 MB".into());
+    }
+    if path.exists() {
+        return Err(format!("{} already exists", rel));
+    }
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+    }
+    fs::write(&path, data).map_err(|e| format!("{}: {}", rel, e))
+}
+
 /// Write a file, creating its folder. Goes through a temporary file so a crash never leaves half a note.
 pub fn write_file(root: &Path, rel: &str, content: &str) -> Result<(), String> {
     let path = safe_join(root, rel)?;
@@ -198,6 +265,21 @@ mod tests {
         trash_file(&root, "Notes/Tor.md").unwrap();
         assert!(root.join(".trash/Tor.md").is_file());
         assert_eq!(fs::read_to_string(root.join(".trash/Tor 2.md")).unwrap(), "t2");
+        let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn lists_reads_and_writes_images() {
+        let root = temp("img");
+        write_image(&root, "Attachments/map.png", &[1, 2, 3]).unwrap();
+        assert!(write_image(&root, "Attachments/map.png", &[4]).is_err());
+        assert!(write_image(&root, "Attachments/notes.md", &[4]).is_err());
+        assert!(write_image(&root, "../escape.png", &[4]).is_err());
+        write_image(&root, ".trash/old.png", &[5]).unwrap();
+        write_file(&root, "Notes/A.md", "x").unwrap();
+        assert_eq!(list_images(&root).unwrap(), vec!["Attachments/map.png".to_string()]);
+        assert_eq!(read_image(&root, "Attachments/map.png").unwrap(), vec![1, 2, 3]);
+        assert!(read_image(&root, "Notes/A.md").is_err());
         let _ = fs::remove_dir_all(&root);
     }
 

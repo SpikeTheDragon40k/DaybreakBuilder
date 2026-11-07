@@ -7,7 +7,7 @@
  * kept exactly as written.
  */
 
-export const NOTE_TYPES = ["general", "npc", "location", "item", "faction", "session", "quest"] as const;
+export const NOTE_TYPES = ["general", "npc", "location", "item", "faction", "session", "quest", "table"] as const;
 export type KnownNoteType = (typeof NOTE_TYPES)[number];
 
 export const NOTE_TYPE_LABELS: Record<KnownNoteType, string> = {
@@ -18,6 +18,7 @@ export const NOTE_TYPE_LABELS: Record<KnownNoteType, string> = {
   faction: "Faction",
   session: "Session",
   quest: "Quest",
+  table: "Random table",
 };
 
 export const QUEST_STATUSES = ["open", "done", "failed"] as const;
@@ -242,7 +243,7 @@ export function serializeNote(n: Note): string {
   return `---\n${lines.join("\n")}\n---\n${n.body}`;
 }
 
-export const FOLDERS: Record<string, string> = { session: "Sessions", quest: "Quests" };
+export const FOLDERS: Record<string, string> = { session: "Sessions", quest: "Quests", table: "Tables" };
 
 export function folderForType(type: string): string {
   return FOLDERS[type] ?? "Notes";
@@ -373,13 +374,19 @@ export function renameNote(notes: Note[], path: string, title: string): { notes:
   const renamed = retitle(note, newTitle);
   const changed: string[] = [];
   const next = notes.map((n) => {
-    const body = renameLinksInText(n.body, notes, path, newTitle);
+    let body = renameLinksInText(n.body, notes, path, newTitle);
+    // A note whose first line is its title as a heading ("# Mira") keeps them matching.
+    if (n.path === path) body = body.replace(new RegExp(`^(#\\s+)${escapeRegExp(note.title)}[ \\t]*$`, "m"), (m, h: string, offset: number) => (body.slice(0, offset).trim() ? m : `${h}${newTitle}`));
     const base = n.path === path ? renamed : n;
     if (body === n.body) return base;
     if (n.path !== path) changed.push(n.path);
     return { ...base, body };
   });
   return { notes: next, renamed: next.find((n) => n.path === renamed.path) ?? renamed, changed };
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export interface Backlink {
@@ -525,4 +532,150 @@ export function allTags(notes: Note[]): string[] {
   const count = new Map<string, number>();
   for (const n of notes) for (const t of n.tags) count.set(t, (count.get(t) ?? 0) + 1);
   return [...count].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([t]) => t);
+}
+
+// ---------------------------------------------------------------------------
+// Templates (the Obsidian convention: notes in a Templates folder)
+
+export const TEMPLATES_FOLDER = "Templates";
+
+export function isTemplate(n: Pick<Note, "path">): boolean {
+  return n.path.toLowerCase().startsWith(`${TEMPLATES_FOLDER.toLowerCase()}/`);
+}
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** Fill a template's {{title}}, {{date}} and {{time}}. */
+export function fillTemplate(text: string, title: string, now = new Date()): string {
+  const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const time = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  return text.replace(/\{\{\s*(title|date|time)\s*\}\}/gi, (_, k: string) => (k.toLowerCase() === "title" ? title : k.toLowerCase() === "date" ? date : time));
+}
+
+/** A new note made from a template: its type, tags, other front matter and text, under a new title. */
+export function noteFromTemplate(template: Note, title: string, notes: Note[], now = new Date()): Note {
+  const n = newNote(template.type, title, notes);
+  return {
+    ...n,
+    tags: [...template.tags],
+    status: template.status,
+    session: { ...template.session, present: [...template.session.present] },
+    frontMatter: template.frontMatter.map((e) => ({ ...e, raw: fillTemplate(e.raw, n.title, now) })),
+    body: fillTemplate(template.body, n.title, now),
+  };
+}
+
+/** The template for a type, if the campaign has one named after it ("NPC", "Session"…) or of that type. */
+export function templateForType(type: string, notes: Note[]): Note | undefined {
+  const templates = notes.filter(isTemplate);
+  const label = (NOTE_TYPE_LABELS[type as KnownNoteType] ?? type).toLowerCase();
+  return templates.find((t) => t.title.toLowerCase() === label) ?? templates.find((t) => t.type === type);
+}
+
+export const STARTER_TEMPLATES: { title: string; type: string; body: string }[] = [
+  { title: "NPC", type: "npc", body: "**Role:** \n**Where:** \n\n## Look and manner\n\n## Wants\n\n## Knows\n\n## Secrets\n" },
+  { title: "Location", type: "location", body: "**Region:** \n\n## What the party sees\n\n## People here\n\n## Hooks\n" },
+  { title: "Faction", type: "faction", body: "**Leader:** \n**Base:** \n\n## Goals\n\n## Allies and enemies\n\n## What the party owes them\n" },
+  { title: "Item", type: "item", body: "**Owner:** \n\n## Description\n\n## History\n" },
+  { title: "Session", type: "session", body: "## Recap\n\n## Scenes\n\n- \n\n## Loose ends\n\n- [ ] \n" },
+  { title: "Quest", type: "quest", body: "**Given by:** \n**Reward:** \n\n## Goal\n\n## Leads\n\n- [ ] \n" },
+  { title: "Random table", type: "table", body: "| d6 | Result |\n| --- | --- |\n| 1 | |\n| 2 | |\n| 3 | |\n| 4 | |\n| 5 | |\n| 6 | |\n" },
+];
+
+/** Starter templates the campaign doesn't have yet, as notes in the Templates folder. */
+export function starterTemplates(notes: Note[]): Note[] {
+  const taken = new Set(notes.map((n) => n.path.toLowerCase()));
+  return STARTER_TEMPLATES.filter((t) => !taken.has(`${TEMPLATES_FOLDER}/${t.title}.md`.toLowerCase())).map((t) => ({
+    path: `${TEMPLATES_FOLDER}/${t.title}.md`,
+    title: t.title,
+    type: t.type,
+    tags: [],
+    session: { present: [] },
+    status: "open",
+    body: t.body,
+    frontMatter: [],
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// Images
+
+export const IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp"];
+export const ATTACHMENTS_FOLDER = "Attachments";
+
+export function isImagePath(path: string): boolean {
+  const ext = path.split(".").pop()?.toLowerCase() ?? "";
+  return path.includes(".") && IMAGE_EXTENSIONS.includes(ext);
+}
+
+/**
+ * The image a link or Markdown image points at: by file name anywhere in the
+ * campaign (`![[map.png]]`), or by path from the campaign or the note's folder.
+ */
+export function resolveAsset(target: string, assets: string[], fromNote?: string): string | undefined {
+  let t = target.trim().replace(/\\/g, "/");
+  try {
+    t = decodeURI(t);
+  } catch {
+    /* keep as written */
+  }
+  t = t.replace(/^\.\//, "").replace(/^\//, "").toLowerCase();
+  if (!t) return undefined;
+  const byLower = assets.map((a) => [a, a.toLowerCase()] as const);
+  if (t.includes("/")) {
+    const dir = fromNote?.includes("/") ? fromNote.slice(0, fromNote.lastIndexOf("/") + 1).toLowerCase() : "";
+    return (byLower.find(([, a]) => a === t) ?? byLower.find(([, a]) => a === dir + t) ?? byLower.find(([, a]) => a.endsWith(`/${t}`)))?.[0];
+  }
+  return byLower.filter(([, a]) => a === t || a.endsWith(`/${t}`)).sort((a, b) => a[0].length - b[0].length)[0]?.[0];
+}
+
+/** Where a new image goes: the Attachments folder, under a free, file-safe name. */
+export function attachmentPath(fileName: string, assets: string[]): string {
+  const dot = fileName.lastIndexOf(".");
+  const ext = dot > 0 ? fileName.slice(dot + 1).toLowerCase() : "png";
+  const stem = safeTitle(dot > 0 ? fileName.slice(0, dot) : fileName) || "image";
+  const taken = new Set(assets.map((a) => (a.split("/").pop() ?? a).toLowerCase()));
+  let name = `${stem}.${ext}`;
+  for (let i = 2; taken.has(name.toLowerCase()); i++) name = `${stem} ${i}.${ext}`;
+  return `${ATTACHMENTS_FOLDER}/${name}`;
+}
+
+// ---------------------------------------------------------------------------
+// Graph
+
+export interface GraphNode {
+  path: string;
+  title: string;
+  type: string;
+  /** Links in and out. */
+  degree: number;
+}
+
+export interface NoteGraph {
+  nodes: GraphNode[];
+  /** Pairs of node indexes, each pair once. */
+  edges: [number, number][];
+}
+
+/** Notes and the links between them (templates left out). */
+export function noteGraph(notes: Note[]): NoteGraph {
+  const list = notes.filter((n) => !isTemplate(n));
+  const index = new Map(list.map((n, i) => [n.path, i]));
+  const seen = new Set<string>();
+  const edges: [number, number][] = [];
+  const degree = list.map(() => 0);
+  list.forEach((n, i) => {
+    for (const l of parseLinks(n.body)) {
+      const target = resolveNote(l.target, list);
+      const j = target ? index.get(target.path) : undefined;
+      if (j === undefined || j === i) continue;
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      edges.push(i < j ? [i, j] : [j, i]);
+      degree[i]++;
+      degree[j]++;
+    }
+  });
+  return { nodes: list.map((n, i) => ({ path: n.path, title: n.title, type: n.type, degree: degree[i] })), edges };
 }

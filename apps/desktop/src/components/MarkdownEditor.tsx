@@ -19,7 +19,7 @@ import { tags as t } from "@lezer/highlight";
 import { useEffect, useRef } from "react";
 
 /** What a `[[link]]` points at, for its colour. */
-export type LinkKind = "note" | "character" | "compendium" | "missing";
+export type LinkKind = "note" | "character" | "compendium" | "missing" | "image";
 
 export interface LinkSuggestion {
   label: string;
@@ -40,6 +40,14 @@ export interface MarkdownEditorProps {
   linkVersion: unknown;
   placeholder?: string;
   ariaLabel?: string;
+  /**
+   * For an embedded image (`![[map.png]]`, `![alt](path)`): null if the target isn't an
+   * image of the campaign, otherwise its URL (null while it loads; change linkVersion when it has).
+   */
+  image?: (target: string) => { src: string | null } | null;
+  /** Save a pasted or dropped image; returns the link target to embed. */
+  onAddImage?: (file: File) => Promise<string>;
+  onError?: (message: string) => void;
 }
 
 const WIKI = /(!?)\[\[([^[\]\n]+?)\]\]/g;
@@ -100,7 +108,33 @@ class CheckboxWidget extends WidgetType {
   }
 }
 
+class ImageWidget extends WidgetType {
+  constructor(
+    readonly src: string,
+    readonly alt: string,
+    readonly width?: number,
+  ) {
+    super();
+  }
+  eq(other: ImageWidget) {
+    return other.src === this.src && other.width === this.width;
+  }
+  toDOM() {
+    const img = document.createElement("img");
+    img.className = "cm-md-image";
+    img.src = this.src;
+    img.alt = this.alt;
+    if (this.width) img.style.width = `${this.width}px`;
+    return img;
+  }
+}
+
 const hide = Decoration.replace({});
+
+interface PreviewHooks {
+  kind: (target: string) => LinkKind;
+  image: (target: string) => { src: string | null } | null;
+}
 
 /** Lines that have the cursor or a selection: those show their Markdown as typed. */
 function activeLines(view: EditorView): Set<number> {
@@ -114,7 +148,7 @@ function activeLines(view: EditorView): Set<number> {
   return out;
 }
 
-function livePreview(kindRef: { current: (target: string) => LinkKind }): Extension {
+function livePreview(hooks: { current: PreviewHooks }): Extension {
   const build = (view: EditorView): DecorationSet => {
     const doc = view.state.doc;
     const active = activeLines(view);
@@ -128,7 +162,14 @@ function livePreview(kindRef: { current: (target: string) => LinkKind }): Extens
         const line = doc.lineAt(pos);
         for (const w of wikiLinksIn(line.text, line.from)) {
           wiki.push(w);
-          const kind = kindRef.current(w.target);
+          const img = w.embed ? hooks.current.image(w.target) : null;
+          if (img?.src && !isActive(w.from)) {
+            const alias = doc.sliceString(w.textFrom, w.textTo);
+            const width = w.textFrom > w.from + 3 && /^\d+$/.test(alias) ? Number(alias) : undefined;
+            decos.push(Decoration.replace({ widget: new ImageWidget(img.src, w.target, width) }).range(w.from, w.to));
+            continue;
+          }
+          const kind = img ? "image" : hooks.current.kind(w.target);
           const mark = Decoration.mark({ class: `cm-wikilink cm-wikilink-${kind}`, attributes: { "data-target": w.target } });
           if (isActive(w.from)) {
             decos.push(Decoration.mark({ class: "cm-wikilink-syntax" }).range(w.from, w.textFrom));
@@ -203,6 +244,16 @@ function livePreview(kindRef: { current: (target: string) => LinkKind }): Extens
               decos.push(Decoration.replace({ widget: new CheckboxWidget(checked) }).range(node.from, node.to));
               return;
             }
+            case "Image": {
+              const url = node.node.getChild("URL");
+              const img = url ? hooks.current.image(doc.sliceString(url.from, url.to)) : null;
+              if (img?.src) {
+                const marks = node.node.getChildren("LinkMark");
+                const alt = marks.length >= 2 ? doc.sliceString(marks[0].to, marks[1].from) : "";
+                decos.push(Decoration.replace({ widget: new ImageWidget(img.src, alt) }).range(node.from, node.to));
+              }
+              return false;
+            }
             case "Link": {
               const marks = node.node.getChildren("LinkMark");
               const url = node.node.getChild("URL");
@@ -267,7 +318,10 @@ export function MarkdownEditor(props: MarkdownEditorProps) {
   const view = useRef<EditorView | null>(null);
   const latest = useRef(props);
   latest.current = props;
-  const kindRef = useRef((target: string) => latest.current.linkKind(target));
+  const hooks = useRef<PreviewHooks>({
+    kind: (target) => latest.current.linkKind(target),
+    image: (target) => latest.current.image?.(target) ?? null,
+  });
 
   useEffect(() => {
     if (!host.current) return;
@@ -299,7 +353,43 @@ export function MarkdownEditor(props: MarkdownEditorProps) {
       { hoverTime: 350 },
     );
 
+    const insertImages = (v: EditorView, files: File[], at: number) => {
+      const add = latest.current.onAddImage;
+      if (!add) return;
+      void (async () => {
+        let pos = at;
+        for (const f of files) {
+          try {
+            const path = await add(f);
+            const name = path.split("/").pop() ?? path;
+            const before = pos > 0 && v.state.doc.sliceString(pos - 1, pos) !== "\n" ? "\n" : "";
+            const insert = `${before}![[${name}]]\n`;
+            v.dispatch({ changes: { from: pos, insert }, selection: { anchor: pos + insert.length } });
+            pos += insert.length;
+          } catch (e) {
+            latest.current.onError?.((e as Error).message);
+          }
+        }
+      })();
+    };
+    const imagesOf = (list: FileList | null | undefined) => [...(list ?? [])].filter((f) => f.type.startsWith("image/"));
+
     const clicks = EditorView.domEventHandlers({
+      paste(e, v) {
+        const files = imagesOf(e.clipboardData?.files);
+        if (!files.length || !latest.current.onAddImage) return false;
+        e.preventDefault();
+        insertImages(v, files, v.state.selection.main.head);
+        return true;
+      },
+      drop(e, v) {
+        const files = imagesOf(e.dataTransfer?.files);
+        if (!files.length || !latest.current.onAddImage) return false;
+        e.preventDefault();
+        const pos = v.posAtCoords({ x: e.clientX, y: e.clientY }) ?? v.state.selection.main.head;
+        insertImages(v, files, v.state.doc.lineAt(pos).to);
+        return true;
+      },
       mousedown(e, v) {
         const el = (e.target as HTMLElement).closest?.(".cm-wikilink") as HTMLElement | null;
         if (el && e.button === 0) {
@@ -333,7 +423,7 @@ export function MarkdownEditor(props: MarkdownEditorProps) {
           EditorView.lineWrapping,
           markdown({ base: markdownLanguage, addKeymap: false }),
           syntaxHighlighting(highlight),
-          livePreview(kindRef),
+          livePreview(hooks),
           autocompletion({ override: [complete], icons: false, activateOnTyping: true }),
           hover,
           clicks,

@@ -188,6 +188,22 @@ fn campaign_trash(root: String, path: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn campaign_images(root: String) -> Result<Vec<String>, String> {
+    campaigns::list_images(Path::new(&root))
+}
+
+/// The image's bytes, sent as raw binary rather than a JSON array.
+#[tauri::command]
+fn campaign_read_image(root: String, path: String) -> Result<tauri::ipc::Response, String> {
+    Ok(tauri::ipc::Response::new(campaigns::read_image(Path::new(&root), &path)?))
+}
+
+#[tauri::command]
+fn campaign_write_image(root: String, path: String, data: Vec<u8>) -> Result<(), String> {
+    campaigns::write_image(Path::new(&root), &path, &data)
+}
+
+#[tauri::command]
 fn reveal_folder(path: String) -> Result<(), String> {
     let dir = PathBuf::from(&path);
     if !dir.is_dir() {
@@ -213,6 +229,9 @@ pub fn run() {
             campaign_write,
             campaign_rename,
             campaign_trash,
+            campaign_images,
+            campaign_read_image,
+            campaign_write_image,
             reveal_folder
         ])
         // The main window is created here (`"create": false` in tauri.conf.json) so that in

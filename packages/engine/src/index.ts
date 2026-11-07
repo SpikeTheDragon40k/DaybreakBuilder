@@ -21,3 +21,5 @@ export * from "./encounters.js";
 export * from "./play.js";
 export * from "./initiative.js";
 export * from "./notes.js";
+export * from "./tables.js";
+export * from "./generators.js";

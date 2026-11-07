@@ -100,6 +100,13 @@ describe("links", () => {
     expect(by("Notes/Mira Brightforge.md")).toBe("Lives in [[Phandalin]].");
   });
 
+  it("keeps a title heading at the top in step with the title", () => {
+    const ns = [parseNote("Notes/New NPC.md", "\n# New NPC\nText about New NPC.\n# New NPC"), parseNote("Notes/B.md", "# New NPC")];
+    const r = renameNote(ns, "Notes/New NPC.md", "Mira");
+    expect(r.renamed.body).toBe("\n# Mira\nText about New NPC.\n# New NPC");
+    expect(r.notes[1].body).toBe("# New NPC");
+  });
+
   it("keeps titles unique and file-safe", () => {
     expect(safeTitle(' What: is "this"? / ok. ')).toBe("What is this ok");
     expect(safeTitle("CON")).toBe("CON note");

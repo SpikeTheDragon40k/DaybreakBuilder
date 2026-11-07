@@ -101,6 +101,16 @@ Play), with Undo, Redo, the change history and *Close*.
      tags and text, with type and tag filters. The compendium has its own search.
    * **Sessions** record the date, in-game date, who played, XP and loot, with the recap as the note text.
    * **Quests** are open, done or failed.
+   * **Images**: paste or drop an image into a note, or use *Insert image…*. It is saved in the campaign's
+     `Attachments` folder and shown in the note (`![[map.png]]`, Obsidian style; `![[map.png|300]]` sets the width).
+   * **Templates**: notes in the `Templates` folder. A new NPC, location, session… starts from the template with that
+     name; `{{title}}`, `{{date}}` and `{{time}}` are filled in. *Add starter templates* creates a set to edit.
+   * **Tables**: random tables are notes of type *Random table* holding a Markdown table (a d6, d20 or d100 column
+     with numbers or ranges, and the results) or a bulleted list. *Roll* picks a result; dice in it are rolled
+     ("2d6 goblins") and a result that links another table rolls that one too. Generators make NPCs, names, taverns,
+     shops, coin treasure by CR, and encounters from the loaded monsters sized to the party (one click puts them in
+     the encounter planner). Results can be saved as notes.
+   * **Graph**: every note and the links between them; click a note to open it.
    * **Party**: the party view lines up AC, HP, initiative, speed, passive Perception/Insight/Investigation, spell
      save DCs, senses and coin for every member, adds up the encounter XP budget (DMG 2014 thresholds), and shows who
      speaks which language, who is best at each skill, saving throw coverage and who needs light. Edits to a
@@ -116,7 +126,7 @@ Play), with Undo, Redo, the change history and *Close*.
    in the portable data folder): `Notes/`, `Sessions/` and `Quests/` hold one `.md` file per note, with the type,
    tags and session or quest fields as YAML front matter, and `campaign.json` holds the party and the encounter.
    The folder works as an Obsidian vault, and *Open folder…* uses an existing one (an Obsidian vault, a folder synced
-   with Dropbox or Syncthing) as a campaign. Changes made in other programs show up when you switch back to the app.
+   with Dropbox or Syncthing) as a campaign; its images and templates work too. Changes made in other programs show up when you switch back to the app.
    Deleted notes go to the campaign's `.trash` folder. In the browser version campaigns are kept in browser storage.
    Parties made with earlier versions become campaigns automatically.
 
