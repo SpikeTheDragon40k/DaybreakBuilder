@@ -68,6 +68,10 @@ npm test
 
 ## Using the app
 
+The top bar has the app's sections (Characters, Campaigns, Compendium, Content) and *Settings* (units and light or
+dark theme). When a character is open, a second bar shows its name and its pages (Build, Equipment, Spells, Sheet,
+Play), with Undo, Redo, the change history and *Close*.
+
 1. **Content** tab → *Download* (prefilled with the 2024-rules index; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
    you can also drop XML files into `Documents/DaybreakBuilder/custom` (like Aurora's custom folder) and press *Rescan*.
 2. **Characters** → *New character* (or *Import…* an Aurora `.dnd5e` file).
@@ -118,7 +122,7 @@ npm test
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
-**Units:** the *ft / m* switch in the top bar shows distances and weights in meters and kilograms everywhere
+**Units:** *Settings* (top right) → *Meters, kilograms* shows distances and weights in meters and kilograms everywhere
 (sheet, descriptions, compendium, PDF export). It uses the convention of the game's metric editions, which keeps the
 5-foot grid: 5 ft = 1.5 m, 1 mile = 1.5 km, 1 inch = 2.5 cm, 1 lb = 0.5 kg. Content files stay in feet and pounds.
 
