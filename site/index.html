@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DaybreakBuilder: D&amp;D 5e character builder and GM toolkit</title>
+<meta name="description" content="Free, open-source D&amp;D 5e character builder and GM toolkit for Windows and Linux. Reads Aurora Builder content.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="canonical" href="https://spikethedragon40k.github.io/DaybreakBuilder/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DaybreakBuilder: Build heroes. Run worlds.">
+<meta property="og:description" content="Free, open-source D&amp;D 5e (2014 and 2024 rules) character builder and GM toolkit for Windows and Linux. Reads Aurora Builder content.">
+<meta property="og:url" content="https://spikethedragon40k.github.io/DaybreakBuilder/">
+<meta property="og:image" content="https://spikethedragon40k.github.io/DaybreakBuilder/logo.png">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f2ee;
+  --panel: #ffffff;
+  --panel-2: #f8f6f2;
+  --text: #1f1d1a;
+  --muted: #6b665e;
+  --border: #ddd7cc;
+  --accent: #8b1e1e;
+  --accent-text: #ffffff;
+  --accent-soft: #f3e3e1;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(60, 30, 20, 0.06);
+  --radius: 10px;
+  --display: "Cinzel", Georgia, "Times New Roman", serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141317;
+    --panel: #1e1d23;
+    --panel-2: #26252c;
+    --text: #ece8e1;
+    --muted: #a7a197;
+    --border: #393740;
+    --accent: #e57368;
+    --accent-text: #1a1012;
+    --accent-soft: #3d2523;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 var(--body);
+  overflow-x: hidden;
+}
+a { color: var(--accent); }
+img { max-width: 100%; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; letter-spacing: 0.02em; }
+h2 { font-size: clamp(1.6rem, 4vw, 2.1rem); margin: 0 0 0.4rem; }
+h3 { font-size: 1.1rem; margin: 0 0 0.3rem; }
+section { padding: 64px 0; }
+section + section { border-top: 1px solid var(--border); }
+.lead { color: var(--muted); max-width: 46rem; margin: 0 0 2rem; }
+
+/* Top bar */
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.top .wrap { display: flex; align-items: center; gap: 16px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-family: var(--display); font-weight: 700; }
+.brand img { width: 28px; height: 28px; border-radius: 6px; }
+.top nav { margin-left: auto; display: flex; gap: 18px; font-size: 0.95rem; }
+.top nav a { color: var(--muted); text-decoration: none; }
+.top nav a:hover { color: var(--text); }
+@media (max-width: 680px) { .top nav a:not(.keep) { display: none; } }
+
+/* Hero */
+.hero { padding: 72px 0 64px; text-align: center; background: radial-gradient(60rem 30rem at 50% -10rem, var(--accent-soft), transparent 70%); }
+.hero img { width: 112px; height: 112px; border-radius: 24px; box-shadow: var(--shadow); }
+.hero h1 { font-size: clamp(2.2rem, 7vw, 3.6rem); margin: 20px 0 8px; }
+.hero p { font-size: 1.15rem; color: var(--muted); max-width: 40rem; margin: 0 auto 28px; }
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; font-weight: 600; text-decoration: none; border: 1px solid var(--border); color: var(--text); background: var(--panel); }
+.btn.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn:hover { filter: brightness(1.06); }
+.platforms { margin-top: 18px; font-size: 0.9rem; color: var(--muted); }
+
+/* Feature grid */
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card .icon { font-size: 1.6rem; line-height: 1; margin-bottom: 10px; }
+.card p, .card ul { margin: 0; color: var(--muted); font-size: 0.97rem; }
+.card ul { padding-left: 1.1rem; }
+
+/* Gallery */
+.gallery { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.gallery figure { margin: 0; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.gallery a { display: block; }
+.gallery img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+.gallery figcaption { padding: 10px 14px; font-size: 0.92rem; color: var(--muted); }
+.gallery figure.missing { display: none; }
+#shots.empty { display: none; }
+
+/* Download table */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); }
+table { width: 100%; border-collapse: collapse; font-size: 0.97rem; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--panel-2); font-weight: 600; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--panel-2); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; overflow-wrap: anywhere; }
+.note { color: var(--muted); font-size: 0.95rem; }
+
+/* Code blocks with copy buttons */
+.code { position: relative; margin: 12px 0; }
+.code pre { margin: 0; padding: 14px 16px; padding-right: 76px; background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; font: 0.9rem/1.5 var(--mono); }
+.copy { position: absolute; top: 8px; right: 8px; font: 600 0.8rem var(--body); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--panel); color: var(--text); cursor: pointer; }
+
+/* Steps */
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.steps li { counter-increment: step; position: relative; padding: 16px 16px 16px 64px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); }
+.steps li::before { content: counter(step); position: absolute; left: 16px; top: 14px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-text); font-family: var(--display); font-weight: 700; }
+.steps strong { display: block; }
+.steps span { color: var(--muted); }
+
+/* FAQ */
+details { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 600; }
+details p { color: var(--muted); margin: 10px 0 0; }
+
+/* Footer */
+footer { border-top: 1px solid var(--border); padding: 36px 0 48px; color: var(--muted); font-size: 0.92rem; }
+footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 14px; }
+footer p { margin: 6px 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="logo.png" alt="">DaybreakBuilder</a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#shots">Screenshots</a>
+      <a href="#start">Quick start</a>
+      <a href="#faq">FAQ</a>
+      <a class="keep" href="#download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <img src="logo.png" alt="DaybreakBuilder logo" width="112" height="112">
+      <h1>Build heroes. Run worlds.</h1>
+      <p>Free, open-source D&amp;D 5e character builder and GM toolkit for Windows and Linux. Reads Aurora content.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#download">Download</a>
+        <a class="btn" href="https://github.com/SpikeTheDragon40k/DaybreakBuilder">Source on GitHub</a>
+      </div>
+      <div class="platforms">2014 and 2024 rules · Windows 10/11 · Linux · MIT license</div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap">
+      <h2>A new dawn for Aurora content</h2>
+      <p class="lead">Aurora Builder was a well-loved Windows-only builder whose development stopped around 2020. Its data
+        format lives on in the community-maintained <a href="https://github.com/AuroraLegacy/elements">AuroraLegacy/elements</a>
+        repository. DaybreakBuilder is a from-scratch reimplementation of the rules engine with a modern interface. It
+        loads the same <code>.xml</code> element files and <code>.index</code> content indexes and imports Aurora
+        <code>.dnd5e</code> characters.</p>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Features</h2>
+      <p class="lead">Everything works offline, on your own computer, from the content you load.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="icon" aria-hidden="true">🛡️</div>
+          <h3>Character building</h3>
+          <p>Races, classes and multiclassing, backgrounds, feats, ability score improvements, spells and equipment,
+            all driven by the content's own rules. Supports the 2024 backgrounds with Origin feats and background
+            ability increases. Red dots mark open choices; undo, redo and a change history.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">📜</div>
+          <h3>The full sheet, explained</h3>
+          <p>Abilities, saves, skills, AC, hit points, speeds, proficiencies, features and spellcasting, with a breakdown
+            of where every number comes from. Export a multi-page PDF sheet (US Letter or A4) with spellcasting,
+            companion and background pages. Metric units if you prefer them.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🎲</div>
+          <h3>Play mode</h3>
+          <p>Use the character at the table: hit points with temporary HP and death saves, spell slots and Pact Magic,
+            limited-use features, conditions, Exhaustion, Heroic Inspiration, short and long rests. Roll real dice and
+            enter the results; the app adds the bonuses. Everything is logged and can be undone.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🗺️</div>
+          <h3>Campaigns and notes</h3>
+          <p>Markdown notes with live formatting and <code>[[links]]</code> to notes, characters and anything in the
+            compendium, with hover cards and backlinks. Sessions, quests, images, templates and a graph of your notes.
+            On desktop a campaign is a folder of Markdown files that also opens as an Obsidian vault.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">⚔️</div>
+          <h3>Encounters and initiative</h3>
+          <p>Plan encounters from the loaded monsters against the party's XP budget (2024 or 2014 DMG), save them to the
+            campaign and run them in the initiative tracker: turn order, rounds, hit points, conditions with durations,
+            concentration and legendary actions, shared with the players' Play mode.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">🧭</div>
+          <h3>Tables, generators and sharing</h3>
+          <p>Random tables written as notes, with dice and nested tables. Generators for NPCs, names, taverns, shops,
+            treasure and encounters. Character portraits and tokens for virtual tabletops. Export a whole campaign,
+            party included, as one zip file.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="shots">
+    <div class="wrap">
+      <h2>Screenshots</h2>
+      <p class="lead">Click a picture to see it full size.</p>
+      <div class="gallery">
+        <figure><a href="screenshots/build.png"><img src="screenshots/build.png" alt="The Build page with class levels and open choices" loading="lazy"></a><figcaption>Build: classes, levels and choices</figcaption></figure>
+        <figure><a href="screenshots/sheet.png"><img src="screenshots/sheet.png" alt="The character sheet with number breakdowns" loading="lazy"></a><figcaption>Sheet: every number explained</figcaption></figure>
+        <figure><a href="screenshots/play.png"><img src="screenshots/play.png" alt="Play mode with hit points, spell slots and conditions" loading="lazy"></a><figcaption>Play mode at the table</figcaption></figure>
+        <figure><a href="screenshots/campaign.png"><img src="screenshots/campaign.png" alt="A campaign note with links and a hover card" loading="lazy"></a><figcaption>Campaign notes with links</figcaption></figure>
+        <figure><a href="screenshots/encounter.png"><img src="screenshots/encounter.png" alt="The encounter planner and initiative tracker" loading="lazy"></a><figcaption>Encounters and initiative</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <h2>Download</h2>
+      <p class="lead">Get the latest version from the <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder/releases/latest">releases page</a>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">System</th><th scope="col">File</th></tr></thead>
+          <tbody>
+            <tr><td>Windows 10/11</td><td><code>…_x64-setup.exe</code> or <code>…_x64_en-US.msi</code> (installers), or <code>…_x64_portable.exe</code>: no install, keeps its data in a folder next to the exe, good for a USB stick.</td></tr>
+            <tr><td>Linux</td><td><code>….AppImage</code> (any distribution), <code>….deb</code> (Debian, Ubuntu), <code>….rpm</code> (Fedora, openSUSE)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><code>SHA256SUMS.txt</code> on each release lists the files' checksums. The builds aren't code-signed, so
+        Windows SmartScreen may warn the first time: <em>More info</em> → <em>Run anyway</em>. On Linux, make the AppImage
+        executable before running it:</p>
+      <div class="code"><pre><code>chmod +x DaybreakBuilder_*.AppImage
+./DaybreakBuilder_*.AppImage</code></pre></div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="wrap">
+      <h2>Quick start</h2>
+      <p class="lead">From download to a finished character in a few minutes.</p>
+      <ol class="steps">
+        <li><strong>Load content</strong><span>Open the <em>Content</em> tab and press <em>Download</em> (prefilled with a 2024-rules index), or <em>Import XML files…</em>. The built-in SRD 5.1 works out of the box. On desktop you can also drop XML files into <code>Documents/DaybreakBuilder/custom</code> and press <em>Rescan</em>.</span></li>
+        <li><strong>Create a character</strong><span><em>Characters</em> → <em>New character</em>, or <em>Import…</em> an Aurora <code>.dnd5e</code> file.</span></li>
+        <li><strong>Build</strong><span>Choose classes and levels and ability scores, then work through the choices. Add equipment and prepare spells; AC, slots and save DCs update as you go.</span></li>
+        <li><strong>Sheet and PDF</strong><span>Check the finished sheet and <em>Export PDF</em>.</span></li>
+        <li><strong>Play</strong><span>Press <em>Start Play Session</em> on the sheet to track the character at the table.</span></li>
+        <li><strong>For GMs: Campaigns</strong><span>Create a campaign, add the party, write linked notes, plan encounters and run them in the initiative tracker.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Content and FAQ</h2>
+      <p class="lead">What comes in the box and what you bring yourself.</p>
+      <details open>
+        <summary>What content is included?</summary>
+        <p>The rules plumbing and the <a href="https://dnd.wizards.com/resources/systems-reference-document">System Reference Document 5.1</a>
+          (CC-BY-4.0): nine races, the twelve classes with one subclass each, the Acolyte background, equipment and 315
+          spells. No other copyrighted game content is shipped. Load content you own or that is openly licensed, from an
+          index URL or your own XML files. SRD element ids match the community content, so characters stay valid when you
+          add more sources.</p>
+      </details>
+      <details>
+        <summary>Can I use my Aurora content and characters?</summary>
+        <p>Yes. DaybreakBuilder loads Aurora <code>.xml</code> element files and <code>.index</code> content indexes,
+          including updates from the AuroraLegacy repository, and imports <code>.dnd5e</code> character files.</p>
+      </details>
+      <details>
+        <summary>Is it free? Do I need an account or internet?</summary>
+        <p>It's free and open source under the MIT license. There's no account, and your characters and campaigns are
+          saved on your own computer. The internet is only used when you download content from an index URL.</p>
+      </details>
+      <details>
+        <summary>Does it work with Obsidian?</summary>
+        <p>On desktop each campaign is a folder of Markdown files with YAML front matter, which opens as an Obsidian
+          vault. <em>Open folder…</em> uses an existing vault or a synced folder as a campaign, and changes made in
+          other programs show up when you switch back to the app.</p>
+      </details>
+      <details>
+        <summary>Can I write or check my own homebrew?</summary>
+        <p>Yes. Put your XML in the custom folder. The repository also has a validator that reports broken XML, missing
+          references and unplayable options per file and line; see the
+          <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder#writing-and-converting-content">README</a>.</p>
+      </details>
+      <details>
+        <summary>macOS?</summary>
+        <p>Releases are built for Windows and Linux only; macOS isn't supported at the moment.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder">Source</a>
+      <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder/releases">Releases</a>
+      <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder/issues">Issues and security reports</a>
+      <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/SpikeTheDragon40k/DaybreakBuilder/blob/main/LICENSE">MIT license</a>
+      <a href="https://ko-fi.com/spikethedragon">Ko-fi</a>
+      <a href="https://buymeacoffee.com/spike_the_dragon">Buy Me a Coffee</a>
+    </div>
+    <p>This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of the Coast LLC,
+      available at <a href="https://dnd.wizards.com/resources/systems-reference-document">dnd.wizards.com</a>. The SRD 5.1
+      is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0
+      International License</a>.</p>
+    <p>DaybreakBuilder is unofficial and not affiliated with Wizards of the Coast or Aurora Builder. Dungeons &amp; Dragons
+      is a trademark of Wizards of the Coast.</p>
+  </div>
+</footer>
+
+<script>
+  // Copy buttons on code blocks.
+  document.querySelectorAll(".code").forEach(function (block) {
+    var button = document.createElement("button");
+    button.className = "copy";
+    button.type = "button";
+    button.textContent = "Copy";
+    button.addEventListener("click", function () {
+      var text = block.querySelector("pre").innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = "Copied";
+        setTimeout(function () { button.textContent = "Copy"; }, 1500);
+      }, function () { button.textContent = "Select and copy"; });
+    });
+    block.appendChild(button);
+  });
+  // Screenshots that haven't been added yet are hidden; with none, the section is hidden.
+  var shots = document.getElementById("shots");
+  var figures = shots.querySelectorAll("figure");
+  var missing = 0;
+  figures.forEach(function (figure) {
+    var img = figure.querySelector("img");
+    function fail() {
+      figure.classList.add("missing");
+      if (++missing === figures.length) shots.classList.add("empty");
+    }
+    if (img.complete && img.naturalWidth === 0) fail();
+    else img.addEventListener("error", fail);
+  });
+</script>
+</body>
+</html>
