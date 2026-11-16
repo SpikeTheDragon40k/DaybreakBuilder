@@ -14,6 +14,7 @@ roadmap in the README when work on it starts, and into *Done* when it ships.
 | 1.3.5 | **Navigation** | The top bar holds the sections (Characters, Campaigns, Compendium, Content) and a Settings menu (units, theme); the open character gets its own bar with its pages, Undo, Redo, History and Close. Fits down to the 900 px minimum window width. |
 | next | **Notes extras and random tables** | Images in notes (paste, drop or insert; `![[map.png]]`), note templates (Obsidian's Templates folder, starter set), a graph of the links between notes, random tables written as notes (with dice and nested tables) and generators for NPCs, names, taverns, shops, encounters from the loaded monsters and coin treasure. |
 | next | **Campaign export and import** | *Export…* saves a campaign as one `.zip` (notes, images, `campaign.json` and the party's characters); *Import…* makes a campaign from it or from any zipped notes folder or Obsidian vault. Works between desktop and browser. |
+| next | **Saved encounters** | Pick monsters from the loaded content in the planner (search by name and CR), save named encounters with notes to the campaign, load them back or *Run* one straight into the initiative tracker with the party. |
 
 Also in the app before this backlog: the rules engine that computes every character's real numbers (AC, HP, saves,
 passives, spell DCs, attacks, feature uses), creature stat blocks from loaded content, the party overview, the
@@ -26,8 +27,6 @@ encounter difficulty calculator, metric units and a dark theme.
 
 ## GM tools
 
-- **Encounters:** pick monsters from the loaded Monster Manual in the planner (not just challenge ratings), save
-  several encounters to the campaign, and start any of them in the tracker. Next up.
 - **Initiative tracker extras:** lair actions on initiative 20, a player view (turn order only) for a second screen,
   monster tokens.
 - **Loot and treasure:** hand out items and coins straight into characters' inventories.
@@ -43,7 +42,6 @@ encounter difficulty calculator, metric units and a dark theme.
 
 Follow-ups from the navigation review (1.3.5):
 
-- The Party view's Overview / Initiative switch still uses the older pill style; make it match the underlined tabs.
 - A campaign shows its own *Saved* label next to the character bar's; consider one save indicator.
 - Check the desktop window with a screen reader (only keyboard navigation has been checked so far).
 

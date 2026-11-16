@@ -114,7 +114,10 @@ Play), with Undo, Redo, the change history and *Close*.
    * **Party**: the party view lines up AC, HP, initiative, speed, passive Perception/Insight/Investigation, spell
      save DCs, senses and coin for every member, adds up the encounter XP budget (DMG 2014 thresholds), and shows who
      speaks which language, who is best at each skill, saving throw coverage and who needs light. Edits to a
-     character show up automatically. The **Initiative** view runs an encounter: add the party and monsters (picked
+     character show up automatically. In the encounter planner, search the loaded monsters (by name and challenge
+     rating) and click to add them, or add one by hand. **Saved encounters**: name the planned encounter and save it to
+     the campaign, with notes; later *Load* it back into the planner or *Run* it, which starts it in the initiative
+     tracker with the whole party and the monsters' stats. The **Initiative** view runs an encounter: add the party and monsters (picked
      from the loaded content, which fills in AC, HP and initiative bonus and offers the stat block, or typed in),
      several of a kind labelled *Goblin A, B, C…*; enter the initiative rolled at the table (or give monsters
      10 + bonus); then *Start encounter* and *Next turn* through the rounds. Track hit points, temporary HP,
@@ -231,7 +234,7 @@ To release:
 
 ## Roadmap
 
-* Saved encounters and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
+* More GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder
