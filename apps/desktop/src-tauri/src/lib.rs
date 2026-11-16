@@ -128,6 +128,14 @@ fn read_text_file(path: String) -> Result<String, String> {
     fs::read_to_string(&path).map_err(|e| format!("{}: {}", path, e))
 }
 
+/// Read a binary file the user picked (e.g. a campaign archive), sent as raw bytes.
+#[tauri::command]
+fn read_binary_file(path: String) -> Result<tauri::ipc::Response, String> {
+    fs::read(&path)
+        .map(tauri::ipc::Response::new)
+        .map_err(|e| format!("{}: {}", path, e))
+}
+
 /// Write a file the user picked in a save dialog.
 #[tauri::command]
 fn write_text_file(path: String, content: String) -> Result<(), String> {
@@ -221,6 +229,7 @@ pub fn run() {
             read_custom_content,
             open_custom_content_folder,
             read_text_file,
+            read_binary_file,
             write_text_file,
             write_binary_file,
             campaigns_dir,

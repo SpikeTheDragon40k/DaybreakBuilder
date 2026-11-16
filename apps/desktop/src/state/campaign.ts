@@ -1,7 +1,7 @@
 import type { Combat } from "@daybreakbuilder/engine";
 import { isTauri, settings, type StoredFile } from "../platform";
 import { idbAll, idbDelete, idbGet, idbPut } from "../platform/idb";
-import { newEncounter, type Party, type PartyEncounter } from "./party";
+import { cleanSavedEncounters, newEncounter, type Party, type PartyEncounter, type SavedEncounter } from "./party";
 
 /** A campaign in the list: a folder on disk (desktop) or a record in browser storage. */
 export interface CampaignRef {
@@ -18,7 +18,7 @@ export interface CampaignMeta {
   format: typeof FORMAT;
   version: 1;
   name: string;
-  party: { memberIds: string[]; encounter?: PartyEncounter; combat?: Combat };
+  party: { memberIds: string[]; encounter?: PartyEncounter; combat?: Combat; savedEncounters?: SavedEncounter[] };
   createdAt: string;
   updatedAt: string;
 }
@@ -46,6 +46,7 @@ export function parseCampaignMeta(text: string | undefined, fallbackName: string
       memberIds: Array.isArray(party.memberIds) ? party.memberIds.filter((x): x is string => typeof x === "string") : [],
       encounter: party.encounter ?? newEncounter(),
       combat: party.combat,
+      ...(party.savedEncounters ? { savedEncounters: cleanSavedEncounters(party.savedEncounters) } : {}),
     },
   };
 }
@@ -56,11 +57,11 @@ export function serializeCampaignMeta(meta: CampaignMeta): string {
 
 /** The campaign's party in the shape the party overview and initiative tracker use. */
 export function campaignParty(id: string, meta: CampaignMeta): Party {
-  return { id, name: meta.name, memberIds: meta.party.memberIds, notes: "", encounter: meta.party.encounter, combat: meta.party.combat, updatedAt: meta.updatedAt };
+  return { id, name: meta.name, memberIds: meta.party.memberIds, notes: "", encounter: meta.party.encounter, combat: meta.party.combat, savedEncounters: meta.party.savedEncounters, updatedAt: meta.updatedAt };
 }
 
 export function withParty(meta: CampaignMeta, party: Party): CampaignMeta {
-  return { ...meta, party: { memberIds: party.memberIds, encounter: party.encounter, combat: party.combat } };
+  return { ...meta, party: { memberIds: party.memberIds, encounter: party.encounter, combat: party.combat, ...(party.savedEncounters ? { savedEncounters: party.savedEncounters } : {}) } };
 }
 
 export const PARTY_NOTES_TITLE = "Party notes";

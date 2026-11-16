@@ -114,7 +114,10 @@ Play), with Undo, Redo, the change history and *Close*.
    * **Party**: the party view lines up AC, HP, initiative, speed, passive Perception/Insight/Investigation, spell
      save DCs, senses and coin for every member, adds up the encounter XP budget (DMG 2014 thresholds), and shows who
      speaks which language, who is best at each skill, saving throw coverage and who needs light. Edits to a
-     character show up automatically. The **Initiative** view runs an encounter: add the party and monsters (picked
+     character show up automatically. In the encounter planner, search the loaded monsters (by name and challenge
+     rating) and click to add them, or add one by hand. **Saved encounters**: name the planned encounter and save it to
+     the campaign, with notes; later *Load* it back into the planner or *Run* it, which starts it in the initiative
+     tracker with the whole party and the monsters' stats. The **Initiative** view runs an encounter: add the party and monsters (picked
      from the loaded content, which fills in AC, HP and initiative bonus and offers the stat block, or typed in),
      several of a kind labelled *Goblin A, B, C…*; enter the initiative rolled at the table (or give monsters
      10 + bonus); then *Start encounter* and *Next turn* through the rounds. Track hit points, temporary HP,
@@ -129,6 +132,11 @@ Play), with Undo, Redo, the change history and *Close*.
    with Dropbox or Syncthing) as a campaign; its images and templates work too. Changes made in other programs show up when you switch back to the app.
    Deleted notes go to the campaign's `.trash` folder. In the browser version campaigns are kept in browser storage.
    Parties made with earlier versions become campaigns automatically.
+   * **Export and import**: *Export…* saves the campaign as one `.zip` file with its notes, images, `campaign.json` and
+     the party's characters (in a hidden `.daybreakbuilder` folder, so the unzipped archive is still a plain notes
+     folder). *Import…* in the campaign list makes a new campaign from such a file, or from any zipped folder of
+     Markdown notes such as an Obsidian vault. Characters already in the app are kept as they are. Use it for backups,
+     to move a campaign between the desktop and browser versions, or to hand it to another GM.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
@@ -226,7 +234,7 @@ To release:
 
 ## Roadmap
 
-* Campaign export and import, saved encounters and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
+* More GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder

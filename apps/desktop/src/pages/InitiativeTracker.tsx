@@ -28,7 +28,7 @@ import { ElementDetail } from "../components/ElementDetail";
 import { Portrait } from "../components/Portrait";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { newId } from "../state/app";
-import type { Party, PartyMember } from "../state/party";
+import { addEncounterLines, type Party, type PartyMember } from "../state/party";
 
 interface Props {
   party: Party;
@@ -62,12 +62,7 @@ export function InitiativeTracker({ party, members, registry, playOf, updatePlay
 
   /** The planned encounter's monsters, with stats from the loaded content when the name matches. */
   const addPlanned = () => {
-    let next = combat;
-    for (const line of party.encounter?.monsters ?? []) {
-      if (!line.name.trim() || line.count < 1) continue;
-      const t = templates.find((x) => x.name.toLowerCase() === line.name.trim().toLowerCase());
-      next = addMonsters(next, t ?? { name: line.name.trim(), ac: 10, hp: 1, initiativeBonus: 0 }, line.count, newId);
-    }
+    const next = addEncounterLines(combat, party.encounter?.monsters ?? [], templates, newId);
     if (next !== combat) setCombat(next);
   };
 

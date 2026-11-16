@@ -1,12 +1,12 @@
-import { buildSheet, formatModifier, loadCharacterJson, newPlayState, resolveCharacter, type CharacterState, type ContentRegistry, type PlayState } from "@daybreakbuilder/engine";
+import { buildSheet, formatModifier, loadCharacterJson, monsterTemplates, newPlayState, resolveCharacter, type CharacterState, type ContentRegistry, type PlayState } from "@daybreakbuilder/engine";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Portrait } from "../components/Portrait";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { EncounterCalculator } from "./EncounterCalculator";
 import { InitiativeTracker } from "./InitiativeTracker";
 import { characters, type CharacterMeta } from "../platform";
-import { useApp } from "../state/app";
-import { formatGp, memberFromSheet, summarizeParty, type Best, type Party, type PartyMember } from "../state/party";
+import { newId, useApp } from "../state/app";
+import { combatForEncounter, formatGp, memberFromSheet, summarizeParty, type Best, type EncounterLine, type Party, type PartyMember } from "../state/party";
 import { useUnits } from "../units";
 
 /**
@@ -107,6 +107,14 @@ function PartyDetail({
   const summary = useMemo(() => summarizeParty(members), [members]);
   const available = roster.filter((c) => !party.memberIds.includes(c.id));
 
+  /** Start a saved encounter: the party and its monsters in a fresh tracker. */
+  const run = (name: string, lines: EncounterLine[]) => {
+    if (party.combat?.combatants.length && !confirm(`An encounter is already in the tracker. Replace it with “${name}”? Characters keep their hit points.`)) return;
+    const templates = registry ? monsterTemplates(registry) : [];
+    onChange({ ...party, combat: combatForEncounter(name, members, lines, templates, newId) });
+    setView("initiative");
+  };
+
   const add = () => {
     if (!adding) return;
     onChange({ ...party, memberIds: [...party.memberIds, adding] });
@@ -137,14 +145,14 @@ function PartyDetail({
         </p>
       )}
 
-      <div className="theme-switch view-switch" role="group" aria-label="Party view">
-        <button aria-pressed={view === "overview"} onClick={() => setView("overview")}>
+      <nav className="subtabs view-switch" aria-label="Party view">
+        <button className={`subtab ${view === "overview" ? "active" : ""}`} aria-current={view === "overview" ? "page" : undefined} onClick={() => setView("overview")}>
           Overview
         </button>
-        <button aria-pressed={view === "initiative"} onClick={() => setView("initiative")}>
+        <button className={`subtab ${view === "initiative" ? "active" : ""}`} aria-current={view === "initiative" ? "page" : undefined} onClick={() => setView("initiative")}>
           Initiative{party.combat?.round ? ` · round ${party.combat.round}` : ""}
         </button>
-      </div>
+      </nav>
 
       {view === "initiative" ? (
         <InitiativeTracker party={party} members={members} registry={registry} playOf={playOf} updatePlay={updatePlay} onChange={onChange} />
@@ -165,6 +173,9 @@ function PartyDetail({
             encounter={party.encounter}
             registry={registry}
             onChange={(encounter) => onChange({ ...party, encounter })}
+            savedEncounters={party.savedEncounters ?? []}
+            onSavedChange={(savedEncounters) => onChange({ ...party, savedEncounters })}
+            onRun={run}
           />
 
           <section className="panel party-table-wrap">

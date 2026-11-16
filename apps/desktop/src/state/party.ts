@@ -1,4 +1,4 @@
-import { ABILITIES, type Ability, type CharacterSheet, type CharacterState, type Combat, type Currency, type RulesEdition } from "@daybreakbuilder/engine";
+import { ABILITIES, addMonsters, logCombat, newCombat, newCombatant, normalizeChallenge, type Ability, type MonsterTemplate, type CharacterSheet, type CharacterState, type Combat, type Currency, type RulesEdition } from "@daybreakbuilder/engine";
 
 /** A group of saved characters a DM runs together. Members are character ids. */
 export interface Party {
@@ -10,7 +10,16 @@ export interface Party {
   encounter?: PartyEncounter;
   /** The encounter being run in the initiative tracker, if any. */
   combat?: Combat;
+  /** Encounters prepared ahead, ready to load into the planner or run. */
+  savedEncounters?: SavedEncounter[];
   updatedAt: string;
+}
+
+export interface SavedEncounter {
+  id: string;
+  name: string;
+  monsters: EncounterLine[];
+  notes: string;
 }
 
 /** One line of the encounter: a kind of monster and how many of them. */
@@ -21,6 +30,8 @@ export interface EncounterLine {
   /** XP per monster when it differs from the CR's (0 = use the CR). */
   xp: number;
   count: number;
+  /** The monster in the loaded content, when picked from it. */
+  elementId?: string;
 }
 
 export interface PartyEncounter {
@@ -155,4 +166,43 @@ export function summarizeParty(members: PartyMember[]): PartySummary {
 export function formatGp(gp: number): string {
   const rounded = Math.round(gp * 100) / 100;
   return `${rounded.toLocaleString(undefined, { maximumFractionDigits: 2 })} gp`;
+}
+
+/** Check a saved encounter read from a file (hand edits, older versions). */
+export function cleanSavedEncounters(raw: unknown): SavedEncounter[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((e): e is SavedEncounter => !!e && typeof e === "object" && typeof (e as SavedEncounter).id === "string")
+    .map((e) => ({
+      id: e.id,
+      name: typeof e.name === "string" ? e.name : "Encounter",
+      notes: typeof e.notes === "string" ? e.notes : "",
+      monsters: Array.isArray(e.monsters) ? e.monsters.filter((m) => m && typeof m.name === "string" && typeof m.count === "number") : [],
+    }));
+}
+
+/** The template for an encounter line: by content id first, then by name. */
+export function templateForLine(line: EncounterLine, templates: MonsterTemplate[]): MonsterTemplate | undefined {
+  return (line.elementId && templates.find((t) => t.elementId === line.elementId)) || templates.find((t) => t.name.toLowerCase() === line.name.trim().toLowerCase());
+}
+
+/** Add the lines' monsters to a combat; monsters not in the loaded content get placeholder stats to fill in. */
+export function addEncounterLines(combat: Combat, lines: EncounterLine[], templates: MonsterTemplate[], newId: () => string): Combat {
+  let next = combat;
+  for (const line of lines) {
+    if (!line.name.trim() || line.count < 1) continue;
+    next = addMonsters(next, templateForLine(line, templates) ?? { name: line.name.trim(), ac: 10, hp: 1, initiativeBonus: 0 }, line.count, newId);
+  }
+  return next;
+}
+
+/** A fresh combat with the whole party and the encounter's monsters, ready for initiative. */
+export function combatForEncounter(name: string, members: PartyMember[], lines: EncounterLine[], templates: MonsterTemplate[], newId: () => string): Combat {
+  const party = members.map((m) => newCombatant(newId(), { kind: "character", name: m.name, characterId: m.id, ac: m.armorClass, initiativeBonus: m.initiative }));
+  return logCombat(addEncounterLines({ ...newCombat(), combatants: party }, lines, templates, newId), `Encounter: ${name}.`);
+}
+
+/** An encounter line for a monster picked from the loaded content. */
+export function lineFromTemplate(id: string, t: MonsterTemplate): EncounterLine {
+  return { id, name: t.name, cr: normalizeChallenge(t.challenge) || "0", xp: 0, count: 1, elementId: t.elementId };
 }

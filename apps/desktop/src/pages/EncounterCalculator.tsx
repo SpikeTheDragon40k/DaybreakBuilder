@@ -3,16 +3,18 @@ import {
   challengeXp,
   encounterDifficulties,
   getSetter,
+  monsterTemplates,
   monsterXp,
   normalizeChallenge,
   rateEncounter,
   type ContentRegistry,
   type EncounterDifficulty,
+  type MonsterTemplate,
   type RulesEdition,
 } from "@daybreakbuilder/engine";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { newId } from "../state/app";
-import { newEncounter, type EncounterLine, type PartyEncounter } from "../state/party";
+import { lineFromTemplate, newEncounter, type EncounterLine, type PartyEncounter, type SavedEncounter } from "../state/party";
 
 const RULES: { rules: RulesEdition; title: string }[] = [
   { rules: "2024", title: "Dungeon Master's Guide 2024: XP budget for Low, Moderate and High difficulty, no multipliers" },
@@ -55,18 +57,27 @@ export function EncounterCalculator({
   encounter: saved,
   registry,
   onChange,
+  savedEncounters = [],
+  onSavedChange,
+  onRun,
 }: {
   /** Levels of the party members in the roster. */
   levels: number[];
   encounter: PartyEncounter | undefined;
   registry: ContentRegistry | undefined;
   onChange: (e: PartyEncounter) => void;
+  /** Encounters saved in the campaign; the list shows only when `onSavedChange` is given. */
+  savedEncounters?: SavedEncounter[];
+  onSavedChange?: (list: SavedEncounter[]) => void;
+  /** Start an encounter in the initiative tracker. */
+  onRun?: (name: string, lines: EncounterLine[]) => void;
 }) {
   const encounter = saved ?? newEncounter();
   const { rules, monsters, extraLevels } = encounter;
   const allLevels = [...levels, ...extraLevels];
   const rating = useMemo(() => rateEncounter(allLevels, monsters, rules), [allLevels.join(), monsters, rules]);
   const suggestions = useMemo(() => monsterSuggestions(registry), [registry]);
+  const templates = useMemo(() => (registry ? monsterTemplates(registry) : []), [registry]);
   const difficulties = encounterDifficulties(rules);
   const top = rating.budget[difficulties[difficulties.length - 1]] ?? 0;
   // The bar goes a bit past the top threshold so an over-budget encounter still shows.
@@ -79,7 +90,14 @@ export function EncounterCalculator({
 
   const rename = (line: EncounterLine, name: string) => {
     const match = suggestions.find((s) => s.name.toLowerCase() === name.trim().toLowerCase());
-    setLine(line.id, match ? { name, cr: match.cr } : { name });
+    // A typed name no longer points at the picked monster.
+    setLine(line.id, match ? { name, cr: match.cr, elementId: undefined } : { name, elementId: undefined });
+  };
+
+  const pick = (t: MonsterTemplate) => {
+    const same = monsters.find((m) => (m.elementId ? m.elementId === t.elementId : m.name.trim().toLowerCase() === t.name.toLowerCase()));
+    if (same) setLine(same.id, { count: same.count + 1 });
+    else set({ monsters: [...monsters, lineFromTemplate(newId(), t)] });
   };
 
   return (
@@ -160,6 +178,8 @@ export function EncounterCalculator({
               <td>
                 <input
                   value={m.name}
+                  className={m.elementId ? "encounter-linked" : undefined}
+                  title={m.elementId ? "Picked from the loaded content: the tracker uses its stat block" : undefined}
                   placeholder="Monster name"
                   list="encounter-monsters"
                   aria-label="Monster name"
@@ -219,9 +239,10 @@ export function EncounterCalculator({
           <option key={s.name} value={s.name} label={`CR ${s.cr}`} />
         ))}
       </datalist>
+      <MonsterPicker templates={templates} onPick={pick} />
       <div className="row">
-        <button className="small primary" onClick={addLine}>
-          Add monster
+        <button className="small" onClick={addLine} title="A monster that isn't in the loaded content, by name and challenge rating">
+          Add by hand
         </button>
         {monsters.length > 0 && (
           <button className="small ghost" onClick={() => set({ monsters: [] })}>
@@ -258,7 +279,155 @@ export function EncounterCalculator({
           enough damage to drop a character in one turn.
         </p>
       )}
+      {onSavedChange && (
+        <SavedEncounters
+          saved={savedEncounters}
+          current={monsters}
+          onChange={onSavedChange}
+          onLoad={(e) => set({ monsters: e.monsters.map((m) => ({ ...m, id: newId() })) })}
+          onRun={onRun}
+          rate={(lines) => rateEncounter(allLevels, lines, rules)}
+        />
+      )}
     </section>
+  );
+}
+
+const PICKER_LIMIT = 40;
+
+/** Search the loaded content's monsters and add them to the encounter. */
+function MonsterPicker({ templates, onPick }: { templates: MonsterTemplate[]; onPick: (t: MonsterTemplate) => void }) {
+  const [query, setQuery] = useState("");
+  const [cr, setCr] = useState("");
+  if (!templates.length) {
+    return <p className="muted small">Load content with monsters (Content tab) to pick them from a list; you can still add monsters by hand.</p>;
+  }
+  const q = query.trim().toLowerCase();
+  const matches = templates.filter((t) => (!q || t.name.toLowerCase().includes(q)) && (!cr || normalizeChallenge(t.challenge) === cr));
+  const shown = q || cr ? matches.slice(0, PICKER_LIMIT) : [];
+  return (
+    <div className="monster-picker">
+      <div className="row wrap">
+        <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`Search ${templates.length} monsters…`} aria-label="Search monsters" className="grow" />
+        <select value={cr} onChange={(e) => setCr(e.target.value)} aria-label="Challenge rating filter">
+          <option value="">Any CR</option>
+          {CHALLENGE_RATINGS.map((c) => (
+            <option key={c} value={c}>
+              CR {c}
+            </option>
+          ))}
+        </select>
+      </div>
+      {(q || cr) && (
+        <ul className="plain monster-results" aria-label="Monsters">
+          {shown.length === 0 && <li className="muted small">No monsters match.</li>}
+          {shown.map((t) => (
+            <li key={`${t.elementId}`}>
+              <button className="monster-result" onClick={() => onPick(t)} title={`Add ${t.name} to the encounter`}>
+                <span className="grow">{t.name}</span>
+                <span className="muted small">
+                  CR {normalizeChallenge(t.challenge) || "?"} · AC {t.ac} · HP {t.hp}
+                  {t.source && ` · ${t.source}`}
+                </span>
+              </button>
+            </li>
+          ))}
+          {matches.length > shown.length && <li className="muted small">{matches.length - shown.length} more: narrow the search.</li>}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const describeLines = (lines: EncounterLine[]) =>
+  lines
+    .filter((l) => l.name.trim() && l.count > 0)
+    .map((l) => (l.count > 1 ? `${l.count} × ${l.name}` : l.name))
+    .join(", ") || "No monsters";
+
+/** Encounters kept in the campaign: save the planner's, load one back, or run it. */
+function SavedEncounters({
+  saved,
+  current,
+  onChange,
+  onLoad,
+  onRun,
+  rate,
+}: {
+  saved: SavedEncounter[];
+  current: EncounterLine[];
+  onChange: (list: SavedEncounter[]) => void;
+  onLoad: (e: SavedEncounter) => void;
+  onRun?: (name: string, lines: EncounterLine[]) => void;
+  rate: (lines: EncounterLine[]) => ReturnType<typeof rateEncounter>;
+}) {
+  const [name, setName] = useState("");
+  const hasMonsters = current.some((l) => l.name.trim() && l.count > 0);
+  const save = () => {
+    const n = name.trim() || `Encounter ${saved.length + 1}`;
+    const lines = current.filter((l) => l.name.trim() && l.count > 0).map((l) => ({ ...l }));
+    const existing = saved.find((e) => e.name.toLowerCase() === n.toLowerCase());
+    if (existing && !confirm(`Replace the saved encounter “${existing.name}”?`)) return;
+    onChange(existing ? saved.map((e) => (e.id === existing.id ? { ...e, monsters: lines } : e)) : [...saved, { id: newId(), name: n, monsters: lines, notes: "" }]);
+    setName("");
+  };
+  const update = (id: string, patch: Partial<SavedEncounter>) => onChange(saved.map((e) => (e.id === id ? { ...e, ...patch } : e)));
+
+  return (
+    <div className="saved-encounters">
+      <h3>Saved encounters</h3>
+      <form
+        className="row wrap"
+        onSubmit={(e) => {
+          e.preventDefault();
+          save();
+        }}
+      >
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name, e.g. Goblin ambush" aria-label="Encounter name" className="grow" />
+        <button className="small primary" type="submit" disabled={!hasMonsters} title={hasMonsters ? "Keep the monsters above as a named encounter" : "Add monsters first"}>
+          Save encounter
+        </button>
+      </form>
+      {saved.length === 0 ? (
+        <p className="muted small">Prepare encounters ahead of the session: plan one above, name it and save it. Run it from here when the fight starts.</p>
+      ) : (
+        <ul className="plain saved-encounter-list">
+          {saved.map((e) => {
+            const r = rate(e.monsters);
+            return (
+              <li key={e.id} className="saved-encounter">
+                <div className="row wrap">
+                  <input className="saved-encounter-name grow" value={e.name} aria-label="Saved encounter name" onChange={(ev) => update(e.id, { name: ev.target.value })} />
+                  <span className={`chip difficulty-${r.difficulty}`} title={`${r.adjustedXp.toLocaleString()} XP for the current party`}>
+                    {verdict(r.difficulty, r.rules, r.overBudget)}
+                  </span>
+                  <button className="small" onClick={() => onLoad(e)} title="Put these monsters in the planner above">
+                    Load
+                  </button>
+                  {onRun && (
+                    <button className="small primary" onClick={() => onRun(e.name, e.monsters)} title="Start it in the initiative tracker with the party">
+                      Run
+                    </button>
+                  )}
+                  <button className="small ghost danger" aria-label={`Delete ${e.name}`} onClick={() => confirm(`Delete the saved encounter “${e.name}”?`) && onChange(saved.filter((x) => x.id !== e.id))}>
+                    Delete
+                  </button>
+                </div>
+                <div className="muted small">{describeLines(e.monsters)}</div>
+                <textarea
+                  className="saved-encounter-notes small"
+                  rows={1}
+                  value={e.notes}
+                  placeholder="Notes: where, tactics, treasure…"
+                  aria-label={`Notes for ${e.name}`}
+                  onChange={(ev) => update(e.id, { notes: ev.target.value })}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
   );
 }
 
