@@ -17,6 +17,8 @@ export interface OpenCampaign {
   renameNote(path: string, title: string): Promise<{ note: Note; changed: number } | null>;
   deleteNote(path: string): Promise<void>;
   reload(): Promise<void>;
+  /** Write pending edits now. */
+  flush(): Promise<void>;
 }
 
 /**
@@ -195,6 +197,7 @@ export function useCampaign(store: CampaignStore, campaign: CampaignRef): { open
       set({ ...c, notes: c.notes.filter((n) => n.path !== path) });
     },
     reload: () => load(true).catch(fail),
+    flush,
   };
   return { open, error };
 }

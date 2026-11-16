@@ -129,6 +129,11 @@ Play), with Undo, Redo, the change history and *Close*.
    with Dropbox or Syncthing) as a campaign; its images and templates work too. Changes made in other programs show up when you switch back to the app.
    Deleted notes go to the campaign's `.trash` folder. In the browser version campaigns are kept in browser storage.
    Parties made with earlier versions become campaigns automatically.
+   * **Export and import**: *Export…* saves the campaign as one `.zip` file with its notes, images, `campaign.json` and
+     the party's characters (in a hidden `.daybreakbuilder` folder, so the unzipped archive is still a plain notes
+     folder). *Import…* in the campaign list makes a new campaign from such a file, or from any zipped folder of
+     Markdown notes such as an Obsidian vault. Characters already in the app are kept as they are. Use it for backups,
+     to move a campaign between the desktop and browser versions, or to hand it to another GM.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
@@ -226,7 +231,7 @@ To release:
 
 ## Roadmap
 
-* Campaign export and import, saved encounters and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
+* Saved encounters and more GM tools: see [docs/SUGGESTIONS.md](docs/SUGGESTIONS.md)
 * SRD 5.2 (2024 rules) content pack
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder

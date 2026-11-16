@@ -43,6 +43,7 @@ export interface Platform {
   kind: "tauri" | "web";
   fetchText(url: string): Promise<string>;
   pickTextFiles(extensions: string[], multiple: boolean): Promise<PickedFile[]>;
+  pickBinaryFile(extensions: string[]): Promise<{ name: string; data: Uint8Array } | null>;
   saveTextFile(defaultName: string, content: string, extension: string): Promise<boolean>;
   saveBinaryFile(defaultName: string, data: Uint8Array, extension: string, mime: string): Promise<boolean>;
   /** Desktop only: XML files from the user's custom content folder. */
@@ -148,6 +149,19 @@ const web: Platform = {
       input.click();
     });
   },
+  pickBinaryFile(extensions) {
+    return new Promise((resolve) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = extensions.map((e) => `.${e}`).join(",");
+      input.onchange = async () => {
+        const f = input.files?.[0];
+        resolve(f ? { name: f.name, data: new Uint8Array(await f.arrayBuffer()) } : null);
+      };
+      input.oncancel = () => resolve(null);
+      input.click();
+    });
+  },
   async saveTextFile(defaultName, content) {
     downloadBlob(defaultName, new Blob([content], { type: "text/plain;charset=utf-8" }));
     return true;
@@ -185,6 +199,12 @@ async function createTauriPlatform(): Promise<Platform> {
       return Promise.all(
         paths.map(async (p) => ({ name: p.split(/[\\/]/).pop() ?? p, content: await invoke<string>("read_text_file", { path: p }) })),
       );
+    },
+    async pickBinaryFile(extensions) {
+      const p = await dialog.open({ multiple: false, filters: [{ name: "Files", extensions }] });
+      if (typeof p !== "string") return null;
+      const bytes = await invoke<ArrayBuffer>("read_binary_file", { path: p });
+      return { name: p.split(/[\\/]/).pop() ?? p, data: new Uint8Array(bytes) };
     },
     async saveTextFile(defaultName, content, extension) {
       const path = await dialog.save({ defaultPath: defaultName, filters: [{ name: extension.toUpperCase(), extensions: [extension] }] });

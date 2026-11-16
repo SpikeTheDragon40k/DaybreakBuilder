@@ -29,7 +29,8 @@ import { ElementDetail } from "../components/ElementDetail";
 import { expandDescription } from "../components/Html";
 import { MarkdownEditor, type LinkKind, type LinkSuggestion } from "../components/MarkdownEditor";
 import { Portrait } from "../components/Portrait";
-import { isTauri, parties, settings } from "../platform";
+import { getPlatform, isTauri, parties, settings } from "../platform";
+import { ARCHIVE_EXTENSION, archiveFileName, exportCampaign, importCampaign, readCampaignArchive } from "../state/campaignArchive";
 import { DEFAULT_TOKEN_COLOR } from "../portraits";
 import { newId, useApp } from "../state/app";
 import { campaignParty, getCampaignStore, moveOldParties, withParty, type CampaignRef, type CampaignStore } from "../state/campaign";
@@ -52,6 +53,7 @@ export function CampaignsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(() => settings.get<string | null>(OPEN_KEY, null));
   const [newName, setNewName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -95,6 +97,24 @@ export function CampaignsPage() {
     try {
       const ref = await store.openFolder();
       if (ref) await refresh(ref.id);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
+  const importArchive = async () => {
+    if (!store) return;
+    setError(null);
+    setNotice(null);
+    try {
+      const picked = await (await getPlatform()).pickBinaryFile([ARCHIVE_EXTENSION]);
+      if (!picked) return;
+      const archive = readCampaignArchive(picked.data, picked.name.replace(/\.zip$/i, ""));
+      const r = await importCampaign(store, archive);
+      const parts = [`${r.notes} note${r.notes === 1 ? "" : "s"}`, `${r.images} image${r.images === 1 ? "" : "s"}`];
+      if (r.added) parts.push(`${r.added} new character${r.added === 1 ? "" : "s"}`);
+      setNotice(`Imported “${r.ref.name}”: ${parts.join(", ")}.${r.kept ? ` ${r.kept} character${r.kept === 1 ? " was" : "s were"} already here and kept as they are.` : ""}`);
+      await refresh(r.ref.id);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -151,6 +171,14 @@ export function CampaignsPage() {
           <button className="small" onClick={() => void openFolder()} title="Use an existing folder of Markdown notes, such as an Obsidian vault">
             Open folder…
           </button>
+        )}
+        <button className="small" onClick={() => void importArchive()} title="A campaign exported from DaybreakBuilder, or a zipped folder of Markdown notes">
+          Import…
+        </button>
+        {notice && (
+          <p className="ok-text small" role="status">
+            {notice}
+          </p>
         )}
         {error && <p className="error-text small">{error}</p>}
       </aside>
@@ -214,6 +242,22 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
   const [popup, setPopup] = useState<Target | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const index = useMemo(() => compendiumIndex(registry), [registry]);
+  const [exporting, setExporting] = useState(false);
+
+  const exportZip = async () => {
+    if (!open) return;
+    setExporting(true);
+    try {
+      await open.flush();
+      const { data, characters } = await exportCampaign(store, campaign);
+      const saved = await (await getPlatform()).saveBinaryFile(archiveFileName(open.meta.name), data, ARCHIVE_EXTENSION, "application/zip");
+      if (saved) setMessage(`Exported with ${characters} character${characters === 1 ? "" : "s"}.`);
+    } catch (e) {
+      setMessage(`Export failed: ${(e as Error).message}`);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   if (!open) return error ? <div className="callout error">Couldn't open the campaign: {error}</div> : <p className="muted">Loading campaign…</p>;
   const notes = open.notes;
@@ -415,6 +459,9 @@ function CampaignWorkspace({ store, campaign, onForget, onRenamed }: { store: Ca
         <span className="muted small save-state" role="status">
           {open.saving ? "Saving…" : "Saved"}
         </span>
+        <button className="small" onClick={() => void exportZip()} disabled={exporting} title="Save the campaign, its images and the party's characters as one .zip file">
+          {exporting ? "Exporting…" : "Export…"}
+        </button>
         {store.reveal && (
           <button className="small" onClick={() => void store.reveal?.(campaign)} title={campaign.id}>
             Show folder
