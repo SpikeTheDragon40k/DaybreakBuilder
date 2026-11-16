@@ -6,8 +6,8 @@
 
 
 
-An open-source, cross-platform (Linux and Windows) character builder for D&D 5th edition, compatible with
-**[Aurora Builder](https://aurorabuilder.com/)** content files.
+An open-source, cross-platform (Linux and Windows) character builder and GM toolkit for D&D 5th edition (2014 and 2024
+rules), compatible with **[Aurora Builder](https://aurorabuilder.com/)** content files.
 
 Aurora was a well-loved Windows-only builder whose development stopped around 2020. Its data format lives on in the
 community-maintained [AuroraLegacy/elements](https://github.com/AuroraLegacy/elements) repository. DaybreakBuilder is a
@@ -20,7 +20,10 @@ from-scratch reimplementation of the rules engine, with a modern UI:
   (+2/+1 or +1/+1/+1) and feat categories;
 * computes the full sheet (abilities, saves, skills, AC, HP, speeds, proficiencies, features, spellcasting) with
   breakdowns showing where each number comes from;
-* imports Aurora `.dnd5e` character files;
+* imports Aurora `.dnd5e` character files and exports PDF character sheets;
+* has a Play mode for using a character at the table (hit points, slots, rests, conditions, attacks);
+* gives GMs campaigns with linked Markdown notes (Obsidian-compatible), sessions, quests, random tables and
+  generators, an encounter planner and an initiative tracker;
 * includes a searchable compendium of everything loaded;
 * runs as a native desktop app (Tauri) on Linux and Windows. The UI also runs in a plain browser for development.
 
@@ -61,7 +64,7 @@ Requirements: Node.js 20+; for the desktop build, Rust (stable) and the
 
 ```sh
 npm install
-npm test                 # engine unit + integration tests
+npm test                 # engine and app tests
 npm run dev              # UI in the browser at http://localhost:1420
 npm run tauri dev        # desktop app with hot reload
 npm run tauri build      # installers in apps/desktop/src-tauri/target/release/bundle
@@ -80,8 +83,8 @@ npm test
 
 ## Using the app
 
-The top bar has the app's sections (Characters, Campaigns, Compendium, Content) and *Settings* (units and light or
-dark theme). When a character is open, a second bar shows its name and its pages (Build, Equipment, Spells, Sheet,
+The top bar has the app's sections (Characters, Campaigns, Compendium, Content) and *Settings* (units, theme and the app
+version). When a character is open, a second bar shows its name and its pages (Build, Equipment, Spells, Sheet,
 Play), with Undo, Redo, the change history and *Close*.
 
 1. **Content** tab → *Download* (prefilled with the 2024-rules index; *Aurora Legacy: everything* switches to the full one) or *Import XML files…*. In the desktop app
@@ -123,8 +126,13 @@ Play), with Undo, Redo, the change history and *Close*.
      shops, coin treasure by CR, and encounters from the loaded monsters sized to the party (one click puts them in
      the encounter planner). Results can be saved as notes.
    * **Graph**: every note and the links between them; click a note to open it.
+   * **Export and import**: *Export…* saves the campaign as one `.zip` file with its notes, images, `campaign.json` and
+     the party's characters (in a hidden `.daybreakbuilder` folder, so the unzipped archive is still a plain notes
+     folder). *Import…* in the campaign list makes a new campaign from such a file, or from any zipped folder of
+     Markdown notes such as an Obsidian vault. Characters already in the app are kept as they are. Use it for backups,
+     to move a campaign between the desktop and browser versions, or to hand it to another GM.
    * **Party**: the party view lines up AC, HP, initiative, speed, passive Perception/Insight/Investigation, spell
-     save DCs, senses and coin for every member, adds up the encounter XP budget (DMG 2014 thresholds), and shows who
+     save DCs, senses and coin for every member, rates encounters against the party's XP budget (2024 DMG budget, or the 2014 DMG thresholds and multipliers), and shows who
      speaks which language, who is best at each skill, saving throw coverage and who needs light. Edits to a
      character show up automatically. In the encounter planner, search the loaded monsters (by name and challenge
      rating) and click to add them, or add one by hand. **Saved encounters**: name the planned encounter and save it to
@@ -139,16 +147,11 @@ Play), with Undo, Redo, the change history and *Close*.
 
    In the desktop app each campaign is a **folder of Markdown files** (in `Documents/DaybreakBuilder/Campaigns`, or
    in the portable data folder): `Notes/`, `Sessions/` and `Quests/` hold one `.md` file per note, with the type,
-   tags and session or quest fields as YAML front matter, and `campaign.json` holds the party and the encounter.
+   tags and session or quest fields as YAML front matter, and `campaign.json` holds the party, the planned and saved encounters and the initiative tracker.
    The folder works as an Obsidian vault, and *Open folder…* uses an existing one (an Obsidian vault, a folder synced
    with Dropbox or Syncthing) as a campaign; its images and templates work too. Changes made in other programs show up when you switch back to the app.
    Deleted notes go to the campaign's `.trash` folder. In the browser version campaigns are kept in browser storage.
    Parties made with earlier versions become campaigns automatically.
-   * **Export and import**: *Export…* saves the campaign as one `.zip` file with its notes, images, `campaign.json` and
-     the party's characters (in a hidden `.daybreakbuilder` folder, so the unzipped archive is still a plain notes
-     folder). *Import…* in the campaign list makes a new campaign from such a file, or from any zipped folder of
-     Markdown notes such as an Obsidian vault. Characters already in the app are kept as they are. Use it for backups,
-     to move a campaign between the desktop and browser versions, or to hand it to another GM.
 
 Characters autosave locally. Use *Export* to get a portable `.json` file.
 
