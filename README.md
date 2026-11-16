@@ -11,7 +11,7 @@ An open-source, cross-platform (Linux and Windows) character builder for D&D 5th
 
 Aurora was a well-loved Windows-only builder whose development stopped around 2020. Its data format lives on in the
 community-maintained [AuroraLegacy/elements](https://github.com/AuroraLegacy/elements) repository. DaybreakBuilder is a
-from-scratch reimplementation of the rules engine, with a modern UI that you can keep developing:
+from-scratch reimplementation of the rules engine, with a modern UI:
 
 * loads Aurora `.xml` element files and `.index` content indexes, including updates from the AuroraLegacy repository;
 * builds characters with races, classes, multiclassing, backgrounds, feats, ASIs, spells and equipment, driven entirely
