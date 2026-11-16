@@ -1,0 +1,16 @@
+name: Feature request
+description: An idea for the builder or the GM tools
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: What you're trying to do at the table, and how the app could help.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Similar tools, sketches, rules references.

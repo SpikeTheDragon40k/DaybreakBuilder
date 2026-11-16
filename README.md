@@ -31,6 +31,18 @@ from-scratch reimplementation of the rules engine, with a modern UI that you can
 > copyrighted game content. Load content you own or that is openly licensed, from an index URL or your own XML files.
 > SRD element ids match the community content, so characters stay valid when you add more sources.
 
+## Download
+
+Get the latest version from [Releases](https://github.com/SpikeTheDragon40k/DaybreakBuilder/releases/latest):
+
+| System | File |
+|---|---|
+| Windows 10/11 | `…_x64-setup.exe` or `…_x64_en-US.msi` (installers), or `…_x64_portable.exe` (no install; keeps its data next to the exe, good for a USB stick) |
+| Linux | `….AppImage` (any distribution), `….deb` (Debian, Ubuntu), `….rpm` (Fedora, openSUSE) |
+
+`SHA256SUMS.txt` on each release lists the files' checksums. The builds aren't code-signed, so Windows SmartScreen may
+warn the first time: *More info* → *Run anyway*. On Linux, make the AppImage executable (`chmod +x`) before running it.
+
 ## Repository layout
 
 | Path | What |
@@ -199,38 +211,42 @@ folders), like the installed version.
 
 ## Releasing
 
-GitHub Actions has a single workflow, *Windows portable build* (`.github/workflows/windows-portable.yml`), and it only
-runs when started by hand: Actions → *Windows portable build* → *Run workflow*. It builds
-`DaybreakBuilder_X.Y.Z_x64_portable.exe` (version from `tauri.conf.json`) and keeps it, with its SHA-256, as a workflow
-artifact for 7 days. Tick *release* to also publish both files on the GitHub release `vX.Y.Z`; the release is created
-from the commit the workflow ran on if it doesn't exist yet, with notes generated from merged pull requests (grouped by
-label, see `.github/release.yml`). If `vX.Y.Z` already has the portable exe, the run stops before building, so a
-forgotten version bump can't overwrite a published release; tick *replace* as well to overwrite it on purpose. Nothing runs on pushes or pull requests, so run `npm run typecheck && npm test`
-before merging.
+GitHub Actions runs two workflows on their own:
+
+* **CI** (`.github/workflows/ci.yml`): typecheck, tests and a web build on every push and pull request; on pushes to
+  `main` (and when started by hand) it also builds the Linux and Windows installers and keeps them for 3 days.
+* **Release** (`.github/workflows/release.yml`): runs when a `vX.Y.Z` tag is pushed (or from Actions → *Release* →
+  *Run workflow* with a version, which bumps, commits and tags for you). It tests, creates a draft release with notes
+  generated from merged pull requests (grouped by label, see `.github/release.yml`), builds the Linux `.deb`, `.rpm`
+  and `.AppImage`, the Windows `.msi` and setup `.exe` and the portable Windows exe, adds `SHA256SUMS.txt` and
+  publishes the release. If anything fails, the draft is deleted.
+
+*Windows portable build* (`.github/workflows/windows-portable.yml`) is still there for rebuilding only the portable exe
+by hand.
 
 To release:
 
-1. `node scripts/version.mjs 1.3.5` (sets every version file; `node scripts/version.mjs` alone prints the version and
-   fails if any file is out of sync), commit and push to `main`.
-2. Run *Windows portable build* on `main` with *release* ticked.
-3. Build the Linux AppImage locally and add it to the same release:
+1. `node scripts/version.mjs X.Y.Z` (sets every version file; `node scripts/version.mjs` alone prints the version and
+   fails if any file is out of sync), commit and merge to `main`.
+2. Tag and push: `git tag -a vX.Y.Z -m "DaybreakBuilder vX.Y.Z" && git push origin vX.Y.Z`.
 
-   ```sh
-   npm ci
-   cd apps/desktop
-   npx tauri build --bundles appimage
-   gh release upload v1.3.5 src-tauri/target/release/bundle/appimage/*.AppImage
-   ```
+To build installers locally instead:
 
-   On Arch Linux, install the build dependencies first:
+```sh
+npm ci
+cd apps/desktop
+npx tauri build                      # or --bundles appimage for just the AppImage
+```
 
-   ```sh
-   sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool rustup
-   rustup default stable
-   ```
+On Arch Linux, install the build dependencies first:
 
-   If the AppImage step fails while stripping libraries (linuxdeploy's `strip` doesn't understand newer binaries),
-   build with `NO_STRIP=true npx tauri build --bundles appimage`.
+```sh
+sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool rustup
+rustup default stable
+```
+
+If the AppImage step fails while stripping libraries (linuxdeploy's `strip` doesn't understand newer binaries),
+build with `NO_STRIP=true npx tauri build --bundles appimage`.
 
 ## Roadmap
 
@@ -239,7 +255,8 @@ To release:
 * Export to Aurora `.dnd5e`
 * Live reload of the custom content folder
 
-Contributions are welcome. Please add a test in `packages/engine/test` for any rules behaviour you change.
+Contributions are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). Please add a test in `packages/engine/test` for any
+rules behaviour you change.
 
 ## License
 

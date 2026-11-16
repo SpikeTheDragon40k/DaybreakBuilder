@@ -119,6 +119,9 @@ function SettingsMenu() {
             </span>
             <ThemeSwitch />
           </div>
+          <p className="muted small settings-about">
+            DaybreakBuilder {__APP_VERSION__}
+          </p>
         </div>
       )}
     </Popover>
