@@ -1,6 +1,6 @@
 [package]
 name = "daybreakbuilder"
-version = "1.3.5"
+version = "2.0.0"
 description = "Open-source D&D 5e character builder compatible with Aurora Builder content"
 authors = ["DaybreakBuilder contributors"]
 license = "MIT"

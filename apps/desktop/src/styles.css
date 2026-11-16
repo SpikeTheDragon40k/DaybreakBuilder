@@ -2683,3 +2683,8 @@ button.swatch.on {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+.settings-about {
+  margin: 0.4rem 0 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--border);
+}
